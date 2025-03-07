@@ -1,24 +1,20 @@
 "use client";
-import React from "react";
-import Header from "../../components/header/Header";
-import ChatBox from "@/app/components/ChatBox/ChatBox";
-import SendInp from "../../components/SendInp";
-import ContextProvider from "../ContextProvider"
+
+import PersonMd from "./PersonMd";
+import PersonLg from "./PersonLg";
+import ContextProvider from "../ContextProvider";
+import "../../global.css";
 function page() {
   return (
-    <ContextProvider >
-
-    <div className="flex flex-col ">
-      <div className="fixed  right-0">
-        <Header />
-      </div>
-      <div className="flex flex-col">
-        <ChatBox />
-        <SendInp />
-      </div>
+    <>
+      <ContextProvider>
+        <div className=" global-width fixed right-0">
+        <PersonMd />
+        <PersonLg />
+        </div>
       
-    </div>
-    </ContextProvider>
+      </ContextProvider>
+    </>
   );
 }
 

@@ -45,6 +45,11 @@
   .global-width{
     width :70vw;
   }
+  
+  .global-width_md{
+    width :35vw;
+  }
+
   /* center A div */
   .div-center{
   
@@ -55,7 +60,9 @@
   }
 
   /* colors */
-
+  .color-lvl-01{
+    background: #1e303c;
+}
   .color-lvl-1{
       background: #243642;
   }
@@ -78,7 +85,9 @@
 
 
 /* text color */
-
+.txt-color-lvl-01{
+  color: #1e303c;
+}
 .txt-color-lvl-1{
   color: #243642;
 }
@@ -90,7 +99,9 @@
 .txt-color-lvl-3{
   color: #629584;
 }
-
+.txt-color-lvl-3_5{
+  color: #84b9a7;
+}
 .txt-color-lvl-4{
   color: #E2F1E7;
 }
@@ -98,3 +109,8 @@
 
 /* text size */
  
+
+.bg-op{
+  background-color: rgba(20, 20, 20);
+  
+}

@@ -3,15 +3,15 @@ import { Send, Microphone, Add, Emogi } from "../icons";
 import React, { useEffect, useState } from "react";
 import "../global.css";
 import "./style.css";
-function SendInp() {
+function SendInp(data:{css :string}) {
   const [fileBtn, setFileBtn] = useState(false);
-  const[emogiBtn , setEmogiBtn] = useState(false);
+  const [emogiBtn, setEmogiBtn] = useState(false);
   useEffect(() => {
     console.log(fileBtn);
   }, [fileBtn]);
   const [text, setText] = useState("");
   return (
-    <div className="fixed right-0 bottom-0  global-width">
+    <div className={` fixed bottom-0 z-100  ${data.css}`}>
       <div className="color-lvl-1 w-full flex p-1">
         <div className="flex justify-around w-[120px] mr-2">
           <button
@@ -22,7 +22,12 @@ function SendInp() {
           >
             <Add />
           </button>
-          <button onClick={()=>setEmogiBtn(!emogiBtn)} className={` ${emogiBtn ? "txt-color-lvl-4" :"txt-color-lvl-2"}  text-xl`}>
+          <button
+            onClick={() => setEmogiBtn(!emogiBtn)}
+            className={` ${
+              emogiBtn ? "txt-color-lvl-4" : "txt-color-lvl-2"
+            }  text-xl`}
+          >
             <Emogi />
           </button>
         </div>
