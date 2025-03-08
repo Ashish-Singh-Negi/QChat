@@ -1,3 +1,4 @@
+import axiosInstance from "@/utils/axiosinstance";
 import { useEffect, useRef, useState } from "react";
 
 interface UseWebSocketOptions {
@@ -73,12 +74,22 @@ export const useWebSocket = (
     };
   }, [url]);
 
-  const sendMessage = (message: string) => {
+  const sendMessage = async (message: string) => {
     if (
       webSocketRef.current &&
       webSocketRef.current.readyState === WebSocket.OPEN
     ) {
-      webSocketRef.current.send(message);
+      webSocketRef.current.send(message.trim());
+
+      console.log(message);
+
+      const { data } = await axiosInstance.post("/users/messages", {
+        message: message,
+        sendTo: "Mango",
+        sendBy: "Apple",
+      });
+
+      console.log(data);
     } else {
       console.error("WebSocket is not open, unable to send message.");
     }

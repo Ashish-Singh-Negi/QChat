@@ -1,0 +1,61 @@
+.add_Btn_Animation {
+  transform: rotate(45deg);
+  transition: rotate 3s 1 ease-in-out;
+}
+
+.Three-dot-list {
+  height: 40vh;
+  width: 28vh;
+  overflow: hidden;
+  animation: Three-dot 300ms 1 ease-in-out;
+}
+
+@keyframes Three-dot {
+  0% {
+    height: 0vh;
+    width: 0vh;
+  }
+
+  100% {
+    height: 40vh;
+    width: 28vh;
+  }
+}
+
+.sent-dot-list {
+  height: 35vh;
+  width: 28vh;
+  overflow: hidden;
+  animation: Three-dot 200ms 1 ease-in-out;
+}
+
+@keyframes sent {
+  0% {
+    height: 0vh;
+    width: 0vh;
+  }
+
+  100% {
+    height: 35vh;
+    width: 28vh;
+  }
+}
+
+.recieve-dot-list {
+  height: 35vh;
+  width: 28vh;
+  overflow: hidden;
+  animation: recieve 200ms 1 left ease-in-out;
+}
+
+@keyframes recieve {
+  0% {
+    height: 0vh;
+    width: 0vh;
+  }
+
+  100% {
+    height: fit-content;
+    width: fit-content;
+  }
+}
