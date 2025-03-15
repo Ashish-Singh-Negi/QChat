@@ -13,6 +13,8 @@ import { FaTrash } from "react-icons/fa";
 import { MdOutlineCheckBox } from "react-icons/md";
 import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 import { FaChevronRight } from "react-icons/fa";
+import { FaFileSignature } from "react-icons/fa6";
+import { TiPinOutline } from "react-icons/ti";
 export {
   IoMdSearch as Search,
   PiDotsThreeOutlineVerticalFill as Three_dot,
@@ -28,5 +30,7 @@ export {
   FaStar as Star,
   FaTrash as Trash,
   MdOutlineCheckBox as Checked,
-  MdOutlineCheckBoxOutlineBlank as UnChecked
+  MdOutlineCheckBoxOutlineBlank as UnChecked,
+  FaFileSignature as Files,
+  TiPinOutline as Pin
 };

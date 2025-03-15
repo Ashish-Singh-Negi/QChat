@@ -1,21 +1,47 @@
 "use client";
 import { Send, Microphone, Add, Emogi } from "../icons";
-import React, { useEffect, useState } from "react";
+import React, { FormEvent , useEffect, useState } from "react";
+import EmojiPicker from "emoji-picker-react";
 import "../global.css";
 import "./style.css";
-function SendInp(data:{css :string}) {
+import { IMessage } from "../Inteface/message";
+import SendOptions from "./SendOptions";
+import { context_val } from "../chatsSection/ContextProvider";
+import Reply from "./Reply";
+function SendInp(data: { css: string }) {
   const [fileBtn, setFileBtn] = useState(false);
   const [emogiBtn, setEmogiBtn] = useState(false);
-  useEffect(() => {
-    console.log(fileBtn);
-  }, [fileBtn]);
+  const {replying } = context_val();
+ 
   const [text, setText] = useState("");
+  const data1: IMessage = {
+    senderID: "me",
+    recieverID: "notme",
+    message: "hello  hello",
+    date: "01-01-2025",
+    phone_No: 2673567,
+  };
+  const onEmojiClick = (emojiData: any) => {
+    setText((prevText) => prevText + emojiData.emoji);
+  };
+ 
+  const handleSubmit =( e : FormEvent<HTMLFormElement>)=>{
+    e.preventDefault();
+  }
   return (
-    <div className={` fixed bottom-0 z-100  ${data.css}`}>
+   <form onSubmit={handleSubmit} className="fixed bottom-0 z-[-1] f;ex  overflow-visible h-fit ">
+     { replying &&   <Reply message={data1} />}
+          {emogiBtn &&
+          <div className="fixed bottom-[64px]  ">
+
+            <EmojiPicker  onEmojiClick={onEmojiClick} />
+          </div>
+           }
+     <div className={`  ${data.css}`}>
       <div className="color-lvl-1 w-full flex p-1">
         <div className="flex justify-around w-[120px] mr-2">
           <button
-            onClick={() => setFileBtn(!fileBtn)}
+            onClick={() => {setFileBtn(!fileBtn)}}
             className={` rounded-full h-fit w-fit p-2 mt-1 outline-none txt-color-lvl-2 text-3xl font-medium ${
               fileBtn && " add_Btn_Animation shadow-xl bg-black bg-opacity-20"
             }`}
@@ -43,7 +69,7 @@ function SendInp(data:{css :string}) {
         </div>
         <div className="flex justify-around w-[120px]">
           {text != "" ? (
-            <button className="txt-color-lvl-2 text-2xl ">
+            <button type="submit" className="txt-color-lvl-2 text-2xl ">
               <Send />
             </button>
           ) : (
@@ -54,6 +80,10 @@ function SendInp(data:{css :string}) {
         </div>
       </div>
     </div>
+    <div className="fixed bottom-[5%] left-[30%] z-100">
+    <SendOptions visible={fileBtn}   />
+    </div>
+    </form>
   );
 }
 
