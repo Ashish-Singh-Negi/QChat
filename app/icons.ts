@@ -10,11 +10,15 @@ import { RxCross2 } from "react-icons/rx";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
+import { BsFillChatSquareTextFill } from "react-icons/bs";
 import { MdOutlineCheckBox } from "react-icons/md";
 import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 import { FaChevronRight } from "react-icons/fa";
 import { FaFileSignature } from "react-icons/fa6";
 import { TiPinOutline } from "react-icons/ti";
+import { IoSettings } from "react-icons/io5";
+import { RiHistoryLine } from "react-icons/ri";
+
 export {
   IoMdSearch as Search,
   PiDotsThreeOutlineVerticalFill as Three_dot,
@@ -32,5 +36,8 @@ export {
   MdOutlineCheckBox as Checked,
   MdOutlineCheckBoxOutlineBlank as UnChecked,
   FaFileSignature as Files,
-  TiPinOutline as Pin
+  TiPinOutline as Pin ,
+  BsFillChatSquareTextFill as Chats,
+  RiHistoryLine as Story,
+ IoSettings as Setting
 };

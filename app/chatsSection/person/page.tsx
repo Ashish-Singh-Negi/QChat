@@ -4,7 +4,7 @@ import PersonMd from "./PersonMd";
 import PersonLg from "./PersonLg";
 import ContextProvider from "../ContextProvider";
 import "../../global.css";
-import MainSec from "@/app/components/SideBar/MainSec";
+import MainSec from "@/app/components/SideBar/MainSec"
 function page() {
   return (
     <>
