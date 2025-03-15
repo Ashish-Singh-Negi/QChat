@@ -10,7 +10,8 @@ import PopUp from "@/app/components/PopUp";
 function Chat(data: { css: string }) {
   const { checked, mutePopUp, blockPopUp, deletePopUp, clearChatPopUp } =
     context_val();
-
+  
+ 
   return (
     <div className={`  "flex" flex-col ${data.css} `}>
       <div className="fixed  right-0">

@@ -30,10 +30,10 @@ function PersonMd() {
         <SearchMessages css={"global-width"} />
       </div>
       <div>
-        <ContactInfo />
+        <ContactInfo css={"global-width"} />
       </div>
       <div>
-        <Disappearing />
+        <Disappearing css={"global-width"} />
       </div>
     </div>
   );

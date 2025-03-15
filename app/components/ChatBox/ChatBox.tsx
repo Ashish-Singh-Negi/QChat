@@ -1,25 +1,26 @@
 import React from "react";
 import Sent from "@/app/components/ChatBox/Sent";
-import ThreeList from "../header/ThreeList";
 import { IMessage } from "@/app/Inteface/message";
+import DeleteMessage from "../DeleteMessage";
 import Recieved from "../../components/ChatBox/Recieved";
 import "../style.css";
 import { context_val } from "@/app/chatsSection/ContextProvider";
 function ChatBox(data: { css: string }) {
-  const { threeDot_btn , setThreeDot_btn, setRecieve_Text, setSent_Text } = context_val();
+  const {  setThreeDot_btn, setRecieve_Text, setSent_Text , visibility } =
+    context_val();
   const data1: IMessage = {
     senderID: "me",
     recieverID: "notme",
     message: "hello  hello",
-    date: "01-01-2025",
+    date: "1:45",
     phone_No: 2673567,
   };
 
   const data2: IMessage = {
-    senderID: "me",
+    senderID: "me ",
     recieverID: "notme",
-    message: "hello , hyd",
-    date: "01-01-2025",
+    message: "hello , kjfjejegjsjd sjdhjsdj jhsdjah hyd",
+    date: "2:23",
     phone_No: 2673567,
   };
   return (
@@ -28,19 +29,19 @@ function ChatBox(data: { css: string }) {
         onClick={() => {
           setRecieve_Text(false);
           setSent_Text(false);
-          setThreeDot_btn(false)
+          setThreeDot_btn(false);
         }}
-        className=" overflow-scroll overflow-y-hidden absolute z-0 flex flex-col  color-lvl-3-op h-[90vh] top-[64px] left-0"
+        className=" overflow-scroll overflow-y-hidden absolute z-[-10] flex flex-col  color-lvl-3-op h-[90vh] top-[64px] left-0"
       >
+        <div className="h-10 w-fit px-3 py-2 color-lvl-1 self-center rounded-3xl text-quick-400 mt-1 " > today </div>
         <Sent message={data1} css={data.css} />
 
         <Recieved message={data2} css={data.css} />
-        {threeDot_btn && (
-          <div className="fixed  z-100 right-4 top-[60px]">
-            <ThreeList />
-          </div>
-        )}
+       
       </div>
+   { visibility &&  <div >
+      <DeleteMessage   />
+    </div>}
     </div>
   );
 }

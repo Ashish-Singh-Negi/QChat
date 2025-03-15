@@ -2,13 +2,17 @@ import React, { useRef, useState } from "react";
 import { Cross, Search, ALeft, Calender } from "../icons";
 import "../global.css";
 import { context_val } from "../chatsSection/ContextProvider";
-function SearchMessages(data : {css : string}) {
+function SearchMessages(data: { css: string }) {
   const [searchval, setSearchval] = useState("");
   const calender = useRef<HTMLInputElement>(null);
   const { search, setSearch } = context_val();
 
   return (
-    <div className={` ${search ? "flex" : "hidden"} global-height color-lvl-1 ${data.css} flex-col fixed right-0 `}>
+    <div
+      className={` ${search ? "flex" : "hidden"} global-height color-lvl-1 ${
+        data.css
+      } flex-col fixed right-0 z-[-1] `}
+    >
       {/* ..............header................ */}
       <div className="flex  w-full  content-center p-1 h-[10vh] align-middle ">
         <button
