@@ -1,14 +1,12 @@
 "use client";
+
 import { Send, Microphone, Add, Emogi } from "../icons";
 import React, { useEffect, useState } from "react";
+
 import "../globals.css";
 import "./style.css";
 
-function SendInp({
-  sendMessageHandler,
-}: {
-  sendMessageHandler: (message: string) => void;
-}) {
+function SendInp(data: { css: string }) {
   const [fileBtn, setFileBtn] = useState(false);
   const [emogiBtn, setEmogiBtn] = useState(false);
   const [text, setText] = useState("");
@@ -18,7 +16,7 @@ function SendInp({
   }, [fileBtn]);
 
   return (
-    <div className="fixed right-0 bottom-0 global-width">
+    <div className={` fixed bottom-0 z-100  ${data.css}`}>
       <div className="color-lvl-1 w-full flex p-1">
         <div className="flex justify-around w-[120px] mr-2">
           <button
@@ -51,7 +49,7 @@ function SendInp({
         <div className="flex justify-around w-[120px]">
           {text != "" ? (
             <button
-              onClick={() => sendMessageHandler(text)}
+              // onClick={() => sendMessageHandler(text)}
               className="txt-color-lvl-2 text-2xl "
             >
               <Send />

@@ -5,10 +5,10 @@ import { IMessage } from "@/app/Inteface/message";
 import Recieved from "../../components/ChatBox/Recieved";
 import "../style.css";
 import { context_val } from "@/app/chatsSection/ContextProvider";
-
-function ChatBox() {
-  const { threeDot_btn, setRecieve_Text, setSent_Text } = context_val();
-  const senderMessage: IMessage = {
+function ChatBox(data: { css: string }) {
+  const { threeDot_btn, setThreeDot_btn, setRecieve_Text, setSent_Text } =
+    context_val();
+  const data1: IMessage = {
     senderID: "me",
     recieverID: "notme",
     message: "hello  hello",
@@ -16,7 +16,7 @@ function ChatBox() {
     phone_No: 2673567,
   };
 
-  const receiverMessage: IMessage = {
+  const data2: IMessage = {
     senderID: "me",
     recieverID: "notme",
     message: "hello , hyd",
@@ -25,20 +25,20 @@ function ChatBox() {
   };
 
   return (
-    <div>
+    <div className="">
       <div
         onClick={() => {
           setRecieve_Text(false);
           setSent_Text(false);
+          setThreeDot_btn(false);
         }}
-        className=" overflow-scroll overflow-y-hidden fixed z-0 flex flex-col 
-            color-lvl-3-op h-[90vh] top-[64px] right-0"
+        className=" overflow-scroll overflow-y-hidden absolute z-0 flex flex-col  color-lvl-3-op h-[90vh] top-[64px] left-0"
       >
-        <Sent {...senderMessage} />
+        <Sent message={data1} css={data.css} />
 
-        <Recieved {...receiverMessage} />
+        <Recieved message={data2} css={data.css} />
         {threeDot_btn && (
-          <div className="fixed z-100 right-4 top-[60px]">
+          <div className="fixed  z-100 right-4 top-[60px]">
             <ThreeList />
           </div>
         )}

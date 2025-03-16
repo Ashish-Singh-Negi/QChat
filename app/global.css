@@ -1,0 +1,115 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
+
+.text-quick-300 {
+    font-family: "Quicksand", serif;
+    font-optical-sizing: auto;
+    font-weight: 300 ;
+    font-style: normal;
+  }
+  .text-quick-400 {
+    font-family: "Quicksand", serif;
+    font-optical-sizing: auto;
+    font-weight: 4s00 ;
+    font-style: normal;
+  }
+  .text-quick-500 {
+    font-family: "Quicksand", serif;
+    font-optical-sizing: auto;
+    font-weight: 500 ;
+    font-style: normal;
+  }
+  .text-quick-600 {
+    font-family: "Quicksand", serif;
+    font-optical-sizing: auto;
+    font-weight: 600 ;
+    font-style: normal;
+  }
+  .text-quick-700 {
+    font-family: "Quicksand", serif;
+    font-optical-sizing: auto;
+    font-weight: 700 ;
+    font-style: normal;
+  }
+
+   /* sizes */
+   .header-height{
+    height :64px;
+   }
+  .global-height{
+    height: 100vh;
+    
+  } 
+  .global-width{
+    width :70vw;
+  }
+  
+  .global-width_md{
+    width :35vw;
+  }
+
+  /* center A div */
+  .div-center{
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+     
+  }
+
+  /* colors */
+  .color-lvl-01{
+    background: #1e303c;
+}
+  .color-lvl-1{
+      background: #243642;
+  }
+
+  .color-lvl-2{
+    background: #387478;
+}
+
+.color-lvl-3{
+  background: #629584;
+}
+
+.color-lvl-3-op{
+  background: rgba(98, 149, 132 , 0.4);
+}
+
+.color-lvl-4{
+  background: #E2F1E7;
+}
+
+/* text color */
+.txt-color-lvl-01{
+  color: #1e303c;
+}
+.txt-color-lvl-1{
+  color: #243642;
+}
+
+.txt-color-lvl-2{
+  color: #387478;
+}
+ 
+.txt-color-lvl-3{
+  color: #629584;
+}
+.txt-color-lvl-3_5{
+  color: #84b9a7;
+}
+.txt-color-lvl-4{
+  color: #E2F1E7;
+}
+
+
+/* text size */
+ 
+
+.bg-op{
+  background-color: rgba(20, 20, 20);
+  
+}

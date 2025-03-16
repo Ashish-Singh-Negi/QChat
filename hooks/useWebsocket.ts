@@ -74,19 +74,24 @@ export const useWebSocket = (
     };
   }, [url]);
 
-  const sendMessage = async (message: string) => {
+  const sendMessage = async (dataIs: {
+    action: "JOIN" | "LEAVE" | "MESSAGE";
+    message: string;
+    room?: string;
+  }) => {
     if (
       webSocketRef.current &&
       webSocketRef.current.readyState === WebSocket.OPEN
     ) {
-      webSocketRef.current.send(message.trim());
+      const buffer = Buffer.from(JSON.stringify(dataIs));
 
-      console.log(message);
+      webSocketRef.current.send(buffer);
+
+      console.log(dataIs);
 
       const { data } = await axiosInstance.post("/users/messages", {
-        message: message,
-        sendTo: "Mango",
-        sendBy: "Apple",
+        data: dataIs,
+        sendTo: "67cd2d571d10653dbb470f99",
       });
 
       console.log(data);
