@@ -1,6 +1,6 @@
 "use client";
 import { Send, Microphone, Add, Emogi } from "../icons";
-import React, { FormEvent , useEffect, useState } from "react";
+import React, { FormEvent ,useState } from "react";
 import EmojiPicker from "emoji-picker-react";
 import "../global.css";
 import "./style.css";

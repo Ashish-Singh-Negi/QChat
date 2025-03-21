@@ -31,10 +31,36 @@ const defaultVal = {
   setVisibility: (visibility) => null,
   selectedMessage: "",
   setSelectedMessage: (selectedMessage) => null,
-  replying :false,
-  setReplying : (replying)=>null,
-  reacting  : false,
-  setReacting : (reacting)=>null
+  replying: false,
+  setReplying: (replying) => null,
+  reacting: false,
+  setReacting: (reacting) => null,
+  show: true,
+  setShow: (show) => null,
+  sideThreeDot: false,
+  setSideThreeDot: (sideThreeDot) => null,
+  side_starredMessage: false,
+  setSide_starredMessages: (side_starredMessage) => null,
+  selectChats: false,
+  setSelectChats: (selectChats) => null,
+  addChats: false,
+  setAddChats: (addChats) => null,
+  starred: false,
+  setStarred: (starred) => null,
+  storySetting: false,
+  setStorySetting: (storySetting) => null,
+  story: false,
+  setStory: (story) => null,
+  logOut: false,
+  setLogOut: (logOut) => null,
+  settings: false,
+  setSettings: (settings) => null,
+  profile: false,
+  setProfile: (profile) => null,
+  notificationSetting: false,
+  setNotificationSetting: (notificationSetting) => null,
+  privacySetting: false,
+  setPrivacySetting: (privacySetting) => null,
 };
 
 const context = createContext(defaultVal);
@@ -57,26 +83,91 @@ function ContextProvider({ children }) {
   //  message states
   const [visibility, setVisibility] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState("");
-  const [replying , setReplying] = useState(false);
-  const [reacting , setReacting] = useState(false);
+  const [replying, setReplying] = useState(false);
+  const [reacting, setReacting] = useState(false);
+  const [selectChats, setSelectChats] = useState(false);
+
+  // sidebar
+
+  const [show, setShow] = useState(true);
+  const [sideThreeDot, setSideThreeDot] = useState(false);
+  const [side_starredMessage, setSide_starredMessages] = useState(false);
+  const [addChats, setAddChats] = useState(false);
+  const [starred, setStarred] = useState(false);
+  const [story, setStory] = useState(false);
+  const [storySetting, setStorySetting] = useState(false);
+  const [logOut, setLogOut] = useState(false);
+  const [settings, setSettings] = useState(false);
+  const [profile, setProfile] = useState(false);
+  const [privacySetting, setPrivacySetting] = useState(false);
+  const [notificationSetting, setNotificationSetting] = useState();
+  // search bar toggle in chat box
   useEffect(() => {
     if (search) {
       setContactInfo(false);
       setDisappearingComp(false);
     }
   }, [search]);
+  // contact info toggle
   useEffect(() => {
     if (contactInfo) {
       setSearch(false);
       setDisappearingComp(false);
     }
   }, [contactInfo]);
+
   useEffect(() => {
     if (disappearingComp) {
       setContactInfo(false);
       setSearch(false);
     }
   }, [disappearingComp]);
+
+  useEffect(() => {
+   if(width <700){
+    setSelectChats(false)
+   }
+    if (show) {
+      if (width < 700) {
+        
+          setShow(false);
+        
+      }
+      setStory(false);
+      setProfile(false);
+      setSettings(false);
+    }
+  }, [show]);
+
+  useEffect(() => {
+    if (story) {
+      setShow(false);
+      setStarred(false);
+      setAddChats(false);
+      setProfile(false);
+      setSettings(false);
+    }
+  }, [story]);
+  useEffect(() => {
+    if (settings) {
+      setShow(false);
+      setStarred(false);
+      setAddChats(false);
+      setProfile(false);
+      setStory(false);
+    }
+  }, [settings]);
+
+  useEffect(() => {
+    if (profile) {
+      setShow(false);
+      setStory(false);
+      setStarred(false);
+      setAddChats(false);
+      setSettings(false);
+    }
+  }, [profile]);
+
   useEffect(() => {
     window.addEventListener("resize", () => {
       setWidth(window.innerWidth);
@@ -88,11 +179,43 @@ function ContextProvider({ children }) {
       });
     };
   }, [window.innerWidth]);
-
+  useEffect(() => {
+    if (width < 700) {
+      if (selectChats ) {
+        setShow(false);
+      } else{
+        setShow(true);
+      }  
+    }else{
+      setSelectChats(true)
+      setShow(true);
+    }
+  }, [width]);
+  
   const values = {
+    notificationSetting,
+    setNotificationSetting,
+    settings,
+    setSettings,
+    profile,
+    setProfile,
+    privacySetting,
+    setPrivacySetting,
+    logOut,
+    setLogOut,
+    addChats,
+    setAddChats,
+    show,
+    setShow,
     width,
     setWidth,
     setChecked,
+    starred,
+    story,
+    setStory,
+    storySetting,
+    setStorySetting,
+    setStarred,
     threeDot_btn,
     setThreeDot_btn,
     blockPopUp,
@@ -110,6 +233,8 @@ function ContextProvider({ children }) {
     setContactInfo,
     disappearingComp,
     setDisappearingComp,
+    sideThreeDot,
+    setSideThreeDot,
     mutePopUp,
     setMutePopUp,
     deletePopUp,
@@ -118,10 +243,14 @@ function ContextProvider({ children }) {
     setClearChatPopUp,
     selectedMessage,
     setSelectedMessage,
-    replying ,
+    replying,
     setReplying,
-    reacting ,
-    setReacting
+    reacting,
+    selectChats,
+    setSelectChats,
+    side_starredMessage,
+    setSide_starredMessages,
+    setReacting,
   };
   return <context.Provider value={values}>{children}</context.Provider>;
 }

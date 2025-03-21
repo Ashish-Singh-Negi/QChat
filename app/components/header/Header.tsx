@@ -3,7 +3,6 @@ import "../../global.css";
 import React, { useState } from "react";
 import Image from "next/image";
 import cat from "../../images/cat.avif";
-import { IMessage } from "../../Inteface/message";
 import { Pin, Search, Three_dot } from "@/app/icons";
 import ThreeList from "./ThreeList";
 import { context_val } from "@/app/chatsSection/ContextProvider";
@@ -13,10 +12,10 @@ function Header(data: { css: string }) {
   const { threeDot_btn, setContactInfo, search, setSearch, setThreeDot_btn } =
     context_val();
   const [online, setOnline] = useState(false);
-  const [pinned , setPinned] = useState(false);
+  const [pinned, setPinned] = useState(false);
   return (
     <div
-      className={`div-center flex flex-col absolute top-0 right-0  p-2  justify-between h-fit ${data.css}  color-lvl-1  `}
+      className={`div-center flex flex-col absolute z-[-1] top-0 right-0  p-2  justify-between h-fit ${data.css}  color-lvl-1  `}
     >
       {threeDot_btn && (
         <div className="absolute z-100 right-4 top-[60px]">
@@ -42,7 +41,7 @@ function Header(data: { css: string }) {
         </div>
 
         <div className="h-full w-[16vw] flex justify-around ">
-        <button
+          <button
             onClick={() => setPinned(!pinned)}
             className="self-center p-0 txt-color-lvl-3 text-2xl"
           >
@@ -62,11 +61,10 @@ function Header(data: { css: string }) {
           </button>
         </div>
       </div>
-      
-          <div className={` ${pinned ? "flex" : "hidden"} w-full h-fit `}>
-          <PinedMessages  />
-        </div>
 
+      <div className={` ${pinned ? "flex" : "hidden"} w-full h-fit `}>
+        <PinedMessages />
+      </div>
     </div>
   );
 }

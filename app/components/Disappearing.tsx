@@ -11,7 +11,7 @@ function Disappearing( data : {css :string}) {
       <div
         className={` ${
           disappearingComp ? "flex" : "hidden"
-        } global-height flex-col bg-black  ${data.css} fixed z-[-1] right-0 overflow-scroll`}
+        } global-height flex-col bg-black  ${data.css} fixed z-[0] right-0 overflow-scroll`}
       >
         <div className="flex   right-0  w-full  justify-start content-center items-center h-[64px] color-lvl-1   ">
           <button
