@@ -13,7 +13,7 @@ function ContactInfo(data :{css :string}) {
     <div
       className={` ${
         contactInfo ? "flex" : "hidden"
-      } flex-col pt-[310px]  h-[100vh] overflow-scroll justify-center content-center text-center  ${data.css} absolute z-[-1] bg-black  right-0  `}
+      } flex-col pt-[310px]  h-[100vh] overflow-scroll justify-center content-center text-center  ${data.css} absolute z-[0] bg-black  right-0  `}
     >
       <div className="flex  w-full fixed top-0 justify-start content-center items-center h-[64px] color-lvl-1   ">
         <button

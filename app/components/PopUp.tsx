@@ -4,17 +4,18 @@ import { context_val } from "../chatsSection/ContextProvider";
 
 function PopUp(data: { message: string; btn2: string; header: string }) {
   const { header, message, btn2 } = data;
-  const { setBlockPopUp, setClearChatPopUp, setDeletePopUp } = context_val();
+  const { setBlockPopUp, setClearChatPopUp, setLogOut , setDeletePopUp } = context_val();
 
   const closePopUP = () => {
     setBlockPopUp(false);
     setClearChatPopUp(false);
     setDeletePopUp(false);
+    setLogOut(false)
   };
 
   return (
     <div
-      className={` flex  fixed left-0 h-[100vh] w-[100vw] justify-center bg-opacity-80 content-center items-center  bg-black `}
+      className={` flex  fixed z-[100] left-0 h-[100vh] w-[100vw] justify-center  bg-black  bg-opacity-80 content-center items-center `}
     >
       <div className=" rounded-xl  top-[30%] left-[20%]  w-[500px] color-lvl-1 p-5 ">
         <h2 className="text-quick-600 text-2xl mb-4 txt-color-lvl-3 ">

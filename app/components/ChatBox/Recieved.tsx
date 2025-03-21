@@ -52,7 +52,12 @@ function Recieved(data: { css: string; message: IMessage }) {
       </div>
       {recieve_Text && (
         <div className="absolute left-8 top-5">
-          <List  stared={stared} setStared={setStared} setReacting= {setReacting} text={data.message.message} />
+          <List
+            stared={stared}
+            setStared={setStared}
+            setReacting={setReacting}
+            text={data.message.message}
+          />
         </div>
       )}
       {reacting && (

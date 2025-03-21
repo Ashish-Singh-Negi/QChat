@@ -5,6 +5,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --sw : 6vw ;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,4 +19,44 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Extra small devices (phones) */
+@media (max-width: 575px) {
+   :root{
+    --sw :6vw;
+   }
+}
+
+/* Small devices (phones)  */
+@media (min-width: 576px) and (max-width: 700px) {
+  :root{
+    --sw :6vw;
+   }
+}
+ 
+@media (min-width: 700px) and (max-width: 992px) {
+  :root{
+    --sw :6vw;
+   }
+}
+
+/* Large devices (desktops) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  :root{
+    --sw :4vw;
+   }
+}
+/* Medium devices (tablets) */
+@media (min-width: 768px) and (max-width: 991px) {
+  :root{
+    --sw :5vw;
+   }
+}
+
+/* Extra large devices (large desktops) */
+@media (min-width: 1200px) {
+  :root{
+    --sw :4vw;
+   }
 }

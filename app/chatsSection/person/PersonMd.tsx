@@ -5,10 +5,11 @@ import SearchMessages from "@/app/components/SearchMessages";
 import Chat from "./Chat";
 import ContactInfo from "@/app/components/ContactInfo";
 import Disappearing from "@/app/components/Disappearing";
+import { context_val } from "../ContextProvider";
 
 function PersonMd() {
   const [width, setWidth] = useState(window.innerWidth);
-
+  const {show  }  = context_val();
   useEffect(() => {
     window.addEventListener("resize", () => {
       setWidth(window.innerWidth);
@@ -23,7 +24,7 @@ function PersonMd() {
 
   return (
     <div className={`${width > 1140 && "hidden"}`}>
-      <div>
+ <div className={`${ width< 700 ?( show ? "flex" :"hidden") : "flex"}`}>  <div>
         <Chat css={"global-width"} />
       </div>
       <div>
@@ -34,7 +35,8 @@ function PersonMd() {
       </div>
       <div>
         <Disappearing css={"global-width"} />
-      </div>
+      </div> </div>
+     
     </div>
   );
 }
