@@ -15,10 +15,10 @@ function Header(data: { css: string }) {
   const [pinned, setPinned] = useState(false);
   return (
     <div
-      className={`div-center flex flex-col absolute z-[-1] top-0 right-0  p-2  justify-between h-fit ${data.css}  color-lvl-1  `}
+      className={`div-center  flex flex-col absolute z-[0] top-0 right-0  p-2  justify-between h-fit ${data.css}  color-lvl-1  `}
     >
       {threeDot_btn && (
-        <div className="absolute z-100 right-4 top-[60px]">
+        <div className="absolute z-50 right-4 top-[60px]">
           <ThreeList />
         </div>
       )}

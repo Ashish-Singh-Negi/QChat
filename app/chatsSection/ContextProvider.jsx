@@ -85,7 +85,7 @@ function ContextProvider({ children }) {
   const [selectedMessage, setSelectedMessage] = useState("");
   const [replying, setReplying] = useState(false);
   const [reacting, setReacting] = useState(false);
-  const [selectChats, setSelectChats] = useState(false);
+  const [selectChats, setSelectChats] = useState(true);
 
   // sidebar
 
@@ -106,6 +106,7 @@ function ContextProvider({ children }) {
     if (search) {
       setContactInfo(false);
       setDisappearingComp(false);
+      setSelectChats(false);
     }
   }, [search]);
   // contact info toggle
@@ -113,6 +114,8 @@ function ContextProvider({ children }) {
     if (contactInfo) {
       setSearch(false);
       setDisappearingComp(false);
+      setSelectChats(false);
+
     }
   }, [contactInfo]);
 
@@ -120,17 +123,25 @@ function ContextProvider({ children }) {
     if (disappearingComp) {
       setContactInfo(false);
       setSearch(false);
+      setSelectChats(false);
+
     }
   }, [disappearingComp]);
+  useEffect(() => {
+    if (selectChats) {
+      setContactInfo(false);
+      setSearch(false);
+      setDisappearingComp(false);
+
+    }
+  }, [selectChats]);
 
   useEffect(() => {
-   if(width <700){
-    setSelectChats(false)
-   }
+    
     if (show) {
       if (width < 700) {
         
-          setShow(false);
+        setSelectChats(false)
         
       }
       setStory(false);
@@ -169,16 +180,17 @@ function ContextProvider({ children }) {
   }, [profile]);
 
   useEffect(() => {
-    window.addEventListener("resize", () => {
+    const handleResize = () => {
       setWidth(window.innerWidth);
-    });
-
-    return () => {
-      window.removeEventListener("resize", () => {
-        setWidth(window.innerWidth);
-      });
     };
-  }, [window.innerWidth]);
+  
+    window.addEventListener("resize", handleResize);
+  
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  console.log(selectChats , show)
   useEffect(() => {
     if (width < 700) {
       if (selectChats ) {
@@ -190,7 +202,7 @@ function ContextProvider({ children }) {
       setSelectChats(true)
       setShow(true);
     }
-  }, [width]);
+  }, [width ]);
   
   const values = {
     notificationSetting,
