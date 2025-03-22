@@ -3,9 +3,9 @@ import { Cross, Search, ALeft, Calender } from "../icons";
 import "../global.css";
 import { context_val } from "../chatsSection/ContextProvider";
 function SearchMessages(data: { css: string }) {
-  const [searchval, setSearchval] = useState("");
+  const [searchval, setSearchval ] = useState("");
   const calender = useRef<HTMLInputElement>(null);
-  const { search, setSearch } = context_val();
+  const { search, setSearch , setSelectChats } = context_val();
 
   return (
     <div
@@ -16,7 +16,7 @@ function SearchMessages(data: { css: string }) {
       {/* ..............header................ */}
       <div className="flex  w-full  content-center p-1 h-[10vh] align-middle ">
         <button
-          onClick={() => setSearch(!search)}
+          onClick={() => {setSearch(!search); setSelectChats(true)}}
           className=" px-[3%] text-3xl font-semibold txt-color-lvl-2 "
         >
           <Cross />

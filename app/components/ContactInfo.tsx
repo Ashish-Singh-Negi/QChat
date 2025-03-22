@@ -5,7 +5,7 @@ import Image from "next/image";
 import "../global.css";
 import { ARight, Cross, Star, Trash } from "../icons";
 function ContactInfo(data :{css :string}) {
-  const { contactInfo, setContactInfo } = context_val();
+  const { contactInfo, setContactInfo , setSelectChats } = context_val();
   const obj = {
     name: "Kit",
   };
@@ -17,7 +17,7 @@ function ContactInfo(data :{css :string}) {
     >
       <div className="flex  w-full fixed top-0 justify-start content-center items-center h-[64px] color-lvl-1   ">
         <button
-          onClick={() => setContactInfo(false)}
+          onClick={() =>{ setContactInfo(false) ; setSelectChats(true)}}
           className=" text-3xl mx-2 txt-color-lvl-2 text-quick-600 "
         >
           <Cross />

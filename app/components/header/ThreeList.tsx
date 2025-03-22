@@ -29,7 +29,7 @@ function ThreeList() {
     setThreeDot_btn(!threeDot_btn);
   };
   return (
-    <div className=" rounded-xl  shadow-2xl Three-dot-list   top-[60px]  color-lvl-3   p-4 z-10 bg-white">
+    <div className=" rounded-xl  shadow-2xl  Three-dot-list     color-lvl-3      p-4  bg-white">
       <li
         onClick={() => Changing(setContactInfo, contactInfo)}
         className="list-none text-white text-opacity-60  text-quick-500 hover:bg-green-950 hover:bg-opacity-25 ml-1  rounded-lg w-full py-1"

@@ -9,7 +9,7 @@ function MainSec() {
     const {show , setSideThreeDot}  = context_val();
    
   return (
-    <div className={`${show ? "flex" :"hidden"} sideBar_width  flex z-[-1] absolute left_l overflow-hidden h-[100vh] color-lvl-1  `}>
+    <div className={` flex sideBar_width    z-[-1] absolute left_l overflow-hidden h-[100vh] color-lvl-1  `}>
      
       <div className={` flex-col h-[100vh] w-full `}>
      <SidebarNav /> 

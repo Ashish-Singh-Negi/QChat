@@ -5,7 +5,7 @@ import Disappearingimg from "../images/image.png";
 import "../global.css";
 import { context_val } from "../chatsSection/ContextProvider";
 function Disappearing( data : {css :string}) {
-  const { disappearingComp, setDisappearingComp } = context_val();
+  const { disappearingComp, setDisappearingComp  , setSelectChats} = context_val();
   return (
     <>
       <div
@@ -15,7 +15,7 @@ function Disappearing( data : {css :string}) {
       >
         <div className="flex   right-0  w-full  justify-start content-center items-center h-[64px] color-lvl-1   ">
           <button
-            onClick={() => setDisappearingComp(false)}
+            onClick={() =>{ setDisappearingComp(false) ; setSelectChats(true)}}
             className=" text-3xl mx-2 txt-color-lvl-2 text-quick-600 "
           >
             <Cross />

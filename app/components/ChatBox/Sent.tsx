@@ -27,7 +27,7 @@ function Sent(data: { css: string; message: IMessage }) {
     >
       {checked && (
         <button
-          className=" ml-4 flex self-start text-2xl  my-2 txt-color-lvl-3 text-quick-600"
+          className=" ml-4 flex self-start text-2xl  my-2 txt-color-lvl-1 text-quick-600"
           onClick={() => setBoxChecked(!boxChecked)}
         >
           {boxChecked ? <Checked /> : <UnChecked />}
