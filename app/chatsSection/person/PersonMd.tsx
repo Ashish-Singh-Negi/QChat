@@ -20,7 +20,7 @@ function PersonMd() {
         setWidth(window.innerWidth);
       });
     };
-  }, [window.innerWidth]);
+  }, [width]);
 
   return (
     <div className={`${width > 1140 && "hidden"}`}>

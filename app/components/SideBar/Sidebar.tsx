@@ -1,16 +1,41 @@
-import React from "react";
+import React ,{useState , useEffect} from "react";
 import Cat from "../../images/kitkit.jpeg";
 import Image from "next/image";
 import "../../global.css"
 import { Chats, Setting, Story } from "../../icons";
 import { context_val } from "@/app/chatsSection/ContextProvider";
 function Sidebar() {
-  const {  setShow,  setStory,  setProfile , setSettings } = context_val();
+  const {  setShow,  setStory,selectChats ,  setProfile , setSettings , setSelectChats } = context_val();
+  const [width, setWidth] = useState(window.innerWidth);
+ 
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setWidth(window.innerWidth);
+    });
+
+    return () => {
+      window.removeEventListener("resize", () => {
+        setWidth(window.innerWidth);
+      });
+    };
+  }, [window.innerWidth]);
+   useEffect(() => {
+      if (width < 700) {
+        if (selectChats ) {
+          setShow(false);
+        } else{
+          setShow(true);
+        }  
+      }else{
+        setSelectChats(true)
+        setShow(true);
+      }
+    }, [width]);
   return (
     <div className="h-[100vh] sB_w flex flex-col justify-between lg:w-[5vw] color-lvl-1  border-r-2 mr-[3px] border-slate-50  border-opacity-5">
       <div className="flex flex-col  justify-start content-center items-center">
         <button
-          onClick={() => setShow(true)}
+          onClick={()=> setShow(true)}
           className="text-xl txt-color-lvl-3 hover:bg-slate-50 hover:bg-opacity-15 rounded-full  p-4 content-center text-center"
         >
           <Chats />

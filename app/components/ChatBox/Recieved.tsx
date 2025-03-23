@@ -23,7 +23,7 @@ function Recieved(data: { css: string; message: IMessage }) {
     <div className={` flex justify-start  ${data.css} `}>
       {checked && (
         <button
-          className=" ml-4 text-2xl my-2 txt-color-lvl-3  text-quick-600"
+          className=" ml-4 text-2xl my-2 txt-color-lvl-1  text-quick-600"
           onClick={() => setBoxChecked(!boxChecked)}
         >
           {boxChecked ? <Checked /> : <UnChecked />}

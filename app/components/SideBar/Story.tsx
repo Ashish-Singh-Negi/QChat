@@ -13,7 +13,7 @@ function Story() {
     <div
       className={` ${
         story ? "flex" : "hidden"
-      } flex-col  sideBar_width h-[100vh] absolute z-[-1] left_l`}
+      } flex-col  sideBar_width color-lvl-1 h-[100vh] absolute z-[-1] left_l`}
     >
       <div>
         <div className="flex w-full px-2 items-center  justify-between text-quick-600 text-2xl h-[60px]">
