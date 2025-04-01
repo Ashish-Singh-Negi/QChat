@@ -1,7 +1,6 @@
 "use client";
 
 import axiosInstance from "@/utils/axiosinstance";
-import React from "react";
 
 type FormData = {
   username: string;
@@ -30,11 +29,6 @@ const useUserLogin = () => {
         formData
       );
 
-      // console.log(data.data.accessToken);
-      // console.log(data.data.refreshToken);
-
-      // localStorage.setItem("access-token", data.data.accessToken);
-      // localStorage.setItem("refresh-token", data.data.refreshToken);
       return data;
     } catch (error) {
       return error;

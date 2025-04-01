@@ -170,7 +170,7 @@ const Websocket = () => {
         action: "PIN",
         crid: roomId,
         mid: mid,
-        isPinned: false
+        isPinned: false,
       });
 
       console.log(data);
@@ -237,6 +237,7 @@ const Websocket = () => {
             <div className="h-10 w-full">
               {btnActionName.map((actionName, index) => (
                 <button
+                  key={actionName}
                   onClick={() => changeBtnActionHandler(actionName, index)}
                   className="px-3 py-1 border-2 border-gray-700 active:scale-90 active:border-blue-500 transition-all"
                 >
@@ -248,6 +249,7 @@ const Websocket = () => {
               <header className="h-10 w-full font-semibold px-2 flex items-center border-b-2 border-gray-700">
                 {userContact?.username}
               </header>
+
               <main className="h-full w-full flex flex-col gap-1 py-1 font-normal overflow-y-auto">
                 {messages?.map((message) =>
                   message.senderId === userInfo?._id ? (

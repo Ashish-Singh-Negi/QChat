@@ -4,7 +4,7 @@ import useUserLogin from "@/hooks/useUserLogin";
 import axiosInstance from "@/utils/axiosinstance";
 import React, { FormEvent, useState } from "react";
 
-const loginPage = () => {
+const LoginPage = () => {
   const [username, setUsername] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
 
@@ -54,4 +54,4 @@ const loginPage = () => {
   );
 };
 
-export default loginPage;
+export default LoginPage;

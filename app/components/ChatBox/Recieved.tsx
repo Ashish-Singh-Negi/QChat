@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import List from "./List";
 import "../style.css";
@@ -6,24 +7,33 @@ import EmojiPicker from "emoji-picker-react";
 import { IMessage } from "../../Inteface/message";
 import { context_val } from "@/app/chatsSection/ContextProvider";
 import { Checked, Star, UnChecked } from "@/app/icons";
+
 function Recieved(data: { css: string; message: IMessage }) {
   const { recieve_Text, setRecieve_Text, checked } = context_val();
   const [boxChecked, setBoxChecked] = useState(false);
   const [stared, setStared] = useState(false);
   const [reaction, setReaction] = useState("");
   const [reacting, setReacting] = useState(false);
-  const handleReaction = (e: any) => {
-    setReaction(e.emoji);
 
+  const handleReaction = (e: {
+    activeSkinTone: string;
+    emoji: string;
+    imageUrl: string;
+    isCustom: boolean;
+    names: string[];
+    unified: string;
+    unifiedWithoutSkinTone: string;
+  }) => {
+    console.log(e);
+    setReaction(e.emoji);
     setReacting(false);
-    console.log(e.emoji);
   };
 
   return (
     <div className={` flex justify-start  ${data.css} `}>
       {checked && (
         <button
-          className=" ml-4 text-2xl my-2 txt-color-lvl-3  text-quick-600"
+          className=" ml-4 text-2xl my-2 txt-color-lvl-1  text-quick-600"
           onClick={() => setBoxChecked(!boxChecked)}
         >
           {boxChecked ? <Checked /> : <UnChecked />}
@@ -52,7 +62,12 @@ function Recieved(data: { css: string; message: IMessage }) {
       </div>
       {recieve_Text && (
         <div className="absolute left-8 top-5">
-          <List  stared={stared} setStared={setStared} setReacting= {setReacting} text={data.message.message} />
+          <List
+            stared={stared}
+            setStared={setStared}
+            setReacting={setReacting}
+            text={data.message.message}
+          />
         </div>
       )}
       {reacting && (

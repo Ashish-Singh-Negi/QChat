@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Files } from "../icons";
 
 function SendOptions(data: { visible: boolean }) {
-  const [grp, setGrp] = useState(false);
+  const [grp] = useState(false);
   const filesRef = useRef<HTMLInputElement>(null);
   const handleClick = () => {
     filesRef.current?.click();

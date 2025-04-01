@@ -10,7 +10,7 @@ const data1: IMessage = {
 };
 function PinedMessages() {
   const [count, setCount] = useState(0);
-  const [content, setContent] = useState<IMessage[]>([data1]);
+  const [content] = useState<IMessage[]>([data1]);
   const handleSubmit = () => {
     if (count < content.length - 1) {
       setCount(count + 1);

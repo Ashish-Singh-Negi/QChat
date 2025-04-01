@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useRef } from "react";
 
 const DialogBox = ({
   isOpen,
@@ -26,7 +20,7 @@ const DialogBox = ({
   editContent?: string;
   editContentHandler: (value: string) => void;
   primaryBtnText: string;
-  primaryBtnAction: any;
+  primaryBtnAction: () => void;
   secondaryBtnText: string;
 }) => {
   const dialogRef = useRef<HTMLDialogElement | null>(null);

@@ -1,8 +1,7 @@
 import axios from "axios";
-import { AxiosError } from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: process.env.BACKEND_URL || `http://localhost:3000/`,
+  baseURL: process.env.BACKEND_URL,
   withCredentials: true,
 });
 
@@ -42,7 +41,7 @@ axiosInstance.interceptors.response.use(
           console.log(data);
 
           return axiosInstance(originalConfig);
-        } catch (_error: AxiosError) {
+        } catch (_error: any) {
           console.log(_error);
 
           if (_error.status == 302) {

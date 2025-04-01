@@ -12,11 +12,19 @@ function Sent(data: { css: string; message: IMessage }) {
   const [boxChecked, setBoxChecked] = useState(false);
   const [stared, setStared] = useState(false);
   const [reaction, setReaction] = useState("");
-  const handleReaction = (e: any) => {
+  const handleReaction = (e: {
+    activeSkinTone: string;
+    emoji: string;
+    imageUrl: string;
+    isCustom: boolean;
+    names: string[];
+    unified: string;
+    unifiedWithoutSkinTone: string;
+  }) => {
+    console.log(e.emoji);
     setReaction(e.emoji);
 
     setReacting(false);
-    console.log(e.emoji);
   };
 
   return (
@@ -27,7 +35,7 @@ function Sent(data: { css: string; message: IMessage }) {
     >
       {checked && (
         <button
-          className=" ml-4 flex self-start text-2xl  my-2 txt-color-lvl-3 text-quick-600"
+          className=" ml-4 flex self-start text-2xl  my-2 txt-color-lvl-1 text-quick-600"
           onClick={() => setBoxChecked(!boxChecked)}
         >
           {boxChecked ? <Checked /> : <UnChecked />}

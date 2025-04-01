@@ -1,7 +1,7 @@
 "use client";
 
 import { Send, Microphone, Add, Emogi } from "../icons";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
 import "../global.css";
 import "./style.css";
@@ -22,7 +22,15 @@ function SendInp(data: { css: string }) {
     date: "01-01-2025",
     // phone_No: 2673567,
   };
-  const onEmojiClick = (emojiData: any) => {
+  const onEmojiClick = (emojiData: {
+    activeSkinTone: string;
+    emoji: string;
+    imageUrl: string;
+    isCustom: boolean;
+    names: string[];
+    unified: string;
+    unifiedWithoutSkinTone: string;
+  }) => {
     setText((prevText) => prevText + emojiData.emoji);
   };
 
@@ -36,7 +44,7 @@ function SendInp(data: { css: string }) {
     >
       {replying && <Reply message={data1} />}
       {emogiBtn && (
-        <div className="fixed bottom-[64px]  ">
+        <div className="fixed bottom-[64px]">
           <EmojiPicker onEmojiClick={onEmojiClick} />
         </div>
       )}

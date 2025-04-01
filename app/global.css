@@ -1,115 +1,175 @@
-
-
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
 
 .text-quick-300 {
-    font-family: "Quicksand", serif;
-    font-optical-sizing: auto;
-    font-weight: 300 ;
-    font-style: normal;
-  }
-  .text-quick-400 {
-    font-family: "Quicksand", serif;
-    font-optical-sizing: auto;
-    font-weight: 4s00 ;
-    font-style: normal;
-  }
-  .text-quick-500 {
-    font-family: "Quicksand", serif;
-    font-optical-sizing: auto;
-    font-weight: 500 ;
-    font-style: normal;
-  }
-  .text-quick-600 {
-    font-family: "Quicksand", serif;
-    font-optical-sizing: auto;
-    font-weight: 600 ;
-    font-style: normal;
-  }
-  .text-quick-700 {
-    font-family: "Quicksand", serif;
-    font-optical-sizing: auto;
-    font-weight: 700 ;
-    font-style: normal;
-  }
-
-   /* sizes */
-   .header-height{
-    height :64px;
-   }
-  .global-height{
-    height: 100vh;
-    
-  } 
-  .global-width{
-    width :70vw;
-  }
-  
-  .global-width_md{
-    width :35vw;
-  }
-
-  /* center A div */
-  .div-center{
-  
-    display: flex;
-    align-items: center;
-    justify-content: center;
-     
-  }
-
-  /* colors */
-  .color-lvl-01{
-    background: #1e303c;
+  font-family: "Quicksand", serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
 }
-  .color-lvl-1{
-      background: #243642;
-  }
-
-  .color-lvl-2{
-    background: #387478;
+.text-quick-400 {
+  font-family: "Quicksand", serif;
+  font-optical-sizing: auto;
+  font-weight: 4s00;
+  font-style: normal;
+}
+.text-quick-500 {
+  font-family: "Quicksand", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+.text-quick-600 {
+  font-family: "Quicksand", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+.text-quick-700 {
+  font-family: "Quicksand", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
 }
 
-.color-lvl-3{
+/* sizes */
+.header-height {
+  height: 64px;
+}
+.global-height {
+  height: 100vh;
+}
+.global-width {
+  width: 70vw;
+}
+
+.global-width_md {
+  width: 35vw;
+}
+.sideBar_width {
+  width: 25vw;
+}
+
+/* center A div */
+.div-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* colors */
+.color-lvl-01 {
+  background: #1e303c;
+}
+.color-lvl-1 {
+  background: #243642;
+}
+
+.color-lvl-2 {
+  background: #387478;
+}
+
+.color-lvl-3 {
   background: #629584;
 }
 
-.color-lvl-3-op{
-  background: rgba(98, 149, 132 , 0.4);
+.color-lvl-3-op {
+  background: rgba(98, 149, 132, 0.4);
 }
 
-.color-lvl-4{
-  background: #E2F1E7;
+.color-lvl-4 {
+  background: #e2f1e7;
+}
+.sB_w {
+  width: var(--sw);
+}
+.left_l {
+  left: var(--sw);
 }
 
 /* text color */
-.txt-color-lvl-01{
+.txt-color-lvl-01 {
   color: #1e303c;
 }
-.txt-color-lvl-1{
+.txt-color-lvl-1 {
   color: #243642;
 }
 
-.txt-color-lvl-2{
+.txt-color-lvl-2 {
   color: #387478;
 }
- 
-.txt-color-lvl-3{
+
+.txt-color-lvl-3 {
   color: #629584;
 }
-.txt-color-lvl-3_5{
+.txt-color-lvl-3_5 {
   color: #84b9a7;
 }
-.txt-color-lvl-4{
-  color: #E2F1E7;
+.txt-color-lvl-4 {
+  color: #e2f1e7;
 }
 
-
 /* text size */
- 
 
-.bg-op{
+.bg-op {
   background-color: rgba(20, 20, 20);
-  
+}
+
+/* Extra small devices (phones) */
+@media (max-width: 575px) {
+  .global-width {
+    width: 94vw;
+  }
+  .sideBar_width {
+    width: 94vw;
+    position: fixed;
+    right: 0;
+  }
+}
+
+/* Small devices (phones)  */
+@media (min-width: 576px) and (max-width: 700px) {
+  .global-width {
+    width: 94vw;
+  }
+  .sideBar_width {
+    width: 94vw;
+  }
+}
+
+@media (min-width: 700px) and (max-width: 992px) {
+  .global-width {
+    width: 55vw;
+  }
+  .sideBar_width {
+    width: 39vw;
+  }
+}
+
+/* Large devices (desktops) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .global-width {
+    width: 60vw;
+  }
+  .sideBar_width {
+    width: 36vw;
+  }
+}
+/* Medium devices (tablets) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .global-width {
+    width: 50vw;
+  }
+  .sideBar_width {
+    width: 46vw;
+  }
+}
+
+/* Extra large devices (large desktops) */
+@media (min-width: 1200px) {
+  .global-width {
+    width: 70vw;
+  }
+  .sideBar_width {
+    width: 26vw;
+  }
 }

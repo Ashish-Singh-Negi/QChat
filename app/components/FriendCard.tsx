@@ -1,7 +1,8 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { UserProfile } from "./WebSocket";
+import React, { useEffect, useState } from "react";
+
 import axiosInstance from "@/utils/axiosinstance";
-import { useWebSocket } from "@/hooks/useWebsocket";
+
+import { UserProfile } from "./WebSocket";
 import { useUserContactContext } from "@/Context/UserContactContext";
 import { SendMessage } from "../Inteface/definations";
 

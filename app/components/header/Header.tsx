@@ -4,7 +4,6 @@ import "../../global.css";
 import React, { useState } from "react";
 import Image from "next/image";
 import cat from "../../images/cat.avif";
-import { IMessage } from "../../Inteface/message";
 import { Pin, Search, Three_dot } from "@/app/icons";
 import ThreeList from "./ThreeList";
 import { context_val } from "@/app/chatsSection/ContextProvider";
@@ -14,17 +13,17 @@ import { useUserContactContext } from "@/Context/UserContactContext";
 function Header(data: { css: string }) {
   const { threeDot_btn, setContactInfo, search, setSearch, setThreeDot_btn } =
     context_val();
-  const [online, setOnline] = useState(false);
+  const [online] = useState(false);
   const [pinned, setPinned] = useState(false);
 
   const { userContact } = useUserContactContext();
 
   return (
     <div
-      className={`div-center flex flex-col absolute top-0 right-0  p-2  justify-between h-fit ${data.css}  color-lvl-1  `}
+      className={`div-center  flex flex-col absolute z-[0] top-0 right-0  p-2  justify-between h-fit ${data.css}  color-lvl-1  `}
     >
       {threeDot_btn && (
-        <div className="absolute z-100 right-4 top-[60px]">
+        <div className="absolute z-50 right-4 top-[60px]">
           <ThreeList />
         </div>
       )}
