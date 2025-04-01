@@ -17,16 +17,24 @@ const defaultVal = {
   setContactInfo: (contactInfo) => null,
   checked: false,
   setChecked: (checked) => null,
-  disappearingComp :false,
-  setDisappearingComp : (disappearingComp)=>null,
-  mutePopUp:false,
-  setMutePopUp :(mutePopUp)=>null,
-  deletePopUp:false,
-  setDeletePopUp :(deletePopUp)=>null,
-  blockPopUp:false,
-  setBlockPopUp :(blockPopUp)=>null,
-  clearChatPopUp:false,
-  setClearChatPopUp :(clearChatPopUp)=>null,
+  disappearingComp: false,
+  setDisappearingComp: (disappearingComp) => null,
+  mutePopUp: false,
+  setMutePopUp: (mutePopUp) => null,
+  deletePopUp: false,
+  setDeletePopUp: (deletePopUp) => null,
+  blockPopUp: false,
+  setBlockPopUp: (blockPopUp) => null,
+  clearChatPopUp: false,
+  setClearChatPopUp: (clearChatPopUp) => null,
+  visibility: false,
+  setVisibility: (visibility) => null,
+  selectedMessage: "",
+  setSelectedMessage: (selectedMessage) => null,
+  replying: false,
+  setReplying: (replying) => null,
+  reacting: false,
+  setReacting: (reacting) => null
 };
 
 const context = createContext(defaultVal);
@@ -35,15 +43,43 @@ function ContextProvider({ children }) {
   const [threeDot_btn, setThreeDot_btn] = useState(false);
   const [sent_Text, setSent_Text] = useState(false);
   const [recieve_Text, setRecieve_Text] = useState(false);
+  const [width, setWidth] = useState(window.innerWidth);
+  // three dot contents ...
   const [search, setSearch] = useState(false);
   const [contactInfo, setContactInfo] = useState(false);
-  const [width, setWidth] = useState(window.innerWidth);
+  const [disappearingComp, setDisappearingComp] = useState(false);
   const [checked, setChecked] = useState(false);
-  const [ mutePopUp , setMutePopUp] = useState(false);
-  const [ blockPopUp , setBlockPopUp] = useState(false);
-  const [ clearChatPopUp , setClearChatPopUp] = useState(false);
-  const [ deletePopUp , setDeletePopUp] = useState(false);
-  const [disappearingComp , setDisappearingComp] = useState(false);
+  const [mutePopUp, setMutePopUp] = useState(false);
+  const [blockPopUp, setBlockPopUp] = useState(false);
+  const [clearChatPopUp, setClearChatPopUp] = useState(false);
+  const [deletePopUp, setDeletePopUp] = useState(false);
+
+  //  message states
+  const [visibility, setVisibility] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState("");
+  const [replying, setReplying] = useState(false);
+  const [reacting, setReacting] = useState(false);
+
+  useEffect(() => {
+    if (search) {
+      setContactInfo(false);
+      setDisappearingComp(false);
+    }
+  }, [search]);
+
+  useEffect(() => {
+    if (contactInfo) {
+      setSearch(false);
+      setDisappearingComp(false);
+    }
+  }, [contactInfo]);
+
+  useEffect(() => {
+    if (disappearingComp) {
+      setContactInfo(false);
+      setSearch(false);
+    }
+  }, [disappearingComp]);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -63,6 +99,8 @@ function ContextProvider({ children }) {
     setChecked,
     threeDot_btn,
     setThreeDot_btn,
+    blockPopUp,
+    setBlockPopUp,
     search,
     setSearch,
     contactInfo,
@@ -70,19 +108,26 @@ function ContextProvider({ children }) {
     checked,
     sent_Text,
     recieve_Text,
+    visibility,
+    setVisibility,
     setRecieve_Text,
     setContactInfo,
-    disappearingComp , 
+    disappearingComp,
     setDisappearingComp,
     mutePopUp,
     setMutePopUp,
-    blockPopUp,
-    setBlockPopUp,
     deletePopUp,
     setDeletePopUp,
     clearChatPopUp,
-    setClearChatPopUp
+    setClearChatPopUp,
+    selectedMessage,
+    setSelectedMessage,
+    replying,
+    setReplying,
+    reacting,
+    setReacting
   };
+
   return <context.Provider value={values}>{children}</context.Provider>;
 }
 
