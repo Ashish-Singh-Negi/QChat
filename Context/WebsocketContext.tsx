@@ -34,7 +34,7 @@ export default function WebSocketContextProvider({
   const { getChatRoomMessages } = useUserContactContext();
 
   const { isConnected, sendMessage, roomId } = useWebSocket(
-    "ws://localhost:3000/chat",
+    `${process.env.NEXT_PUBLIC_WEBSOCKET_BACKEND_URL}`,
     {
       onOpen: () => console.log("WebSocket connected"),
       onMessage: (event) => {
