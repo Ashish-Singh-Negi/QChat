@@ -67,6 +67,7 @@ export default function WebSocketContextProvider({
             updatedAt: new Date().toISOString(),
             isEdited: false,
             isPinned: false,
+            isStar: false,
             visibleToEveryone: true,
             visibleToSender: true,
           },

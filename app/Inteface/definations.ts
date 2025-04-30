@@ -12,6 +12,7 @@ export type UserInfo = {
   followers: string[];
   following: string[];
   friendRequestList: string[];
+  starMessages: string[];
   blacklist: string[];
   createdAt: string;
   updatedAt: string;
@@ -33,6 +34,7 @@ export type StoredMessage = {
   content: string;
   isPinned: boolean;
   isEdited: boolean;
+  isStar: boolean;
   visibleToEveryone?: boolean;
   visibleToSender?: boolean;
   updatedAt?: string;

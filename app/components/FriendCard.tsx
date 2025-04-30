@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { UserProfile } from "./WebSocket";
 import { useUserContactContext } from "@/Context/UserContactContext";
-import { SendMessage } from "../Inteface/definations";
+import { SendMessage, UserInfo } from "../Inteface/definations";
 
 const FriendCard = ({
   contactId,
@@ -15,7 +14,7 @@ const FriendCard = ({
   roomId: string;
   sendMessage: (dataIs: SendMessage) => void;
 }) => {
-  const [friendInfo, setFriendInfo] = useState<UserProfile | null>(null);
+  const [friendInfo, setFriendInfo] = useState<UserInfo | null>(null);
 
   const { setUserContact, getChatRoomMessages } = useUserContactContext();
 
@@ -44,7 +43,7 @@ const FriendCard = ({
       data,
     }: {
       data: {
-        data: UserProfile;
+        data: UserInfo;
       };
     } = await axiosInstance.get("/users/friends", {
       params: {

@@ -11,24 +11,8 @@ import FriendCard from "./FriendCard";
 import SenderMessageCard from "./SenderMessageCard";
 import ReceiverMessageCard from "./ReceiverMessageCard";
 
-export interface UserProfile {
-  _id: string;
-  username: string;
-  email: string;
-  about: string;
-  profilePic: string;
-  friendList: {
-    contactId: string;
-    roomId: string;
-  }[];
-  favouritesContactList: string[];
-  followers: string[];
-  following: string[];
-  friendRequestList: string[];
-  blacklist: string[];
-  createdAt: string;
-  updatedAt: string;
-}
+import { UserInfo } from "../Inteface/definations";
+import StarMessage from "./StarMessage";
 
 const Websocket = () => {
   const { userInfo, setUserInfo } = useUserInfoContext();
@@ -63,7 +47,7 @@ const Websocket = () => {
       data,
     }: {
       data: {
-        data: UserProfile;
+        data: UserInfo;
       };
     } = await axiosInstance.get(`/users/profile`);
     console.log(data.data);
@@ -89,9 +73,7 @@ const Websocket = () => {
 
   const deleteMessageForMeHandler = async (mid: string) => {
     try {
-      await axiosInstance.patch("/users/chat/messages/deleteforme", {
-        mid: mid,
-      });
+      await axiosInstance.patch(`/users/chats/messages/${mid}/deleteforme`);
     } catch (error) {
       console.error(error);
     }
@@ -114,9 +96,9 @@ const Websocket = () => {
   const deleteMessageForEveryoneHandler = async (mid: string) => {
     try {
       console.log("MID : ", mid);
-      await axiosInstance.patch("/users/chat/messages/deleteforeveryone", {
-        mid: mid,
-      });
+      await axiosInstance.patch(
+        `/users/chats/messages/${mid}/deleteforeveryone`
+      );
     } catch (error) {
       console.error(error);
     }
@@ -138,11 +120,7 @@ const Websocket = () => {
 
   const deleteChatMessagesHandler = async () => {
     try {
-      await axiosInstance.delete("/users/chat/messages", {
-        params: {
-          crid: roomId,
-        },
-      });
+      await axiosInstance.delete(`/users/chats/${roomId}/messages`);
     } catch (error) {
       console.error(error);
     }
@@ -166,7 +144,7 @@ const Websocket = () => {
     console.log("PIN mid : ", mid);
 
     try {
-      const { data } = await axiosInstance.patch("/users/chat/messages", {
+      const { data } = await axiosInstance.patch("/users/chats/messages", {
         action: "PIN",
         crid: roomId,
         mid: mid,
@@ -183,17 +161,43 @@ const Websocket = () => {
       room: roomId!,
     });
 
-    const updatedMessages = messages?.map((message) => {
-      if (message._id === mid) {
-        message.isPinned = !message.isPinned;
-      }
+    // const updatedMessages = messages?.map((message) => {
+    //   if (message._id === mid) {
+    //     message.isPinned = !message.isPinned;
+    //   }
 
-      return message;
+    //   return message;
+    // });
+
+    // console.log(updatedMessages);
+
+    // setMessages(updatedMessages!);
+  };
+
+  const starMessageHandler = async (mid: string) => {
+    console.log("Star MID : ", mid);
+
+    try {
+      const { data } = await axiosInstance.patch("/users/chats/messages", {
+        action: "STAR",
+        mid: mid,
+        uid: userInfo?._id,
+      });
+
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+
+    sendMessage({
+      action: "UPDATE",
+      room: roomId!,
     });
 
-    console.log(updatedMessages);
+    const index = userInfo?.starMessages.indexOf(mid);
 
-    setMessages(updatedMessages!);
+    if (index! > -1) userInfo?.starMessages.splice(index!, 1);
+    else userInfo?.starMessages.push(mid);
   };
 
   // Actions Btns
@@ -204,6 +208,7 @@ const Websocket = () => {
     deleteMessageForMeHandler,
     deleteChatMessagesHandler,
     pinMessageHandler,
+    starMessageHandler,
   ];
 
   const [currentActionIndex, setCurrentActionIndex] = useState(0);
@@ -212,6 +217,80 @@ const Websocket = () => {
     console.log(actionName);
     setCurrentActionIndex(index);
   };
+
+  // return (
+  //   <div>
+  //     <h1>WebSocket Demo</h1>
+  //     <p>Status: {isConnected ? "Connected" : "Disconnected"}</p>
+
+  //     <div className="font-medium text-xl">Contacts</div>
+  //     <main className="flex gap-2">
+  //       <div>
+  //         {userInfo &&
+  //           userInfo.friendList.map((friend) => (
+  //             <FriendCard
+  //               key={friend.contactId}
+  //               contactId={friend.contactId}
+  //               roomId={friend.roomId}
+  //               // setMessages={setMessages}
+  //               sendMessage={sendMessage}
+  //             />
+  //           ))}
+  //       </div>
+  //       {roomId && (
+  //         <section className="h-[600px] w-[500px] rounded-lg flex flex-col gap-1">
+  //           <div className="h-10 w-full">
+  //             {btnActionName.map((actionName, index) => (
+  //               <button
+  //                 key={actionName}
+  //                 onClick={() => changeBtnActionHandler(actionName, index)}
+  //                 className="px-3 py-1 border-2 border-gray-700 active:scale-90 active:border-blue-500 transition-all"
+  //               >
+  //                 {actionName}
+  //               </button>
+  //             ))}
+  //           </div>
+  //           <div className="h-[600px] w-[500px] bg-black rounded-lg flex flex-col mt-2">
+  //             <header className="h-10 w-full font-semibold px-2 flex items-center border-b-2 border-gray-700">
+  //               {userContact?.username}
+  //             </header>
+
+  //             <main className="h-full w-full flex flex-col gap-1 py-1 font-normal overflow-y-auto">
+  //               {messages?.map((message) =>
+  //                 message.senderId === userInfo?._id ? (
+  //                   <SenderMessageCard
+  //                     message={message}
+  //                     key={message._id}
+  //                     deleteMessageHandler={btnActions[currentActionIndex]}
+  //                   />
+  //                 ) : (
+  //                   <ReceiverMessageCard message={message} key={message._id} />
+  //                 )
+  //               )}
+  //             </main>
+  //             <footer className="h-fit w-full border-t-2 border-gray-700 bg-gray-950 flex items-center px-2 py-2">
+  //               <div className="h-fit w-full">
+  //                 {/* <div className="px-2 py-1">Hare Krishna</div> */}
+  //                 <form onSubmit={sendMessageHandler}>
+  //                   <input
+  //                     type="text"
+  //                     placeholder="Type a message"
+  //                     value={textMessage || ""}
+  //                     onChange={(e) => setTextMessage(e.target.value)}
+  //                     className="h-8 w-[400px] px-2 outline-none rounded-lg focus:border-2 focus:border-blue-500"
+  //                   />
+  //                   <button className="px-4 py-1 bg-blue-600 rounded-lg ml-2 font-semibold active:scale-95">
+  //                     Send
+  //                   </button>
+  //                 </form>
+  //               </div>
+  //             </footer>
+  //           </div>
+  //         </section>
+  //       )}
+  //     </main>
+  //   </div>
+  // );
 
   return (
     <div>
@@ -233,19 +312,22 @@ const Websocket = () => {
             ))}
         </div>
         {roomId && (
-          <section className="h-[600px] w-[500px] rounded-lg flex flex-col gap-1">
+          <section className="h-[800px] w-[500px] rounded-lg flex flex-col gap-1">
             <div className="h-10 w-full">
               {btnActionName.map((actionName, index) => (
                 <button
                   key={actionName}
                   onClick={() => changeBtnActionHandler(actionName, index)}
-                  className="px-3 py-1 border-2 border-gray-700 active:scale-90 active:border-blue-500 transition-all"
+                  className={`px-3 py-1 border-2 border-gray-700 ${
+                    currentActionIndex === index &&
+                    "border-blue-500 text-blue-300"
+                  } active:scale-90 active:border-blue-500 transition-all`}
                 >
                   {actionName}
                 </button>
               ))}
             </div>
-            <div className="h-[600px] w-[500px] bg-black rounded-lg flex flex-col mt-2">
+            <div className="h-[600px] w-full bg-black rounded-lg flex flex-col mt-2">
               <header className="h-10 w-full font-semibold px-2 flex items-center border-b-2 border-gray-700">
                 {userContact?.username}
               </header>
@@ -254,9 +336,9 @@ const Websocket = () => {
                 {messages?.map((message) =>
                   message.senderId === userInfo?._id ? (
                     <SenderMessageCard
-                      message={message}
                       key={message._id}
-                      deleteMessageHandler={btnActions[currentActionIndex]}
+                      message={message}
+                      actionsHandler={btnActions[currentActionIndex]}
                     />
                   ) : (
                     <ReceiverMessageCard message={message} key={message._id} />
@@ -283,6 +365,20 @@ const Websocket = () => {
             </div>
           </section>
         )}
+        <section className="h-[600px] w-[400px]">
+          <header className="text-xl font-medium mb-2">Star Messages</header>
+          <main>
+            <div className="h-fit w-full bg-black">
+              {userInfo?.starMessages &&
+                userInfo.starMessages.map((starMessageId) => (
+                  <StarMessage
+                    starMessageId={starMessageId}
+                    key={`${starMessageId}-3232`}
+                  />
+                ))}
+            </div>
+          </main>
+        </section>
       </main>
     </div>
   );

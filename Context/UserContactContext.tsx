@@ -44,30 +44,15 @@ export default function UserContactContextProvider({
     console.log(contactMessages);
   }, [contactMessages]);
 
-  const getChatRoomMessages = async (id: string) => {
+  const getChatRoomMessages = async (crid: string) => {
     try {
       const {
         data,
       }: {
         data: {
-          data: {
-            createdAt: string;
-            isEdited: false;
-            isPinned: false;
-            content: string;
-            receiverId: string;
-            senderId: string;
-            updatedAt: string;
-            visibleToEveryone: true;
-            visibleToSender: true;
-            _id: "67dd0877061bf94408a51847";
-          }[];
+          data: StoredMessage[];
         };
-      } = await axiosInstance.get("/users/chat/messages", {
-        params: {
-          crid: id, // crid -> chatRoomId
-        },
-      });
+      } = await axiosInstance.get(`/users/chats/${crid}/messages`);
 
       console.log(data);
       setContactMessages(data.data);
