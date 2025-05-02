@@ -359,7 +359,7 @@ const Websocket = () => {
                   {viewFullImage && (
                     <div
                       onClick={() => setViewFullImage(!viewFullImage)}
-                      className="absolute top-0 left-0 bg-black bg-opacity-50 h-full w-full flex justify-center items-center"
+                      className="absolute z-10 top-0 left-0 bg-black bg-opacity-50 h-full w-full flex justify-center items-center"
                     >
                       <img
                         src={userContact?.profilePic}
