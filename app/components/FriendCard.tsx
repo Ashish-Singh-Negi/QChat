@@ -45,11 +45,7 @@ const FriendCard = ({
       data: {
         data: UserInfo;
       };
-    } = await axiosInstance.get("/users/friends", {
-      params: {
-        fid: contactId,
-      },
-    });
+    } = await axiosInstance.get(`/users/friends/${contactId}`);
 
     console.log(data);
     setFriendInfo(data.data);
@@ -62,8 +58,13 @@ const FriendCard = ({
   return (
     <div
       onClick={joinRoomHandler}
-      className="h-20 w-[420px] bg-black rounded-md flex items-center justify-center gap-4 p-2 m m-2 active:scale-95 cursor-pointer"
+      className="h-20 w-[420px] bg-black rounded-md flex items-center justify-center gap-4 p-2 mb-2 active:scale-95 cursor-pointer"
     >
+      <img
+        src={friendInfo?.profilePic}
+        className="h-14 w-14 rounded-full"
+        alt=""
+      />
       <p className="font-medium text-white">{friendInfo?.username}</p>
       <p className="font-normal text-white">{roomId}</p>
     </div>
