@@ -31,7 +31,7 @@ export default function WebSocketContextProvider({
 }) {
   const [messages, setMessages] = useState<StoredMessage[] | []>([]);
 
-  const { getChatRoomMessages } = useUserContactContext();
+  const { getChatMessages } = useUserContactContext();
 
   const { isConnected, sendMessage, roomId } = useWebSocket(
     `${process.env.NEXT_PUBLIC_WEBSOCKET_BACKEND_URL}`,
@@ -52,7 +52,7 @@ export default function WebSocketContextProvider({
         console.log("Received message : ", parsed);
 
         if (!parsed.sender || !parsed.receiver || parsed.content === "UPDATE") {
-          getChatRoomMessages(parsed.roomId!);
+          getChatMessages(parsed.roomId!, "messages");
           return;
         }
 

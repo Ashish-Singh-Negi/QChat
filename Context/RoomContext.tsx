@@ -1,20 +1,15 @@
 "use client";
 
+import { Room } from "@/app/Inteface/definations";
 import {
   createContext,
   Dispatch,
   ReactNode,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from "react";
-
-type Room = {
-  roomId: string;
-  participants: string[];
-  messages: string[];
-  createdAt: Date;
-};
 
 type RoomContext = {
   roomInfo: Room | null;
@@ -29,6 +24,10 @@ export default function RoomContextProvider({
   children: ReactNode;
 }) {
   const [roomInfo, setRoomInfo] = useState<Room | null>(null);
+
+  useEffect(() => {
+    console.log(roomInfo);
+  }, [roomInfo]);
 
   return (
     <RoomContext.Provider

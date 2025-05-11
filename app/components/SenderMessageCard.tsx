@@ -73,7 +73,7 @@ const SenderMessageCard = ({
         message.visibleToSender && (
           <div
             onDoubleClick={() => actionsHandler(message._id!)}
-            className={`relative h-fit w-full px-4 flex justify-end ${
+            className={`relative h-fit w-full px-4 flex justify-end mb-[2px] ${
               edit && "bg-gray-600 bg-opacity-40"
             }`}
             key={message._id}
@@ -112,7 +112,7 @@ const SenderMessageCard = ({
         )
       ) : (
         <div
-          className={`relative h-fit w-full px-4 flex justify-end ${
+          className={`relative h-fit w-full px-4 flex justify-end mb=[2px] ${
             edit && "bg-gray-600 bg-opacity-40"
           }`}
           key={message._id}

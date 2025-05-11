@@ -49,13 +49,13 @@ const FriendRequestCard = ({ friendRequest }: { friendRequest: string }) => {
         };
       } = await axiosInstance.get(`/users/profile`, {
         params: {
-          filter: "friendList friendRequestList",
+          filter: "contactList friendRequestList",
         },
       });
 
       setUserInfo({
         ...userInfo!,
-        friendList: data.data.friendList,
+        contactList: data.data.contactList,
         friendRequestList: data.data.friendRequestList,
       });
     } catch (error) {

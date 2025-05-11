@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  SendMessage,
-  StoredMessage,
-  UserInfo,
-} from "@/app/Inteface/definations";
+import { StoredMessage, UserInfo } from "@/app/Inteface/definations";
 import axiosInstance from "@/utils/axiosinstance";
 import {
   createContext,
@@ -15,13 +11,14 @@ import {
   useEffect,
   useState,
 } from "react";
+import toast from "react-hot-toast";
 
 type UserContactContext = {
   userContact: UserInfo | null;
   setUserContact: Dispatch<SetStateAction<UserInfo | null>>;
   contactMessages: StoredMessage[] | [];
   setContactMessages: Dispatch<SetStateAction<StoredMessage[] | []>>;
-  getChatRoomMessages: (id: string) => void;
+  getChatMessages: (crid: string, filter: string) => void;
 };
 
 const UserContactContext = createContext<UserContactContext | null>(null);
@@ -44,19 +41,27 @@ export default function UserContactContextProvider({
     console.log(contactMessages);
   }, [contactMessages]);
 
-  const getChatRoomMessages = async (crid: string) => {
+  const getChatMessages = async (crid: string, filter: string) => {
     try {
       const {
         data,
       }: {
         data: {
-          data: StoredMessage[];
+          data: {
+            messages: StoredMessage[];
+          };
         };
-      } = await axiosInstance.get(`/users/chats/${crid}/messages`);
+      } = await axiosInstance.get(`/users/chats/${crid}/messages`, {
+        params: {
+          filter: filter,
+        },
+      });
 
       console.log(data);
-      setContactMessages(data.data);
-    } catch (error) {
+
+      setContactMessages(data.data.messages);
+    } catch (error: any) {
+      toast.error(error?.response.data.error);
       console.error(error);
     }
   };
@@ -68,7 +73,7 @@ export default function UserContactContextProvider({
         setUserContact,
         contactMessages,
         setContactMessages,
-        getChatRoomMessages,
+        getChatMessages,
       }}
     >
       {children}

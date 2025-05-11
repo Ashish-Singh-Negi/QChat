@@ -4,10 +4,11 @@ export type UserInfo = {
   email: string;
   about: string;
   profilePic: string;
-  friendList: {
+  contactList: {
     contactId: string;
     roomId: string;
   }[];
+  friendList: string[];
   favouritesContactList: string[];
   followers: string[];
   following: string[];
@@ -25,6 +26,24 @@ export type SendMessage = {
   room: string;
   sender?: string;
   receiver?: string;
+};
+
+// export type RoomMessage = {
+//   _id: string;
+//   message: string;
+//   createdAt: string;
+//   updatedAt: string;
+// };
+
+export type Room = {
+  _id: string;
+  participants: string[];
+  pinMessages: string[];
+  muteNotification: false;
+  disappearingMessages: string;
+  createdAt: string;
+  updatedAt: string;
+  isDisabled: boolean;
 };
 
 export type StoredMessage = {
