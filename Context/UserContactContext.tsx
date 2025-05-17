@@ -18,7 +18,7 @@ type UserContactContext = {
   setUserContact: Dispatch<SetStateAction<UserInfo | null>>;
   contactMessages: StoredMessage[] | [];
   setContactMessages: Dispatch<SetStateAction<StoredMessage[] | []>>;
-  getChatMessages: (crid: string, filter: string) => void;
+  getChatMessages: (crid: string) => void;
 };
 
 const UserContactContext = createContext<UserContactContext | null>(null);
@@ -41,7 +41,7 @@ export default function UserContactContextProvider({
     console.log(contactMessages);
   }, [contactMessages]);
 
-  const getChatMessages = async (crid: string, filter: string) => {
+  const getChatMessages = async (crid: string) => {
     try {
       const {
         data,
@@ -51,11 +51,7 @@ export default function UserContactContextProvider({
             messages: StoredMessage[];
           };
         };
-      } = await axiosInstance.get(`/users/chats/${crid}/messages`, {
-        params: {
-          filter: filter,
-        },
-      });
+      } = await axiosInstance.get(`/users/chats/${crid}/messages`);
 
       console.log(data);
 

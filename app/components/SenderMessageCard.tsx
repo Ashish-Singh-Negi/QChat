@@ -74,17 +74,17 @@ const SenderMessageCard = ({
           <div
             onDoubleClick={() => actionsHandler(message._id!)}
             className={`relative h-fit w-full px-4 flex justify-end mb-[2px] ${
-              edit && "bg-gray-600 bg-opacity-40"
+              edit && "bg-gray-400 dark:bg-gray-600 bg-opacity-40"
             }`}
             key={message._id}
           >
-            <p className="absolute right-2 top-0 rotate-90 border-t-[14px] border-t-transparent border-l-[10px] border-l-gray-900"></p>
+            <p className="absolute right-2 top-0 rotate-90 border-t-[14px] border-t-transparent border-l-[10px] border-l-gray-700 dark:border-l-gray-900"></p>
             {message.content.length > 50 ? (
               <div
-                className={`h-full w-full px-2 rounded-lg bg-gray-900 text-gray-300`}
+                className={`h-full w-full px-2 rounded-lg text-white dark:bg-gray-900`}
               >
                 <p className="px-1 ">{message.content}</p>
-                <span className="h-fit w-full text-[8px] px-1 text-gray-400 flex justify-end items-end gap-[2px]">
+                <span className="h-fit w-full text-[8px] px-1 text-gray-300 dark:text-gray-400 flex justify-end items-end gap-[2px]">
                   {message.isStar && <TiStar className="h-3 w-3 mb-[2px]" />}
                   {message.isPinned && (
                     <BsPinFill className="h-2 w-2 mb-[2px]" />
@@ -95,10 +95,10 @@ const SenderMessageCard = ({
               </div>
             ) : (
               <div
-                className={`h-full w-fit px-2 rounded-lg bg-gray-900 text-gray-300 flex items-end`}
+                className={`h-full w-fit px-2 rounded-lg bg-gray-700 text-white dark:bg-gray-900 dark:text-gray-300 flex items-end`}
               >
                 <p className="px-1 ">{message.content}</p>
-                <span className="h-full w-fit text-[8px] px-1 text-gray-400 flex items-end gap-[2px]">
+                <span className="h-full w-fit text-[8px] px-1 text-white flex items-end gap-[2px]">
                   {message.isStar && <TiStar className="h-3 w-3 mb-[2px]" />}
                   {message.isPinned && (
                     <BsPinFill className="h-2 w-2 mb-[2px]" />
@@ -117,13 +117,13 @@ const SenderMessageCard = ({
           }`}
           key={message._id}
         >
-          <p className="absolute right-2 top-0 rotate-90 border-t-[14px] border-t-transparent border-l-[10px] border-l-gray-900"></p>
+          <p className="absolute right-2 top-0 rotate-90 border-t-[14px] border-t-transparent border-l-[10px] border-l-gray-700 dark:border-l-gray-900"></p>
           <div
-            className={`h-full w-fit px-2 rounded-lg bg-gray-900 text-gray-400 flex items-center`}
+            className={`h-full w-fit px-2 rounded-lg bg-gray-700 text-gray-300 dark:bg-gray-900 dark:text-gray-400 flex items-center`}
           >
             <IoBanSharp className="inline" />
             <p className="px-1 italic">You deleted this message</p>
-            <span className="h-full text-[8px] px-1 text-gray-400 flex items-end">
+            <span className="h-full text-[8px] px-1 text-gray-300 dark:text-gray-400 flex items-end">
               {exectTime}
             </span>
           </div>

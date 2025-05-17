@@ -55,7 +55,7 @@ const Profile = () => {
                 </label>
                 <input
                   type="text"
-                  className="h-10 w-full px-2 py-1 outline-none border-2 border-black rounded-md focus:border-blue-500 transition-all"
+                  className="h-10 w-full px-2 py-1 outline-none border-2 bg-gray-900 border-black rounded-md focus:border-blue-500 transition-all"
                   value={userInfo?.username}
                 />
               </div>
@@ -66,7 +66,7 @@ const Profile = () => {
                 <label className="text-xs mb-1 px-1 font-medium">email</label>
                 <input
                   type="text"
-                  className="h-10 w-full px-2 py-1 outline-none border-2 border-black rounded-md focus:border-blue-500 transition-all"
+                  className="h-10 w-full px-2 py-1 outline-none border-2 bg-gray-900 border-black rounded-md focus:border-blue-500 transition-all"
                   value={userInfo?.email}
                 />
               </div>
@@ -76,7 +76,7 @@ const Profile = () => {
                 <label className="text-xs mb-1 px-1 font-medium">About</label>
                 <textarea
                   placeholder="write something..."
-                  className="h-40 w-full p-2 outline-none border-2 border-black rounded-md focus:border-blue-500 mb-4 transition-all resize-none "
+                  className="h-40 w-full p-2 outline-none border-2 bg-gray-900 border-black rounded-md focus:border-blue-500 mb-4 transition-all resize-none "
                 ></textarea>
               </div>
             </div>

@@ -49,14 +49,15 @@ const FriendRequestCard = ({ friendRequest }: { friendRequest: string }) => {
         };
       } = await axiosInstance.get(`/users/profile`, {
         params: {
-          filter: "contactList friendRequestList",
+          filter: "contactRoomList friendRequestList friendList",
         },
       });
 
       setUserInfo({
         ...userInfo!,
-        contactList: data.data.contactList,
+        contactRoomList: data.data.contactRoomList,
         friendRequestList: data.data.friendRequestList,
+        friendList: data.data.friendList,
       });
     } catch (error) {
       console.error(error);
@@ -87,6 +88,7 @@ const FriendRequestCard = ({ friendRequest }: { friendRequest: string }) => {
         ...userInfo!,
         friendRequestList: data.data.friendRequestList,
       });
+      toast.success("Request Rejected");
     } catch (error) {
       console.error(error);
     }
@@ -102,7 +104,7 @@ const FriendRequestCard = ({ friendRequest }: { friendRequest: string }) => {
       <div className="flex gap-2">
         <button
           onClick={acceptFriendRequest}
-          className="px-2 py-1 rounded-md font-semibold text-white text-sm bg-blue-700 active:scale-95 transition-all"
+          className="px-2 py-1 rounded-md font-semibold text-white text-sm bg-blue-600 active:scale-95 transition-all"
         >
           Accept
         </button>

@@ -8,30 +8,23 @@ import { useUserContactContext } from "@/Context/UserContactContext";
 import { Room, SendMessage, UserInfo } from "../Inteface/definations";
 import toast from "react-hot-toast";
 import { useRoomContext } from "@/Context/RoomContext";
+import { useUserInfoContext } from "@/Context/UserInfoContext";
 
 const ContactCard = ({
-  contactId,
+  // contactId,
   roomId,
   sendMessage,
 }: {
-  contactId: string;
+  // contactId: string;
   roomId: string;
   sendMessage: (dataIs: SendMessage) => void;
 }) => {
-  const [ContactInfo, setContactInfo] = useState<UserInfo | null>(null);
-
   const { setUserContact, getChatMessages } = useUserContactContext();
+  const { userInfo } = useUserInfoContext();
   const { setRoomInfo } = useRoomContext();
 
-  // const { isConnected, sendMessage } = useWebSocket(url, {
-  //   onOpen: () => console.log("WebSocket connected"),
-  //   onMessage: (event) => {
-  //     console.log("Received message:", event.data);
-  //     setMessages((prev) => [...prev, event.data]);
-  //   },
-  //   onClose: () => console.log("WebSocket disconnected"),
-  //   onError: (event) => console.error("WebSocket error:", event),
-  // });
+  const [ContactInfo, setContactInfo] = useState<UserInfo | null>(null);
+  const [contactId, setContactId] = useState<string | null>(null);
 
   const joinRoomHandler = () => {
     setUserContact(ContactInfo);
@@ -41,29 +34,36 @@ const ContactCard = ({
       room: roomId,
     });
 
-    getChatMessages(roomId, "messages");
+    getChatMessages(roomId);
+    getChatRoomInfo();
+  };
 
-    (async () => {
-      try {
-        const {
-          data,
-        }: {
-          data: {
-            data: Room;
-          };
-        } = await axiosInstance.get(`/users/chats/${roomId}/messages`);
+  const getChatRoomInfo = async () => {
+    try {
+      const {
+        data,
+      }: {
+        data: {
+          data: Room;
+        };
+      } = await axiosInstance.get(`/users/chats/${roomId}`);
 
-        console.log(data.data);
+      console.log(data.data);
 
-        let isDisabled = false;
-        if (data.data.participants.length < 2) isDisabled = true;
+      let isDisabled = false;
+      if (data.data.participants.length < 2) isDisabled = true;
 
-        setRoomInfo({ ...data.data, isDisabled: isDisabled });
-      } catch (error: any) {
-        toast.error(error?.response.data.error);
-        console.error(error);
-      }
-    })();
+      const friendId = data.data.participants.filter(
+        (id) => id !== userInfo?._id
+      );
+
+      setContactId(friendId[0]);
+
+      setRoomInfo({ ...data.data, isDisabled: isDisabled });
+    } catch (error: any) {
+      toast.error(error?.response.data.error);
+      console.error(error);
+    }
   };
 
   const getContactInfo = async () => {
@@ -77,24 +77,30 @@ const ContactCard = ({
 
     console.log(data);
     setContactInfo(data.data);
+    setUserContact(data.data);
   };
 
   useEffect(() => {
-    getContactInfo();
+    getChatRoomInfo();
   }, []);
+
+  useEffect(() => {
+    if (!contactId) return;
+    getContactInfo();
+  }, [contactId]);
 
   return (
     <div
       onClick={joinRoomHandler}
-      className="h-20 w-[420px] bg-black rounded-md flex items-center justify-center gap-4 p-2 mb-2 active:scale-95 cursor-pointer"
+      className="h-20 w-[420px] border-l-2 border-gray-800 bg-gray-200 hover:bg-gray-300 text-black dark:bg-black dark:hover:bg-gray-950 dark:text-white rounded-r-md flex items-center justify-center gap-4 p-2 mb-2 active:scale-95 cursor-pointer transition-transform "
     >
       <img
         src={ContactInfo?.profilePic}
         className="h-14 w-14 rounded-full"
         alt=""
       />
-      <p className="font-medium text-white">{ContactInfo?.username}</p>
-      <p className="font-normal text-white">{roomId}</p>
+      <p className="font-medium">{ContactInfo?.username}</p>
+      <p className="font-normal">{roomId}</p>
     </div>
   );
 };

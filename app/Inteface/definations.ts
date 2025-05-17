@@ -4,10 +4,7 @@ export type UserInfo = {
   email: string;
   about: string;
   profilePic: string;
-  contactList: {
-    contactId: string;
-    roomId: string;
-  }[];
+  contactRoomList: string[];
   friendList: string[];
   favouritesContactList: string[];
   followers: string[];

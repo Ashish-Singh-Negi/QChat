@@ -52,7 +52,7 @@ export default function WebSocketContextProvider({
         console.log("Received message : ", parsed);
 
         if (!parsed.sender || !parsed.receiver || parsed.content === "UPDATE") {
-          getChatMessages(parsed.roomId!, "messages");
+          getChatMessages(parsed.roomId!);
           return;
         }
 
