@@ -4,10 +4,7 @@ import { useRoomContext } from "@/Context/RoomContext";
 import { useUserContactContext } from "@/Context/UserContactContext";
 import { useWebSocketContext } from "@/Context/WebsocketContext";
 import axiosInstance from "@/utils/axiosinstance";
-import React, {
-  useEffect,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import toast from "react-hot-toast";
 
@@ -91,7 +88,7 @@ const HomeContactInfo = ({
   return (
     <section className="h-full w-[740px] px-4 pt-2 dark:bg-black">
       <header className="h-10 w-full font-semibold flex items-center mb-6">
-        <button className="h-8 w-8 hover:bg-gray-100 rounded-full mr-2 grid place-items-center">
+        <button className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-full mr-2 grid place-items-center">
           <IoMdClose
             onClick={() => setOpenContactInfo(false)}
             className="h-6 w-6 inline cursor-pointer active:scale-95"
@@ -122,14 +119,14 @@ const HomeContactInfo = ({
           <p className="h-10 mt-2 font-medium text-xl text-black dark:text-white">
             {userContact?.username}
           </p>
-          {true && (
+          {userContact?.about && (
             <div className="h-12 w-full mt-4 px-1 ">
               <h2 className="text-sm font-medium text-gray-700 dark:text-gray-400">
                 About
               </h2>
               <p className="py-1 text-gray-950 dark:text-white font-normal">
                 {" "}
-                Hare krishna{userContact?.about}
+                {userContact?.about}
               </p>
             </div>
           )}

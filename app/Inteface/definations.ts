@@ -4,6 +4,7 @@ export type UserInfo = {
   email: string;
   about: string;
   profilePic: string;
+  isOnline: boolean;
   contactRoomList: string[];
   friendList: string[];
   favouritesContactList: string[];
@@ -16,6 +17,21 @@ export type UserInfo = {
   updatedAt: string;
 };
 
+export type FriendRequest = {
+  _id: string;
+  sender: {
+    username: string;
+    profilePic: string;
+  };
+  recipient: {
+    username: string;
+    profilePic: string;
+  };
+  status: "accepted" | "pending" | "rejected";
+  sendAt: string;
+  respondedAt: string;
+};
+
 export type SendMessage = {
   _id?: string;
   action: "JOIN" | "LEAVE" | "MESSAGE" | "UPDATE";
@@ -24,13 +40,6 @@ export type SendMessage = {
   sender?: string;
   receiver?: string;
 };
-
-// export type RoomMessage = {
-//   _id: string;
-//   message: string;
-//   createdAt: string;
-//   updatedAt: string;
-// };
 
 export type Room = {
   _id: string;

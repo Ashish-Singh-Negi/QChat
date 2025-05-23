@@ -1,6 +1,7 @@
 "use client";
 
 import { UserInfo } from "@/app/Inteface/definations";
+import axiosInstance from "@/utils/axiosinstance";
 import {
   createContext,
   Dispatch,
@@ -14,6 +15,7 @@ import {
 type UserInfoContext = {
   userInfo: UserInfo | null;
   setUserInfo: Dispatch<SetStateAction<UserInfo | null>>;
+  getUserProfile: () => void;
 };
 
 const UserInfoContext = createContext<UserInfoContext | null>(null);
@@ -29,11 +31,26 @@ export default function UserInfoContextProvider({
     console.log(userInfo);
   }, [userInfo]);
 
+  const getUserProfile = async () => {
+    try {
+      const response = await axiosInstance.get<{ data: UserInfo }>(
+        `/users/profile`
+      );
+
+      console.log(response.data.data);
+
+      setUserInfo(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <UserInfoContext.Provider
       value={{
         userInfo,
         setUserInfo,
+        getUserProfile,
       }}
     >
       {children}

@@ -35,10 +35,12 @@ export const useWebSocket = (
   const attemptRef = useRef(0);
 
   const connectWebSocket = () => {
+    if (!url) return;
+
     setIsReconnecting(false);
     attemptRef.current = 0;
 
-    const ws = new WebSocket(url!);
+    const ws = new WebSocket(url);
     webSocketRef.current = ws;
 
     ws.onopen = (event) => {
@@ -110,13 +112,13 @@ export const useWebSocket = (
       const buffer = Buffer.from(JSON.stringify(dataIs));
       webSocketRef.current.send(buffer);
 
-      if (dataIs.action === "MESSAGE") {
+      // if (dataIs.action === "MESSAGE") {
         // const { data } = await axiosInstance.post(
         //   "users/chat/messages",
         //   dataIs
         // );
         // console.log(data);
-      }
+      // }
     } else {
       console.error("WebSocket is not open, unable to send message.");
     }

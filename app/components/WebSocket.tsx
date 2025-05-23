@@ -15,18 +15,18 @@ import Profile from "./Profile";
 import SearchUser from "./SearchUser";
 import RoomMessageCard from "./RoomMessageCard";
 import ContactCard from "./ContactCard";
+import HomeContactInfo from "./HomeContactInfo";
+import Dropdown from "./Dropdown";
+import FriendCard from "./FriendCard";
 
 import { RiSendPlaneFill } from "react-icons/ri";
 
 import toast, { Toaster } from "react-hot-toast";
 
 import { UserInfo } from "../Inteface/definations";
-import HomeContactInfo from "./HomeContactInfo";
-import Dropdown from "./Dropdown";
-import FriendCard from "./FriendCard";
 
 const Websocket = () => {
-  const { userInfo, setUserInfo } = useUserInfoContext();
+  const { userInfo, setUserInfo, getUserProfile } = useUserInfoContext();
   const { userContact, contactMessages } = useUserContactContext();
   const { isConnected, roomId, sendMessage, messages, setMessages } =
     useWebSocketContext();
@@ -50,39 +50,19 @@ const Websocket = () => {
     console.log("messages : ", messages);
   }, [messages]);
 
-  const getProfile = async () => {
-    try {
-      const {
-        data,
-      }: {
-        data: {
-          data: UserInfo;
-        };
-      } = await axiosInstance.get(`/users/profile`);
-      console.log(data.data);
-
-      setUserInfo(data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const sendFriendRequestHandler = async () => {
     try {
-      const {
-        data,
-      }: {
-        data: {
-          data: UserInfo;
-          message: string;
-        };
-      } = await axiosInstance.patch(`/users/friends/request`, {
+      const response = await axiosInstance.post<{
+        data: UserInfo;
+        message: string;
+      }>(`/users/friends/requests`, {
         friendUsername: userContact?.username,
       });
 
-      console.log(data);
-      toast.success(data.message);
-    } catch (error) {
+      console.log(response.data.data);
+      toast.success(response.data.message);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.error);
       console.error(error);
     }
   };
@@ -173,48 +153,55 @@ const Websocket = () => {
   };
 
   const pinMessageHandler = async (mid: string) => {
+    if (!messages || !roomId) return;
+
     console.log("PIN mid : ", mid);
 
-    try {
-      const { data } = await axiosInstance.patch("/users/chats/messages", {
-        action: "PIN",
-        crid: roomId,
-        mid: mid,
-        isPinned: false,
-      });
+    // Find message and determine new pin status
+    const targetMessage = messages.find((msg) => msg._id === mid);
+    if (!targetMessage) return;
 
-      console.log(data);
+    const newPinnedState = !targetMessage.isPinned;
+
+    // Update UI optimistically
+    const updatedMessages = messages.map((message) =>
+      message._id === mid ? { ...message, isPinned: newPinnedState } : message
+    );
+    setMessages(updatedMessages);
+
+    try {
+      const { data } = await axiosInstance.patch(
+        `/users/chats/${roomId}/messages/${mid}/pin`
+      );
+
+      console.log("PIN update response:", data);
     } catch (error) {
       console.error(error);
+
+      // Rollback UI if error
+      const rolledBackMessages = messages.map((message) =>
+        message._id === mid
+          ? { ...message, isPinned: targetMessage.isPinned } // original value
+          : message
+      );
+      setMessages(rolledBackMessages);
     }
 
+    // Notify others in the room
     sendMessage({
       action: "UPDATE",
-      room: roomId!,
+      room: roomId,
     });
-
-    // const updatedMessages = messages?.map((message) => {
-    //   if (message._id === mid) {
-    //     message.isPinned = !message.isPinned;
-    //   }
-
-    //   return message;
-    // });
-
-    // console.log(updatedMessages);
-
-    // setMessages(updatedMessages!);
   };
 
   const starMessageHandler = async (mid: string) => {
-    console.log("Star MID : ", mid);
-
     try {
-      const { data } = await axiosInstance.patch("/users/chats/messages", {
-        action: "STAR",
-        mid: mid,
-        uid: userInfo?._id,
-      });
+      const { data } = await axiosInstance.patch(
+        `/users/chats/messages/${mid}/star`,
+        {
+          uid: userInfo?._id,
+        }
+      );
 
       console.log(data);
     } catch (error) {
@@ -226,10 +213,19 @@ const Websocket = () => {
       room: roomId!,
     });
 
-    const index = userInfo?.starMessages.indexOf(mid);
+    setUserInfo((prev) => {
+      if (!prev) return prev;
 
-    if (index! > -1) userInfo?.starMessages.splice(index!, 1);
-    else userInfo?.starMessages.push(mid);
+      const isStarred = prev.starMessages.includes(mid);
+      const updatedStarMessages = isStarred
+        ? prev.starMessages.filter((id) => id !== mid)
+        : [...prev.starMessages];
+
+      return {
+        ...prev,
+        starMessages: updatedStarMessages,
+      };
+    });
   };
 
   // Actions Btns
@@ -269,7 +265,7 @@ const Websocket = () => {
   };
 
   useEffect(() => {
-    getProfile();
+    getUserProfile();
   }, []);
 
   useEffect(() => {
@@ -293,8 +289,8 @@ const Websocket = () => {
   }, [messages]);
 
   return (
-    <div className="h-full w-full ">
-      <Toaster position="bottom-left" />
+    <div className="h-full w-full">
+      <Toaster position="bottom-right" />
       <header className="h-fit w-full flex justify-between px-2 py-1 pt-2">
         <div>
           {" "}
@@ -357,7 +353,7 @@ const Websocket = () => {
                         userContact?.profilePic ? userContact.profilePic : ""
                       }
                       className="h-8 w-8 rounded-full cursor-pointer"
-                      alt=""
+                      alt="Profile pic"
                     />
                     {userContact?.username}
                   </header>
@@ -388,12 +384,26 @@ const Websocket = () => {
                         );
                     })}
                     {roomInfo?.isDisabled && (
-                      <button
-                        onClick={sendFriendRequestHandler}
-                        className="px-4 py-1 flex justify-center items-center gap-1 bg-blue-500 dark:bg-blue-600 font-medium active:scale-x-95 transition-all"
-                      >
-                        send <RiSendPlaneFill className="inline mt-1 h-3 w-3" />
-                      </button>
+                      <div className="h-14 w-full flex flex-col gap-2 items-center">
+                        <p className="w-full text-center px-4 py-1 bg-gray-800 text-white">
+                          you and {userContact?.username} are no longer friends.
+                          To start conversation again send friend request or
+                          <br />
+                          Delete the conversation
+                        </p>
+                        <div className="w-full flex gap-2">
+                          <button className="h-10 w-full px-4 py-1 flex justify-center items-center gap-1 bg-red-600 text-white font-medium active:scale-x-95 transition-all">
+                            Delete{" "}
+                          </button>{" "}
+                          <button
+                            onClick={sendFriendRequestHandler}
+                            className="h-10 w-full px-4 py-1 flex justify-center items-center gap-1 bg-blue-600 text-white font-medium active:scale-x-95 transition-all"
+                          >
+                            send{" "}
+                            <RiSendPlaneFill className="inline mt-1 h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
                     )}
                   </main>
                   <footer className="h-14 w-full border-t-2 border-gray-400 dark:border-gray-700 dark:bg-gray-950 flex items-center px-2 py-2">
@@ -402,11 +412,11 @@ const Websocket = () => {
                         <div className="flex">
                           <input
                             type="text"
-                            placeholder="Type a message"
+                            placeholder="Message"
                             disabled
-                            className="h-8 w-full px-2 outline-none rounded-lg"
+                            className="h-10 w-full px-2 outline-none rounded-lg border-2 dark:border-gray-800 hover:cursor-not-allowed"
                           />
-                          <button className="flex items-center px-4 py-1 bg-gray-600 rounded-lg ml-2 font-semibold active:scale-95">
+                          <button className="flex items-center px-4 py-1 bg-gray-600 text-white rounded-lg ml-2 font-semibold active:scale-95 hover:cursor-not-allowed">
                             <RiSendPlaneFill className="inline h-5 w-5" />
                           </button>
                         </div>
@@ -414,7 +424,7 @@ const Websocket = () => {
                         <form className="flex" onSubmit={sendMessageHandler}>
                           <input
                             type="text"
-                            placeholder="Type a message"
+                            placeholder="Message"
                             value={textMessage || ""}
                             onChange={(e) => setTextMessage(e.target.value)}
                             className="h-10 w-full px-2 outline-none rounded-lg border-2 border-gray-400 bg-gray-100 text-black dark:bg-black dark:border-gray-800 dark:text-white focus:border-blue-600 transition-all"
@@ -457,13 +467,13 @@ const Websocket = () => {
           </Dropdown>
           <SearchUser />
           <div className="h-60 px-2 mx-2 mb-4">
-            <h1 className="h-8 flex items-center text-lg font-medium mb-2 border-l-2 border-gray-400 dark:border-white px-2">
+            <h1 className="h-8 flex items-center text-lg font-medium mb-2 border-l-2 dark:text-white border-gray-400 dark:border-white px-2">
               Requests
             </h1>
             <main className="h-52 w-full overflow-y-auto">
               {userInfo?.friendRequestList.map((friendRequest) => (
                 <FriendRequestCard
-                  friendRequest={friendRequest}
+                  requestId={friendRequest}
                   key={friendRequest}
                 />
               ))}

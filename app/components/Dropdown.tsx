@@ -8,7 +8,7 @@ const Dropdown = ({
   children: ReactNode;
   title: string;
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className="h-fit px-2 mx-2 mb-4">

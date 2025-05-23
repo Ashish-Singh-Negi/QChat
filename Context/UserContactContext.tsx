@@ -19,6 +19,7 @@ type UserContactContext = {
   contactMessages: StoredMessage[] | [];
   setContactMessages: Dispatch<SetStateAction<StoredMessage[] | []>>;
   getChatMessages: (crid: string) => void;
+  getContactInfo: (contactId: string) => Promise<UserInfo | null>;
 };
 
 const UserContactContext = createContext<UserContactContext | null>(null);
@@ -43,22 +44,38 @@ export default function UserContactContextProvider({
 
   const getChatMessages = async (crid: string) => {
     try {
-      const {
-        data,
-      }: {
+      const response = await axiosInstance.get<{
         data: {
-          data: {
-            messages: StoredMessage[];
-          };
+          messages: StoredMessage[];
         };
-      } = await axiosInstance.get(`/users/chats/${crid}/messages`);
+      }>(`/users/chats/${crid}/messages`);
 
-      console.log(data);
+      const messages = response.data?.data?.messages ?? [];
 
-      setContactMessages(data.data.messages);
+      console.log(messages);
+      setContactMessages(messages);
     } catch (error: any) {
-      toast.error(error?.response.data.error);
+      toast.error(error?.response?.data?.error || "Failed to load messages");
       console.error(error);
+    }
+  };
+
+  const getContactInfo = async (contactId: string) => {
+    if (!contactId) return null;
+
+    try {
+      const response = await axiosInstance.get<{ data: UserInfo }>(
+        `/users/friends/${contactId}`
+      );
+
+      const contact = response.data.data;
+
+      console.log("Contact : ", contact);
+      setUserContact(contact);
+      return contact;
+    } catch (error: any) {
+      toast.error(error.response.data.error || "An error occured");
+      return null;
     }
   };
 
@@ -70,6 +87,7 @@ export default function UserContactContextProvider({
         contactMessages,
         setContactMessages,
         getChatMessages,
+        getContactInfo,
       }}
     >
       {children}

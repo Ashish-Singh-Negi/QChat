@@ -36,13 +36,13 @@ const Profile = () => {
         </div>
       )}
       {editProfile && (
-        <div className="absolute z-10 bg-black bg-opacity-50 top-0 left-0 h-full w-full flex justify-center items-center">
-          <main className=" h-fit w-[460px] border-2 border-gray-800 bg-gray-950 flex flex-col gap-4 p-8 rounded-lg">
+        <div className="absolute z-10 h-full w-full bg-black bg-opacity-50 top-0 left-0 flex justify-center items-center">
+          <main className=" h-fit w-[460px] border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 flex flex-col gap-4 p-8 rounded-lg">
             <div className="h-fit w-full flex justify-between mb-8">
               <p className="text-xl font-semibold">Profile</p>
               <button
                 onClick={() => setEditProfile(!editProfile)}
-                className="h-fit w-fit flex justify-end text-gray-500 active:scale-90 transition-all"
+                className="h-8 w-8 flex justify-center items-center rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-900 active:scale-90 transition-all"
               >
                 <IoMdClose className="h-6 w-6" />
               </button>
@@ -55,7 +55,7 @@ const Profile = () => {
                 </label>
                 <input
                   type="text"
-                  className="h-10 w-full px-2 py-1 outline-none border-2 bg-gray-900 border-black rounded-md focus:border-blue-500 transition-all"
+                  className="h-10 w-full px-2 py-1 outline-none border-2 border-gray-300 dark:bg-gray-900 dark:border-gray-800 rounded-md focus:border-blue-500 transition-all"
                   value={userInfo?.username}
                 />
               </div>
@@ -66,7 +66,7 @@ const Profile = () => {
                 <label className="text-xs mb-1 px-1 font-medium">email</label>
                 <input
                   type="text"
-                  className="h-10 w-full px-2 py-1 outline-none border-2 bg-gray-900 border-black rounded-md focus:border-blue-500 transition-all"
+                  className="h-10 w-full px-2 py-1 outline-none border-2 border-gray-300 dark:bg-gray-900 dark:border-gray-800 rounded-md focus:border-blue-500 transition-all"
                   value={userInfo?.email}
                 />
               </div>
@@ -76,7 +76,7 @@ const Profile = () => {
                 <label className="text-xs mb-1 px-1 font-medium">About</label>
                 <textarea
                   placeholder="write something..."
-                  className="h-40 w-full p-2 outline-none border-2 bg-gray-900 border-black rounded-md focus:border-blue-500 mb-4 transition-all resize-none "
+                  className="h-40 w-full p-2 outline-none border-2 border-gray-300 dark:bg-gray-900 dark:border-gray-800 rounded-md focus:border-blue-500 mb-4 transition-all resize-none "
                 ></textarea>
               </div>
             </div>

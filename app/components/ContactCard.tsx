@@ -19,7 +19,8 @@ const ContactCard = ({
   roomId: string;
   sendMessage: (dataIs: SendMessage) => void;
 }) => {
-  const { setUserContact, getChatMessages } = useUserContactContext();
+  const { setUserContact, getChatMessages, getContactInfo } =
+    useUserContactContext();
   const { userInfo } = useUserInfoContext();
   const { setRoomInfo } = useRoomContext();
 
@@ -30,8 +31,8 @@ const ContactCard = ({
     setUserContact(ContactInfo);
     sendMessage({
       action: "JOIN",
-      content: "joining room " + roomId,
       room: roomId,
+      content: "joining room " + roomId,
     });
 
     getChatMessages(roomId);
@@ -40,44 +41,26 @@ const ContactCard = ({
 
   const getChatRoomInfo = async () => {
     try {
-      const {
-        data,
-      }: {
-        data: {
-          data: Room;
-        };
-      } = await axiosInstance.get(`/users/chats/${roomId}`);
-
-      console.log(data.data);
-
-      let isDisabled = false;
-      if (data.data.participants.length < 2) isDisabled = true;
-
-      const friendId = data.data.participants.filter(
-        (id) => id !== userInfo?._id
+      const response = await axiosInstance.get<{ data: Room }>(
+        `/users/chats/${roomId}`
       );
 
-      setContactId(friendId[0]);
+      const room = response.data.data;
 
-      setRoomInfo({ ...data.data, isDisabled: isDisabled });
+      const friendId = room.participants.find((id) => id !== userInfo?._id);
+      if (!friendId) return;
+
+      setContactId(friendId);
+
+      if (userInfo?.friendList.indexOf(friendId) === -1) {
+        setRoomInfo({ ...room!, isDisabled: true });
+      } else {
+        setRoomInfo({ ...room!, isDisabled: false });
+      }
     } catch (error: any) {
-      toast.error(error?.response.data.error);
+      toast.error(error?.response?.data?.error || "Failed to fetch room info");
       console.error(error);
     }
-  };
-
-  const getContactInfo = async () => {
-    const {
-      data,
-    }: {
-      data: {
-        data: UserInfo;
-      };
-    } = await axiosInstance.get(`/users/friends/${contactId}`);
-
-    console.log(data);
-    setContactInfo(data.data);
-    setUserContact(data.data);
   };
 
   useEffect(() => {
@@ -86,7 +69,11 @@ const ContactCard = ({
 
   useEffect(() => {
     if (!contactId) return;
-    getContactInfo();
+
+    (async () => {
+      const contact = await getContactInfo(contactId);
+      setContactInfo(contact);
+    })();
   }, [contactId]);
 
   return (

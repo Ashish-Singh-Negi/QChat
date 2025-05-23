@@ -46,13 +46,14 @@ const SearchUser = () => {
 
   const sendFriendRequestHandler = async (username: string) => {
     try {
-      const { data } = await axiosInstance.patch("/users/friends/request", {
+      const { data } = await axiosInstance.post("/users/friends/requests", {
         friendUsername: username,
       });
 
       console.log(data);
-      toast.success("Friend request sended");
-    } catch (error) {
+      toast.success("Friend request send");
+    } catch (error: any) {
+      toast.error(error.response.data.error);
       console.error(error);
     }
   };
@@ -76,7 +77,9 @@ const SearchUser = () => {
         <MdOutlineSearch className="inline h-10 w-10 p-2 cursor-pointer bg-blue-600 text-white rounded-r-md" />
       </div>
       <main className="h-40 w-full overflow-y-auto mt-1">
-        {noUsernameFound && <p className="mt-2 text-sm text-center">No user found</p>}
+        {noUsernameFound && (
+          <p className="mt-2 text-sm text-center">No user found</p>
+        )}
         {usernameFounded &&
           usernameFounded.map((user) => {
             if (userInfo?.username !== user.username)
