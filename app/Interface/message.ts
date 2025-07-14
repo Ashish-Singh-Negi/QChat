@@ -3,7 +3,6 @@ interface IMessage {
   recieverID: string;
   message: string;
   date: string;
-  // phone_No: number;
 }
 
 export type { IMessage };

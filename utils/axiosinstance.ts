@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000/",
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000/api",
   withCredentials: true,
 });
 
@@ -27,7 +27,7 @@ axiosInstance.interceptors.response.use(
 
     const originalConfig = err.config;
 
-    if (originalConfig.url !== "/auth/user/login" && err.response) {
+    if (originalConfig.url !== "/api/auth/login" && err.response) {
       // access token expired
 
       if (err.response.status === 401 && !originalConfig._retry) {
@@ -36,7 +36,7 @@ axiosInstance.interceptors.response.use(
         // console.log("Intercepts : ", originalConfig);
 
         try {
-          const { data } = await axiosInstance.post("/auth/user/refresh");
+          const { data } = await axiosInstance.post("/auth/refresh");
 
           console.log(data);
 

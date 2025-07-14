@@ -1,4 +1,4 @@
-import { SendMessage } from "@/app/Inteface/definations";
+import { SendMessage } from "@/app/Interface/definations";
 import axiosInstance from "@/utils/axiosinstance";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
@@ -23,7 +23,7 @@ export const useWebSocket = (
     onError,
     reconnectAttempts = 5,
     reconnectIntervel = 3000,
-    setMessages,
+    // setMessages,
   } = options;
 
   const [isConnected, setIsConnected] = useState(false);

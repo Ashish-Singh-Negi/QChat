@@ -1,12 +1,13 @@
 import axiosInstance from "@/utils/axiosinstance";
 import React, { useEffect, useState } from "react";
 
-import { Room, UserInfo } from "../Inteface/definations";
+import { Room, UserInfo } from "../Interface/definations";
 import { IoPersonRemove } from "react-icons/io5";
 import { BsChatLeftText } from "react-icons/bs";
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 import toast from "react-hot-toast";
 import { useUserContactContext } from "@/Context/UserContactContext";
+import ProfilePic from "./ProfilePic";
 
 const FriendCard = ({ friendId }: { friendId: string }) => {
   const [friend, setFriend] = useState<UserInfo | null>(null);
@@ -15,9 +16,11 @@ const FriendCard = ({ friendId }: { friendId: string }) => {
   const { setUserInfo } = useUserInfoContext();
 
   useEffect(() => {
+    console.log(friendId);
     if (!friendId) return;
     (async () => {
       const contact = await getContactInfo(friendId);
+      console.log(contact);
       setFriend(contact);
     })();
   }, []);
@@ -25,19 +28,19 @@ const FriendCard = ({ friendId }: { friendId: string }) => {
   const removeFriendHandler = async () => {
     try {
       // Remove friend
-      await axiosInstance.patch(`/users/friends/${friendId}/remove`);
+      await axiosInstance.patch(`/friends/${friendId}/remove`);
 
       // Refetch user info with updated friendList
       const response = await axiosInstance.get<{
         data: UserInfo;
-      }>("/users/profile", {
-        params: { filter: "friendList" },
+      }>("/profile", {
+        params: { filter: "friends" },
       });
 
       // Update state
       setUserInfo((prev) => ({
         ...prev!,
-        friendList: response.data.data.friendList,
+        friends: response.data.data.friends,
       }));
 
       // show success message
@@ -45,19 +48,15 @@ const FriendCard = ({ friendId }: { friendId: string }) => {
     } catch (error) {
       console.error("Error removing friend or updating list:", error);
       // show error message
-      toast.error("Failed to remove friend");
     }
   };
 
   const createChatRoom = async () => {
     try {
       // create chat room
-      const response = await axiosInstance.post<{ data: Room }>(
-        `/users/chats`,
-        {
-          fid: friendId,
-        }
-      );
+      const response = await axiosInstance.post<{ data: Room }>(`/chats`, {
+        fid: friendId,
+      });
 
       console.log("Room data : ", response.data.data);
     } catch (error: any) {
@@ -76,13 +75,12 @@ const FriendCard = ({ friendId }: { friendId: string }) => {
             friend.isOnline && "bg-emerald-500"
           } rounded-full grid place-items-center`}
         >
-          <img
-            src={friend?.profilePic}
-            className="h-[52px] w-[52px] rounded-full"
-          />
-          {/* <span
-            className={`absolute bottom-0 right-0 h-4 w-4 bg-red-500 rounded-full`}
-          ></span> */}
+          <div className="h-[52px] w-[52px] cursor-pointer text-2xl">
+            <ProfilePic
+              profilePic={friend?.profilePic!}
+              username={friend?.username!}
+            />
+          </div>
         </div>
         <div>
           <p className="font-medium dark:text-white">{friend?.username}</p>

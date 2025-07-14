@@ -1,8 +1,9 @@
 import axiosInstance from "@/utils/axiosinstance";
 import React, { useEffect, useState } from "react";
-import { FriendRequest, UserInfo } from "../Inteface/definations";
+import { FriendRequest, UserInfo } from "../Interface/definations";
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 import toast from "react-hot-toast";
+import ProfilePic from "./ProfilePic";
 
 const FriendRequestCard = ({ requestId }: { requestId: string }) => {
   const [friendRequest, setFriendRequest] = useState<FriendRequest | null>(
@@ -13,13 +14,15 @@ const FriendRequestCard = ({ requestId }: { requestId: string }) => {
 
   const getFriendRequest = async () => {
     try {
+      console.log(friendRequest);
+
       const {
         data,
       }: {
         data: {
           data: FriendRequest;
         };
-      } = await axiosInstance.get(`/users/friends/requests/${requestId}`);
+      } = await axiosInstance.get(`/friends/requests/${requestId}`);
 
       console.log(data);
 
@@ -32,7 +35,7 @@ const FriendRequestCard = ({ requestId }: { requestId: string }) => {
   const acceptFriendRequest = async () => {
     try {
       const { data } = await axiosInstance.patch(
-        `/users/friends/requests/${requestId}/accept`
+        `/friends/requests/${requestId}/accept`
       );
 
       console.log(data);
@@ -49,17 +52,17 @@ const FriendRequestCard = ({ requestId }: { requestId: string }) => {
         data: {
           data: UserInfo;
         };
-      } = await axiosInstance.get(`/users/profile`, {
+      } = await axiosInstance.get(`/profile`, {
         params: {
-          filter: "contactRoomList friendRequestList friendList",
+          filter: "chats friends friendRequests",
         },
       });
 
       setUserInfo({
         ...userInfo!,
-        contactRoomList: data.data.contactRoomList,
-        friendRequestList: data.data.friendRequestList,
-        friendList: data.data.friendList,
+        chats: data.data.chats,
+        friendRequests: data.data.friendRequests,
+        friends: data.data.friends,
       });
     } catch (error) {
       console.error(error);
@@ -69,7 +72,7 @@ const FriendRequestCard = ({ requestId }: { requestId: string }) => {
   const rejectFriendRequest = async () => {
     try {
       const { data } = await axiosInstance.patch(
-        `/users/friends/requests/${requestId}/reject`
+        `/friends/requests/${requestId}/reject`
       );
 
       console.log(data);
@@ -86,13 +89,13 @@ const FriendRequestCard = ({ requestId }: { requestId: string }) => {
         };
       } = await axiosInstance.get(`/users/profile`, {
         params: {
-          filter: "friendRequestList",
+          filter: "friendRequests",
         },
       });
 
       setUserInfo({
         ...userInfo!,
-        friendRequestList: data.data.friendRequestList,
+        friendRequests: data.data.friendRequests,
       });
       toast.success("Request Rejected");
     } catch (error) {
@@ -109,11 +112,12 @@ const FriendRequestCard = ({ requestId }: { requestId: string }) => {
   return friendRequest?.sender.username === userInfo?.username ? (
     <div className="h-16 w-full border-gray-300 dark:border-gray-700 flex items-center justify-between px-2">
       <div className="flex items-center gap-2">
-        <img
-          className="h-10 w-10 rounded-full"
-          src={friendRequest?.recipient.profilePic}
-          alt=""
-        />
+        <div className="h-10 w-10 text-2xl">
+          <ProfilePic
+            profilePic={friendRequest.recipient?.profilePic!}
+            username={friendRequest.recipient?.username!}
+          />
+        </div>
         <p className="font-medium">{friendRequest?.recipient.username}</p>
       </div>
       <p
@@ -132,11 +136,12 @@ const FriendRequestCard = ({ requestId }: { requestId: string }) => {
     <div className="h-16 w-full border-gray-300 dark:border-gray-700 flex items-center justify-between px-2">
       <div className="w-fit flex items-center gap-2">
         {" "}
-        <img
-          src={friendRequest?.sender.profilePic}
-          className="h-10 w-10 rounded-full"
-          alt="pic"
-        />
+        <div className="h-10 w-10 text-2xl">
+          <ProfilePic
+            profilePic={friendRequest.sender?.profilePic!}
+            username={friendRequest.sender?.username!}
+          />
+        </div>
         <p className="font-medium dark:text-white">
           {friendRequest?.sender.username}
         </p>
@@ -159,11 +164,12 @@ const FriendRequestCard = ({ requestId }: { requestId: string }) => {
   ) : (
     <div className="h-16 w-full border-gray-300 dark:border-gray-700 flex items-center justify-between px-2">
       <div className="flex items-center gap-2">
-        <img
-          className="h-10 w-10 rounded-full"
-          src={friendRequest?.sender.profilePic}
-          alt="pic"
-        />
+        <div className="h-10 w-10 text-2xl">
+          <ProfilePic
+            profilePic={friendRequest.sender?.profilePic!}
+            username={friendRequest.sender?.username!}
+          />
+        </div>
         <p className="font-medium">{friendRequest?.sender.username}</p>
       </div>
       <p

@@ -5,12 +5,12 @@ export type UserInfo = {
   about: string;
   profilePic: string;
   isOnline: boolean;
-  contactRoomList: string[];
-  friendList: string[];
+  chats: string[];
+  friends: string[];
+  friendRequests: string[];
   favouritesContactList: string[];
   followers: string[];
   following: string[];
-  friendRequestList: string[];
   starMessages: string[];
   blacklist: string[];
   createdAt: string;

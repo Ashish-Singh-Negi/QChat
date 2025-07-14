@@ -7,6 +7,7 @@ import axiosInstance from "@/utils/axiosinstance";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import toast from "react-hot-toast";
+import ProfilePic from "./ProfilePic";
 
 const HomeContactInfo = ({
   setOpenContactInfo,
@@ -17,7 +18,7 @@ const HomeContactInfo = ({
   const { roomInfo, setRoomInfo } = useRoomContext();
   const { roomId } = useWebSocketContext();
 
-  const [viewFullImage, setViewFullImage] = useState(false);
+  const [showFullImage, setShowFullImage] = useState(false);
   const [muteNotifications, setMuteNotifications] = useState(false);
 
   const [disappearingMessagesDuration, setDisappearingMessagesDuration] =
@@ -25,7 +26,7 @@ const HomeContactInfo = ({
 
   const updateDisappearingMessageSettings = async (duration: string) => {
     try {
-      const { data } = await axiosInstance.patch(`/users/chats/${roomId}`, {
+      const { data } = await axiosInstance.patch(`/chats/${roomId}`, {
         disappearingMessagesDuration: duration,
       });
       console.log(data);
@@ -86,7 +87,7 @@ const HomeContactInfo = ({
   };
 
   return (
-    <section className="h-full w-[740px] px-4 pt-2 dark:bg-black">
+    <section className="h-full w-2/3 px-4 pt-2  dark:bg-black animate-moreInfoSlideIn">
       <header className="h-10 w-full font-semibold flex items-center mb-6">
         <button className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-full mr-2 grid place-items-center">
           <IoMdClose
@@ -96,17 +97,18 @@ const HomeContactInfo = ({
         </button>
         Contact Info
       </header>
-      <main className="h-[94%] w-full overflow-y-auto">
+      <main className="h-[92%] w-full overflow-y-auto overflow-x-hidden">
         <div className="h-fit w-full flex flex-col items-center border-b-2 dark:border-gray-800">
-          <img
-            onClick={() => setViewFullImage(!viewFullImage)}
-            className="h-32 w-32 rounded-full cursor-pointer"
-            src={userContact?.profilePic}
-            alt="profile pic"
-          />
-          {viewFullImage && (
+          <div className="h-32 w-32 cursor-pointer text-5xl">
+            <ProfilePic
+              profilePic={userContact?.profilePic!}
+              username={userContact?.username!}
+              setShowFullImage={setShowFullImage}
+            />
+          </div>
+          {showFullImage && (
             <div
-              onClick={() => setViewFullImage(!viewFullImage)}
+              onClick={() => setShowFullImage(!showFullImage)}
               className="absolute z-10 top-0 left-0 bg-black bg-opacity-50 h-full w-full flex justify-center items-center"
             >
               <img

@@ -1,6 +1,6 @@
 "use client";
 
-import { StoredMessage, UserInfo } from "@/app/Inteface/definations";
+import { StoredMessage, UserInfo } from "@/app/Interface/definations";
 import axiosInstance from "@/utils/axiosinstance";
 import {
   createContext,
@@ -48,7 +48,9 @@ export default function UserContactContextProvider({
         data: {
           messages: StoredMessage[];
         };
-      }>(`/users/chats/${crid}/messages`);
+      }>(`/chats/${crid}/messages`);
+
+      console.log(response);
 
       const messages = response.data?.data?.messages ?? [];
 
@@ -61,12 +63,15 @@ export default function UserContactContextProvider({
   };
 
   const getContactInfo = async (contactId: string) => {
+    console.log(contactId);
     if (!contactId) return null;
 
     try {
       const response = await axiosInstance.get<{ data: UserInfo }>(
-        `/users/friends/${contactId}`
+        `/friends/${contactId}`
       );
+
+      console.log(response);
 
       const contact = response.data.data;
 

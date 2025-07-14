@@ -4,7 +4,7 @@ import Sent from "../ChatBox/Sent";
 import Cat from "../../images/kitkit.jpeg";
 import { Down, ARight } from "@/app/icons";
 import Recieved from "../ChatBox/Recieved";
-import { IMessage } from "../../Inteface/message";
+import { IMessage } from "../../Interface/message";
 
 function Starredmsg() {
   const [recieved] = useState(false);

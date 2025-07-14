@@ -16,14 +16,15 @@ import SearchUser from "./SearchUser";
 import RoomMessageCard from "./RoomMessageCard";
 import ContactCard from "./ContactCard";
 import HomeContactInfo from "./HomeContactInfo";
-import Dropdown from "./Dropdown";
+import Dropdown from "./Accordion";
 import FriendCard from "./FriendCard";
 
 import { RiSendPlaneFill } from "react-icons/ri";
 
 import toast, { Toaster } from "react-hot-toast";
 
-import { UserInfo } from "../Inteface/definations";
+import { UserInfo } from "../Interface/definations";
+import ProfilePic from "./ProfilePic";
 
 const Websocket = () => {
   const { userInfo, setUserInfo, getUserProfile } = useUserInfoContext();
@@ -55,7 +56,7 @@ const Websocket = () => {
       const response = await axiosInstance.post<{
         data: UserInfo;
         message: string;
-      }>(`/users/friends/requests`, {
+      }>(`/friends/requests`, {
         friendUsername: userContact?.username,
       });
 
@@ -194,49 +195,49 @@ const Websocket = () => {
     });
   };
 
-  const starMessageHandler = async (mid: string) => {
-    try {
-      const { data } = await axiosInstance.patch(
-        `/users/chats/messages/${mid}/star`,
-        {
-          uid: userInfo?._id,
-        }
-      );
+  // const starMessageHandler = async (mid: string) => {
+  //   try {
+  //     const { data } = await axiosInstance.patch(
+  //       `/users/chats/messages/${mid}/star`,
+  //       {
+  //         uid: userInfo?._id,
+  //       }
+  //     );
 
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
 
-    sendMessage({
-      action: "UPDATE",
-      room: roomId!,
-    });
+  //   sendMessage({
+  //     action: "UPDATE",
+  //     room: roomId!,
+  //   });
 
-    setUserInfo((prev) => {
-      if (!prev) return prev;
+  //   setUserInfo((prev) => {
+  //     if (!prev) return prev;
 
-      const isStarred = prev.starMessages.includes(mid);
-      const updatedStarMessages = isStarred
-        ? prev.starMessages.filter((id) => id !== mid)
-        : [...prev.starMessages];
+  //     const isStarred = prev.starMessages.includes(mid);
+  //     const updatedStarMessages = isStarred
+  //       ? prev.starMessages.filter((id) => id !== mid)
+  //       : [...prev.starMessages];
 
-      return {
-        ...prev,
-        starMessages: updatedStarMessages,
-      };
-    });
-  };
+  //     return {
+  //       ...prev,
+  //       starMessages: updatedStarMessages,
+  //     };
+  //   });
+  // };
 
   // Actions Btns
-  const btnActionName = ["DFE", "DFM", "DCM", "PIN", "STAR"];
+  const btnActionName = ["DFE", "DFM", "DCM", "PIN"];
 
   const btnActions = [
     deleteMessageForEveryoneHandler,
     deleteMessageForMeHandler,
     deleteChatMessagesHandler,
     pinMessageHandler,
-    starMessageHandler,
+    // starMessageHandler,
   ];
 
   const [currentActionIndex, setCurrentActionIndex] = useState(0);
@@ -315,7 +316,7 @@ const Websocket = () => {
           <div className="px-2">
             <p className="font-medium text-xl mb-1">Contacts</p>
             {userInfo &&
-              userInfo.contactRoomList.map((roomId) => (
+              userInfo.chats.map((roomId) => (
                 <ContactCard
                   // contactId={friend.contactId}
                   // setMessages={setMessages}
@@ -348,13 +349,12 @@ const Websocket = () => {
                     onClick={() => setOpenContactInfo(true)}
                     className="h-14 w-full font-semibold px-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-950 transition-all text-black dark:text-white border-b-2 border-gray-400 dark:border-gray-700 cursor-pointer"
                   >
-                    <img
-                      src={
-                        userContact?.profilePic ? userContact.profilePic : ""
-                      }
-                      className="h-8 w-8 rounded-full cursor-pointer"
-                      alt="Profile pic"
-                    />
+                    <div className="h-10 w-10 text-xl">
+                      <ProfilePic
+                        profilePic={userContact?.profilePic!}
+                        username={userContact?.username!}
+                      />
+                    </div>
                     {userContact?.username}
                   </header>
                   <main
@@ -374,7 +374,7 @@ const Websocket = () => {
                           <SenderMessageCard
                             key={message._id}
                             message={message}
-                            actionsHandler={btnActions[currentActionIndex]}
+                            // actionsHandler={btnActions[currentActionIndex]}
                           />
                         ) : (
                           <ReceiverMessageCard
@@ -461,9 +461,10 @@ const Websocket = () => {
 
         <aside className="py-2">
           <Dropdown title="Friends">
-            {userInfo?.friendList.map((friendId) => (
-              <FriendCard key={friendId} friendId={friendId} />
-            ))}
+            {userInfo?.friends &&
+              userInfo?.friends.map((friendId) => (
+                <FriendCard key={friendId} friendId={friendId} />
+              ))}
           </Dropdown>
           <SearchUser />
           <div className="h-60 px-2 mx-2 mb-4">
@@ -471,12 +472,13 @@ const Websocket = () => {
               Requests
             </h1>
             <main className="h-52 w-full overflow-y-auto">
-              {userInfo?.friendRequestList.map((friendRequest) => (
-                <FriendRequestCard
-                  requestId={friendRequest}
-                  key={friendRequest}
-                />
-              ))}
+              {userInfo?.friendRequests &&
+                userInfo?.friendRequests.map((friendRequest) => (
+                  <FriendRequestCard
+                    requestId={friendRequest}
+                    key={friendRequest}
+                  />
+                ))}
             </main>
           </div>
         </aside>

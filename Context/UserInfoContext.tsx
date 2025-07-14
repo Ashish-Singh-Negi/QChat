@@ -1,6 +1,6 @@
 "use client";
 
-import { UserInfo } from "@/app/Inteface/definations";
+import { UserInfo } from "@/app/Interface/definations";
 import axiosInstance from "@/utils/axiosinstance";
 import {
   createContext,

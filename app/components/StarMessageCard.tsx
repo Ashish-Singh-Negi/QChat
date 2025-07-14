@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosinstance";
 
-import { StoredMessage } from "../Inteface/definations";
+import { StoredMessage } from "../Interface/definations";
 
 import { BsPinFill } from "react-icons/bs";
 import { TiStar } from "react-icons/ti";

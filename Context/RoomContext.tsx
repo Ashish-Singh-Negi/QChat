@@ -1,7 +1,6 @@
 "use client";
 
-import { Room } from "@/app/Inteface/definations";
-import axiosInstance from "@/utils/axiosinstance";
+import { Room } from "@/app/Interface/definations";
 import {
   createContext,
   Dispatch,

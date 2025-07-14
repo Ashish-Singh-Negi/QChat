@@ -1,44 +1,42 @@
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 import React, { useState } from "react";
-import { FaUserCircle } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { MdOutlineAlternateEmail } from "react-icons/md";
+import ProfilePic from "./ProfilePic";
 
 const Profile = () => {
   const { userInfo } = useUserInfoContext();
 
-  const [viewFullImage, setViewFullImage] = useState(false);
+  const [showFullImage, setShowFullImage] = useState(false);
   const [editProfile, setEditProfile] = useState(false);
 
   return (
     <div className="px-2 border-l-2 border-blue-500 flex items-center gap-2">
-      {userInfo?.profilePic ? (
-        <img
-          onClick={() => setViewFullImage(!viewFullImage)}
-          src={userInfo?.profilePic}
-          className={`h-14 w-14 rounded-full cursor-pointer`}
-          alt="profile picture"
+      <div className="h-14 w-14 cursor-pointer text-2xl">
+        <ProfilePic
+          profilePic={userInfo?.profilePic!}
+          username={userInfo?.username!}
+          setShowFullImage={setShowFullImage}
         />
-      ) : (
-        <FaUserCircle className="h-14 w-14" />
-      )}
-      {viewFullImage && (
+      </div>
+      {showFullImage && (
         <div
-          onClick={() => setViewFullImage(!viewFullImage)}
+          onClick={() => setShowFullImage(!showFullImage)}
           className="absolute z-10 bg-black bg-opacity-40 top-0 left-0 h-full w-full flex justify-center items-center"
         >
-          <img
-            src={userInfo?.profilePic ? userInfo.profilePic : ""}
-            className={`h-96 w-96 cursor-pointer`}
-            alt="profile picture"
-          />
+          <div className="h-96 w-96">
+            <ProfilePic
+              profilePic={userInfo?.profilePic!}
+              username={userInfo?.username!}
+            />
+          </div>
         </div>
       )}
       {editProfile && (
         <div className="absolute z-10 h-full w-full bg-black bg-opacity-50 top-0 left-0 flex justify-center items-center">
           <main className=" h-fit w-[460px] border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 flex flex-col gap-4 p-8 rounded-lg">
-            <div className="h-fit w-full flex justify-between mb-8">
+            <header className="h-fit w-full flex justify-between mb-4">
               <p className="text-xl font-semibold">Profile</p>
               <button
                 onClick={() => setEditProfile(!editProfile)}
@@ -46,6 +44,14 @@ const Profile = () => {
               >
                 <IoMdClose className="h-6 w-6" />
               </button>
+            </header>
+            <div className="h-40 w-full rounded-full flex justify-center">
+              <div className="h-40 w-40 text-5xl">
+                <ProfilePic
+                  profilePic={userInfo?.profilePic!}
+                  username={userInfo?.username!}
+                />
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <FaUser className="h-6 w-6" />

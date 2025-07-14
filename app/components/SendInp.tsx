@@ -5,7 +5,7 @@ import React, { FormEvent, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
 import "../global.css";
 import "./style.css";
-import { IMessage } from "../Inteface/message";
+import { IMessage } from "../Interface/message";
 import SendOptions from "./SendOptions";
 import { context_val } from "../chatsSection/ContextProvider";
 import Reply from "./Reply";

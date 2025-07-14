@@ -22,8 +22,8 @@ const RoomMessageCard = ({ message }: { message: string }) => {
   }, []);
 
   return (
-    <div className="h-fit w-full px-16 flex justify-center my-[6px]">
-      <p className="w-fit text-black dark:text-white bg-gray-300 dark:bg-gray-950 text-xs text-center rounded-xl font-normal px-4 py-[2px] my-1">
+    <div className="h-fit w-full px-16 flex justify-center mb-3">
+      <p className="w-fit text-black dark:text-white bg-white dark:bg-gray-900 text-xs text-center rounded-lg font-normal px-4 py-1 my-1">
         <PiClockCountdown className="inline" /> {roomMessage}
       </p>
     </div>

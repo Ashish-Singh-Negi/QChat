@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Pin } from "../../icons";
-import { IMessage } from "@/app/Inteface/message";
+import { IMessage } from "@/app/Interface/message";
 const data1: IMessage = {
   senderID: "me",
   recieverID: "notme",

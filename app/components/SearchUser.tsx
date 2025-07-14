@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { UserInfo } from "../Inteface/definations";
+import { UserInfo } from "../Interface/definations";
 import axiosInstance from "@/utils/axiosinstance";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { MdOutlineSearch } from "react-icons/md";
@@ -46,7 +46,7 @@ const SearchUser = () => {
 
   const sendFriendRequestHandler = async (username: string) => {
     try {
-      const { data } = await axiosInstance.post("/users/friends/requests", {
+      const { data } = await axiosInstance.post("/friends/requests", {
         friendUsername: username,
       });
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { IMessage } from "../Inteface/message";
+import { IMessage } from "../Interface/message";
 import { Cross } from "../icons";
 import "../global.css"
 import { context_val } from "../chatsSection/ContextProvider";
