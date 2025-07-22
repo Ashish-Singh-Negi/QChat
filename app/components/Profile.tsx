@@ -11,12 +11,14 @@ const Profile = () => {
   const [showFullImage, setShowFullImage] = useState(false);
   const [editProfile, setEditProfile] = useState(false);
 
+  if (!userInfo) return;
+
   return (
     <div className="px-2 border-l-2 border-blue-500 flex items-center gap-2">
       <div className="h-14 w-14 cursor-pointer text-2xl">
         <ProfilePic
-          profilePic={userInfo?.profilePic!}
-          username={userInfo?.username!}
+          profilePic={userInfo.profilePic!}
+          username={userInfo.username!}
           setShowFullImage={setShowFullImage}
         />
       </div>
@@ -27,8 +29,8 @@ const Profile = () => {
         >
           <div className="h-96 w-96">
             <ProfilePic
-              profilePic={userInfo?.profilePic!}
-              username={userInfo?.username!}
+              profilePic={userInfo.profilePic!}
+              username={userInfo.username!}
             />
           </div>
         </div>
@@ -48,8 +50,8 @@ const Profile = () => {
             <div className="h-40 w-full rounded-full flex justify-center">
               <div className="h-40 w-40 text-5xl">
                 <ProfilePic
-                  profilePic={userInfo?.profilePic!}
-                  username={userInfo?.username!}
+                  profilePic={userInfo.profilePic!}
+                  username={userInfo.username!}
                 />
               </div>
             </div>
@@ -62,7 +64,7 @@ const Profile = () => {
                 <input
                   type="text"
                   className="h-10 w-full px-2 py-1 outline-none border-2 border-gray-300 dark:bg-gray-900 dark:border-gray-800 rounded-md focus:border-blue-500 transition-all"
-                  value={userInfo?.username}
+                  value={userInfo.username}
                 />
               </div>
             </div>
@@ -73,7 +75,7 @@ const Profile = () => {
                 <input
                   type="text"
                   className="h-10 w-full px-2 py-1 outline-none border-2 border-gray-300 dark:bg-gray-900 dark:border-gray-800 rounded-md focus:border-blue-500 transition-all"
-                  value={userInfo?.email}
+                  value={userInfo.email}
                 />
               </div>
             </div>
@@ -93,8 +95,8 @@ const Profile = () => {
         onClick={() => setEditProfile(!editProfile)}
         className="cursor-pointer"
       >
-        <p className="font-medium">{userInfo?.username}</p>
-        <p>{userInfo?.email}</p>
+        <p className="font-medium">{userInfo.username}</p>
+        <p>{userInfo.email}</p>
       </div>
     </div>
   );

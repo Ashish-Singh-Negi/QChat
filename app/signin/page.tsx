@@ -17,7 +17,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const { data } = await axiosInstance.post(`/auth/login`, {
+      const { data } = await axiosInstance.post(`/auth/signin`, {
         username: username?.trim(),
         password: password?.trim(),
       });
@@ -56,9 +56,18 @@ const LoginPage = () => {
           >
             Sign in
           </button>
+          <p className="text-center">
+            don&#39;t have account?{" "}
+            <span
+              onClick={() => push("/signup")}
+              className="text-blue-500 cursor-pointer"
+            >
+              signup
+            </span>
+          </p>
         </form>
       </div>
-      <div className="h-full w-3/4 border-l-2 border-red-500 rounded-l-full flex justify-center items-center">
+      <div className="h-full w-3/4 border-l-2 border-blue-500 rounded-l-full flex justify-center items-center">
         <Image src={chatIllust} height={800} width={500} alt="Illustration" />
       </div>
     </main>

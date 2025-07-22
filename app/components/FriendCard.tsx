@@ -77,13 +77,13 @@ const FriendCard = ({ friendId }: { friendId: string }) => {
         >
           <div className="h-[52px] w-[52px] cursor-pointer text-2xl">
             <ProfilePic
-              profilePic={friend?.profilePic!}
-              username={friend?.username!}
+              profilePic={friend.profilePic!}
+              username={friend.username!}
             />
           </div>
         </div>
         <div>
-          <p className="font-medium dark:text-white">{friend?.username}</p>
+          <p className="font-medium dark:text-white">{friend.username}</p>
           {friend.isOnline ? (
             <span className="text-emerald-500">Online</span>
           ) : (

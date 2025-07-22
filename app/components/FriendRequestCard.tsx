@@ -109,16 +109,16 @@ const FriendRequestCard = ({ requestId }: { requestId: string }) => {
 
   if (!friendRequest) return;
 
-  return friendRequest?.sender.username === userInfo?.username ? (
+  return friendRequest.sender.username === userInfo?.username ? (
     <div className="h-16 w-full border-gray-300 dark:border-gray-700 flex items-center justify-between px-2">
       <div className="flex items-center gap-2">
         <div className="h-10 w-10 text-2xl">
           <ProfilePic
-            profilePic={friendRequest.recipient?.profilePic!}
-            username={friendRequest.recipient?.username!}
+            profilePic={friendRequest.recipient.profilePic}
+            username={friendRequest.recipient.username}
           />
         </div>
-        <p className="font-medium">{friendRequest?.recipient.username}</p>
+        <p className="font-medium">{friendRequest.recipient.username}</p>
       </div>
       <p
         className={`${
@@ -138,12 +138,12 @@ const FriendRequestCard = ({ requestId }: { requestId: string }) => {
         {" "}
         <div className="h-10 w-10 text-2xl">
           <ProfilePic
-            profilePic={friendRequest.sender?.profilePic!}
-            username={friendRequest.sender?.username!}
+            profilePic={friendRequest.sender.profilePic}
+            username={friendRequest.sender.username}
           />
         </div>
         <p className="font-medium dark:text-white">
-          {friendRequest?.sender.username}
+          {friendRequest.sender.username}
         </p>
       </div>
       <div>
@@ -166,11 +166,11 @@ const FriendRequestCard = ({ requestId }: { requestId: string }) => {
       <div className="flex items-center gap-2">
         <div className="h-10 w-10 text-2xl">
           <ProfilePic
-            profilePic={friendRequest.sender?.profilePic!}
-            username={friendRequest.sender?.username!}
+            profilePic={friendRequest.sender.profilePic}
+            username={friendRequest.sender.username}
           />
         </div>
-        <p className="font-medium">{friendRequest?.sender.username}</p>
+        <p className="font-medium">{friendRequest.sender.username}</p>
       </div>
       <p
         className={`${
@@ -179,7 +179,7 @@ const FriendRequestCard = ({ requestId }: { requestId: string }) => {
             : "text-red-600"
         }`}
       >
-        {friendRequest!.status}
+        {friendRequest.status}
       </p>
     </div>
   );

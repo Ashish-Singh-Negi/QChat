@@ -40,7 +40,7 @@ const Messages = ({ messages }: { messages: StoredMessage[] }) => {
       }
     ] = [
       {
-        date: getMessageDate(messages.at(-1)?.createdAt!),
+        date: getMessageDate(messages.at(-1)!.createdAt!),
         messages: [],
       },
     ];

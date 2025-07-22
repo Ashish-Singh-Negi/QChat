@@ -43,7 +43,7 @@ export default function Home() {
       action: async () => {
         try {
           await axiosInstance.delete(`/chats/${roomId}/clear`);
-          toast.success("Chat cleared")
+          toast.success("Chat cleared");
         } catch (error) {
           console.error(error);
         }
@@ -105,182 +105,9 @@ export default function Home() {
     setTextMessage(null);
   };
 
-  // const deleteMessageForMeHandler = async (mid: string) => {
-  //   try {
-  //     await axiosInstance.patch(`/users/chats/messages/${mid}/deleteforme`);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-
-  //   sendMessage({
-  //     action: "UPDATE",
-  //     room: roomId!,
-  //   });
-
-  // const updatedMessages = messages?.map((mess) => {
-  //   if (mess._id === mid) {
-  //     mess.content = "You deleted this message";
-  //   } else mess;
-
-  //   return mess;
-  // });
-  // setMessages(updatedMessages!);
-  // };
-
-  // const deleteMessageForEveryoneHandler = async (mid: string) => {
-  //   try {
-  //     console.log("MID : ", mid);
-  //     await axiosInstance.patch(
-  //       `/users/chats/messages/${mid}/deleteforeveryone`
-  //     );
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-
-  //   sendMessage({
-  //     action: "UPDATE",
-  //     room: roomId!,
-  //   });
-
-  // const updatedMessages = messages?.map((mess) => {
-  //   if (mess._id === mid) {
-  //     mess.content = "You deleted this message";
-  //   } else mess;
-
-  //   return mess;
-  // });
-  // setMessages(updatedMessages!);
-  // };
-
-  // const deleteChatMessagesHandler = async () => {
-  //   try {
-  //     await axiosInstance.delete(`/users/chats/${roomId}/messages`);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-
-  //   sendMessage({
-  //     action: "UPDATE",
-  //     room: roomId!,
-  //   });
-
-  // const updatedMessages = messages?.map((mess) => {
-  //   if (mess._id === mid) {
-  //     mess.content = "You deleted this message";
-  //   } else mess;
-
-  //   return mess;
-  // });
-  // setMessages(updatedMessages!);
-  // };
-
-  // const pinMessageHandler = async (mid: string) => {
-  //   if (!messages || !roomId) return;
-
-  //   console.log("PIN mid : ", mid);
-
-  //   // Find message and determine new pin status
-  //   const targetMessage = messages.find((msg) => msg._id === mid);
-  //   if (!targetMessage) return;
-
-  //   const newPinnedState = !targetMessage.isPinned;
-
-  //   // Update UI optimistically
-  //   const updatedMessages = messages.map((message) =>
-  //     message._id === mid ? { ...message, isPinned: newPinnedState } : message
-  //   );
-  //   setMessages(updatedMessages);
-
-  //   try {
-  //     const { data } = await axiosInstance.patch(
-  //       `/users/chats/${roomId}/messages/${mid}/pin`
-  //     );
-
-  //     console.log("PIN update response:", data);
-  //   } catch (error) {
-  //     console.error(error);
-
-  //     // Rollback UI if error
-  //     const rolledBackMessages = messages.map((message) =>
-  //       message._id === mid
-  //         ? { ...message, isPinned: targetMessage.isPinned } // original value
-  //         : message
-  //     );
-  //     setMessages(rolledBackMessages);
-  //   }
-
-  //   // Notify others in the room
-  //   sendMessage({
-  //     action: "UPDATE",
-  //     room: roomId,
-  //   });
-  // };
-
-  // const starMessageHandler = async (mid: string) => {
-  //   try {
-  //     const { data } = await axiosInstance.patch(
-  //       `/users/chats/messages/${mid}/star`,
-  //       {
-  //         uid: userInfo?._id,
-  //       }
-  //     );
-
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-
-  //   sendMessage({
-  //     action: "UPDATE",
-  //     room: roomId!,
-  //   });
-
-  //   setUserInfo((prev) => {
-  //     if (!prev) return prev;
-
-  //     const isStarred = prev.starMessages.includes(mid);
-  //     const updatedStarMessages = isStarred
-  //       ? prev.starMessages.filter((id) => id !== mid)
-  //       : [...prev.starMessages];
-
-  //     return {
-  //       ...prev,
-  //       starMessages: updatedStarMessages,
-  //     };
-  //   });
-  // };
-
-  // Actions Btns
-  // const btnActionName = ["DFE", "DFM", "DCM", "PIN"];
-
-  // const btnActions = [
-  //   deleteMessageForEveryoneHandler,
-  //   deleteMessageForMeHandler,
-  //   deleteChatMessagesHandler,
-  //   pinMessageHandler,
-  //   // starMessageHandler,
-  // ];
-
-  // const [currentActionIndex, setCurrentActionIndex] = useState(0);
-
-  // const changeBtnActionHandler = (actionName: string, index: number) => {
-  //   console.log(actionName);
-  //   setCurrentActionIndex(index);
-  // };
-
   const disappearMessagesAboveDurationHandler = async () => {
     try {
-      const { data } = await axiosInstance.delete(
-        `/users/chats/${roomId}/messages`,
-        {
-          params: {
-            action: "DISAPPEAR_MESSAGES",
-            duration: roomInfo?.disappearingMessages,
-          },
-        }
-      );
-
-      console.log("Disappear Message Handler : ", data);
+      await axiosInstance.delete(`/chats/${roomId}/messages/disappear`);
     } catch (error) {
       console.error(error);
     }
@@ -346,18 +173,20 @@ export default function Home() {
           <section className="bg-[url(./public/background.png)] dark:bg-[url(./public/dark-background.png)] bg-cover h-full w-2/3 flex">
             <div className="h-full w-full flex flex-col border-r-[1px] dark:border-gray-800">
               <header className="h-16 w-full bg-white dark:bg-black px-2 pr-4 flex items-center justify-between">
-                <div
-                  onClick={() => setOpenContactInfo(true)}
-                  className="h-16 w-full font-semibold px-2 flex items-center gap-4 transition-all text-black dark:text-white cursor-pointer"
-                >
-                  <div className="h-10 w-10 text-xl">
-                    <ProfilePic
-                      profilePic={userContact?.profilePic!}
-                      username={userContact?.username!}
-                    />
+                {userContact && (
+                  <div
+                    onClick={() => setOpenContactInfo(true)}
+                    className="h-16 w-full font-semibold px-2 flex items-center gap-4 transition-all text-black dark:text-white cursor-pointer"
+                  >
+                    <div className="h-10 w-10 text-xl">
+                      <ProfilePic
+                        profilePic={userContact.profilePic!}
+                        username={userContact.username!}
+                      />
+                    </div>
+                    {userContact.username}
                   </div>
-                  {userContact?.username}
-                </div>
+                )}
                 <div
                   ref={dropdownRef}
                   onClick={() => setDropdown(!dropdown)}

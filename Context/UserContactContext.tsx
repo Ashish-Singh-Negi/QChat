@@ -45,14 +45,12 @@ export default function UserContactContextProvider({
   const getChatMessages = async (crid: string) => {
     try {
       const response = await axiosInstance.get<{
-        data: {
-          messages: StoredMessage[];
-        };
+        data: StoredMessage[];
       }>(`/chats/${crid}/messages`);
 
       console.log(response);
 
-      const messages = response.data?.data?.messages ?? [];
+      const messages = response.data?.data ?? [];
 
       console.log(messages);
       setContactMessages(messages);

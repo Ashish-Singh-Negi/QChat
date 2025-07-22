@@ -26,9 +26,12 @@ const HomeContactInfo = ({
 
   const updateDisappearingMessageSettings = async (duration: string) => {
     try {
-      const { data } = await axiosInstance.patch(`/chats/${roomId}`, {
-        disappearingMessagesDuration: duration,
-      });
+      const { data } = await axiosInstance.patch(
+        `/chats/${roomId}/disappearduration`,
+        {
+          disappearingMessagesDuration: duration,
+        }
+      );
       console.log(data);
     } catch (error) {
       console.error(error);
@@ -68,7 +71,7 @@ const HomeContactInfo = ({
             disappearingMessages: string;
           };
         };
-      } = await axiosInstance.get(`/users/chats/${roomId}`, {
+      } = await axiosInstance.get(`/chats/${roomId}`, {
         params: {
           filter: "disappearingMessages",
         },
@@ -86,8 +89,10 @@ const HomeContactInfo = ({
     }
   };
 
+  if (!userContact) return;
+
   return (
-    <section className="h-full w-2/3 px-4 pt-2  dark:bg-black animate-moreInfoSlideIn">
+    <section className="h-full w-2/3 px-4 pt-2 bg-white dark:bg-black animate-moreInfoSlideIn">
       <header className="h-10 w-full font-semibold flex items-center mb-6">
         <button className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-full mr-2 grid place-items-center">
           <IoMdClose
@@ -101,8 +106,8 @@ const HomeContactInfo = ({
         <div className="h-fit w-full flex flex-col items-center border-b-2 dark:border-gray-800">
           <div className="h-32 w-32 cursor-pointer text-5xl">
             <ProfilePic
-              profilePic={userContact?.profilePic!}
-              username={userContact?.username!}
+              profilePic={userContact.profilePic}
+              username={userContact.username}
               setShowFullImage={setShowFullImage}
             />
           </div>
@@ -121,14 +126,14 @@ const HomeContactInfo = ({
           <p className="h-10 mt-2 font-medium text-xl text-black dark:text-white">
             {userContact?.username}
           </p>
-          {userContact?.about && (
+          {userContact.about && (
             <div className="h-12 w-full mt-4 px-1 ">
-              <h2 className="text-sm font-medium text-gray-700 dark:text-gray-400">
+              <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 About
               </h2>
-              <p className="py-1 text-gray-950 dark:text-white font-normal">
+              <p className="py-1 text-gray-950 dark:text-gray-400 font-normal">
                 {" "}
-                {userContact?.about}
+                {userContact.about}
               </p>
             </div>
           )}
