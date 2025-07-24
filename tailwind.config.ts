@@ -82,7 +82,7 @@ export default {
             opacity: "1",
           },
         },
-        moreInfoSlideIn: {
+        slideIn: {
           "0%": {
             width: "0",
             opacity: "0",
@@ -97,7 +97,7 @@ export default {
         leftSlideIn: "leftSlideIn 0.3s ease-in-out forwards",
         leftSlideOut: "leftSlideOut 0.5s ease-in-out forwards",
         dropdownOpen: "dropdownOpen 0.3s ease-in-out forwards",
-        moreInfoSlideIn: "moreInfoSlideIn 0.3s ease-in-out forwards",
+        slideIn: "slideIn 0.3s ease-in-out forwards",
       },
     },
   },

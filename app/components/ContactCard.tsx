@@ -58,10 +58,14 @@ const ContactCard = ({
 
       setContactId(friendId);
 
-      if (userInfo?.friends.indexOf(friendId) === -1) {
-        setRoomInfo({ ...room!, isDisabled: true });
-      } else {
+      const isFriend = userInfo?.friends.some(
+        (friend) => friend.id === friendId
+      );
+
+      if (isFriend) {
         setRoomInfo({ ...room!, isDisabled: false });
+      } else {
+        setRoomInfo({ ...room!, isDisabled: true });
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.error || "Failed to fetch room info");

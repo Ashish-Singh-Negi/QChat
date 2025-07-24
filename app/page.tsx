@@ -20,12 +20,15 @@ import Messages from "./components/Messages";
 import { IoMdMore } from "react-icons/io";
 import DropdownActionCard from "./components/DropdownActionCard";
 import { FiMinusCircle } from "react-icons/fi";
+import FriendCard from "./components/FriendCard";
 
 export default function Home() {
   const { userInfo, getUserProfile } = useUserInfoContext();
   const { userContact, contactMessages } = useUserContactContext();
   const { roomId, sendMessage, messages, setMessages } = useWebSocketContext();
   const { roomInfo } = useRoomContext();
+
+  const [search, setSearch] = useState("");
 
   const [textMessage, setTextMessage] = useState<string | null>(null);
 
@@ -154,19 +157,36 @@ export default function Home() {
           <div className="px-4">
             <input
               type="text"
+              onChange={(e) => setSearch(e.target.value)}
+              value={search}
               className="h-10 w-full rounded-2xl bg-gray-100 dark:bg-gray-900 outline-none border-2 dark:border-gray-800 hover:border-gray-400 dark:hover:border-gray-900 focus:border-red-300 placeholder:text-gray-600 dark:placeholder:text-gray-400 dark:focus:border-red-300 px-4 py-1 transition-all"
-              placeholder="Search"
+              placeholder="Search friend"
             />
           </div>
           <main className="flex-1 w-full mt-2 py-1 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-800">
-            {userInfo &&
-              userInfo.chats.map((roomId) => (
+            {!search &&
+              userInfo &&
+              userInfo.chats.map((chat) => (
                 <ContactCard
-                  key={roomId}
-                  roomId={roomId}
+                  key={chat.id}
+                  roomId={chat.id}
                   sendMessage={sendMessage}
                 />
               ))}
+            {search && (
+              <>
+                <p className="h-8 w-full bg-gray-200 dark:bg-gray-800 px-4 py-1 mb-2 animate-slideIn">
+                  Friends
+                </p>
+                {userInfo?.friends
+                  .filter((friend) =>
+                    friend.name.toLowerCase().startsWith(search.toLowerCase())
+                  )
+                  .map((friend) => (
+                    <FriendCard friendId={friend.id} key={friend.name} />
+                  ))}
+              </>
+            )}
           </main>
         </section>
         {roomId && (

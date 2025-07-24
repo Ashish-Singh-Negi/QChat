@@ -74,7 +74,7 @@ export default function UserContactContextProvider({
       const contact = response.data.data;
 
       console.log("Contact : ", contact);
-      setUserContact(contact);
+      // setUserContact(contact);
       return contact;
     } catch (error: any) {
       toast.error(error.response.data.error || "An error occured");

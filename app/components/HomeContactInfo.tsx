@@ -92,7 +92,7 @@ const HomeContactInfo = ({
   if (!userContact) return;
 
   return (
-    <section className="h-full w-2/3 px-4 pt-2 bg-white dark:bg-black animate-moreInfoSlideIn">
+    <section className="h-full w-2/3 px-4 pt-2 bg-white dark:bg-black animate-slideIn">
       <header className="h-10 w-full font-semibold flex items-center mb-6">
         <button className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-full mr-2 grid place-items-center">
           <IoMdClose
