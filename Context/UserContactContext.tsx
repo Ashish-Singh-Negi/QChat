@@ -14,13 +14,19 @@ import {
 import toast from "react-hot-toast";
 
 type UserContactContext = {
-  userContact: UserInfo | null;
-  setUserContact: Dispatch<SetStateAction<UserInfo | null>>;
+  userContacts: Contacts[] | [];
+  setUserContacts: Dispatch<SetStateAction<Contacts[] | []>>;
   contactMessages: StoredMessage[] | [];
   setContactMessages: Dispatch<SetStateAction<StoredMessage[] | []>>;
-  getChatMessages: (crid: string) => void;
+  getChatMessages: (crid: string) => Promise<StoredMessage[] | []>;
   getContactInfo: (contactId: string) => Promise<UserInfo | null>;
+  selectedContact: number;
+  setSelectedContact: Dispatch<SetStateAction<number>>;
 };
+
+interface Contacts extends UserInfo {
+  messages: StoredMessage[] | [];
+}
 
 const UserContactContext = createContext<UserContactContext | null>(null);
 
@@ -32,11 +38,12 @@ export default function UserContactContextProvider({
   const [contactMessages, setContactMessages] = useState<StoredMessage[] | []>(
     []
   );
-  const [userContact, setUserContact] = useState<UserInfo | null>(null);
+  const [userContacts, setUserContacts] = useState<Contacts[] | []>([]);
+  const [selectedContact, setSelectedContact] = useState(0);
 
   useEffect(() => {
-    console.log(userContact);
-  }, [userContact]);
+    console.log(userContacts);
+  }, [userContacts]);
 
   useEffect(() => {
     console.log(contactMessages);
@@ -54,9 +61,11 @@ export default function UserContactContextProvider({
 
       console.log(messages);
       setContactMessages(messages);
+      return messages;
     } catch (error: any) {
       toast.error(error?.response?.data?.error || "Failed to load messages");
       console.error(error);
+      return [];
     }
   };
 
@@ -74,7 +83,6 @@ export default function UserContactContextProvider({
       const contact = response.data.data;
 
       console.log("Contact : ", contact);
-      // setUserContact(contact);
       return contact;
     } catch (error: any) {
       toast.error(error.response.data.error || "An error occured");
@@ -85,12 +93,14 @@ export default function UserContactContextProvider({
   return (
     <UserContactContext.Provider
       value={{
-        userContact,
-        setUserContact,
+        userContacts,
+        setUserContacts,
         contactMessages,
         setContactMessages,
         getChatMessages,
         getContactInfo,
+        selectedContact,
+        setSelectedContact,
       }}
     >
       {children}

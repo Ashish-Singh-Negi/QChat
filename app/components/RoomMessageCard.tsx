@@ -5,7 +5,7 @@ import { PiClockCountdown } from "react-icons/pi";
 
 const RoomMessageCard = ({ message }: { message: string }) => {
   const { userInfo } = useUserInfoContext();
-  const { userContact } = useUserContactContext();
+  const { userContacts, selectedContact } = useUserContactContext();
 
   const [roomMessage, setRoomMessage] = useState("");
 
@@ -17,7 +17,9 @@ const RoomMessageCard = ({ message }: { message: string }) => {
     if (splitedMessage[0] === userInfo?._id) {
       setRoomMessage(`you ${splitedMessage[1]}`);
     } else {
-      setRoomMessage(`${userContact?.username} ${splitedMessage[1]}`);
+      setRoomMessage(
+        `${userContacts[selectedContact]?.username} ${splitedMessage[1]}`
+      );
     }
   }, []);
 

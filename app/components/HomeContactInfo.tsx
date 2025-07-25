@@ -6,7 +6,6 @@ import { useWebSocketContext } from "@/Context/WebsocketContext";
 import axiosInstance from "@/utils/axiosinstance";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import toast from "react-hot-toast";
 import ProfilePic from "./ProfilePic";
 
 const HomeContactInfo = ({
@@ -14,9 +13,9 @@ const HomeContactInfo = ({
 }: {
   setOpenContactInfo: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { userContact } = useUserContactContext();
-  const { roomInfo, setRoomInfo } = useRoomContext();
-  const { roomId } = useWebSocketContext();
+  const { userContacts, selectedContact } = useUserContactContext();
+  const { roomInfo } = useRoomContext();
+  const { roomId, sendMessage } = useWebSocketContext();
 
   const [showFullImage, setShowFullImage] = useState(false);
   const [muteNotifications, setMuteNotifications] = useState(false);
@@ -33,12 +32,17 @@ const HomeContactInfo = ({
         }
       );
       console.log(data);
+
+      sendMessage({
+        action: "UPDATE",
+        room: roomId!,
+      });
     } catch (error) {
       console.error(error);
     }
 
     // to update room DisappearingMessages duration
-    getDisappearingMessagesStatus();
+    // getDisappearingMessagesStatus();
   };
 
   useEffect(() => {
@@ -61,35 +65,35 @@ const HomeContactInfo = ({
     }
   }, [roomInfo]);
 
-  const getDisappearingMessagesStatus = async () => {
-    try {
-      const {
-        data,
-      }: {
-        data: {
-          data: {
-            disappearingMessages: string;
-          };
-        };
-      } = await axiosInstance.get(`/chats/${roomId}`, {
-        params: {
-          filter: "disappearingMessages",
-        },
-      });
+  // const getDisappearingMessagesStatus = async () => {
+  //   try {
+  //     const {
+  //       data,
+  //     }: {
+  //       data: {
+  //         data: {
+  //           disappearingMessages: string;
+  //         };
+  //       };
+  //     } = await axiosInstance.get(`/chats/${roomId}`, {
+  //       params: {
+  //         filter: "disappearingMessages",
+  //       },
+  //     });
 
-      console.log(data.data);
+  //     console.log(data.data);
 
-      setRoomInfo({
-        ...roomInfo!,
-        disappearingMessages: data.data.disappearingMessages,
-      });
-    } catch (error: any) {
-      toast.error(error?.response.data.error);
-      console.error(error);
-    }
-  };
+  //     setRoomInfo({
+  //       ...roomInfo!,
+  //       disappearingMessages: data.data.disappearingMessages,
+  //     });
+  //   } catch (error: any) {
+  //     toast.error(error?.response.data.error);
+  //     console.error(error);
+  //   }
+  // };
 
-  if (!userContact) return;
+  if (!userContacts[selectedContact]) return;
 
   return (
     <section className="h-full w-2/3 px-4 pt-2 bg-white dark:bg-black animate-slideIn">
@@ -106,8 +110,8 @@ const HomeContactInfo = ({
         <div className="h-fit w-full flex flex-col items-center border-b-2 dark:border-gray-800">
           <div className="h-32 w-32 cursor-pointer text-5xl">
             <ProfilePic
-              profilePic={userContact.profilePic}
-              username={userContact.username}
+              profilePic={userContacts[selectedContact].profilePic}
+              username={userContacts[selectedContact].username}
               setShowFullImage={setShowFullImage}
             />
           </div>
@@ -117,23 +121,23 @@ const HomeContactInfo = ({
               className="absolute z-10 top-0 left-0 bg-black bg-opacity-50 h-full w-full flex justify-center items-center"
             >
               <img
-                src={userContact?.profilePic}
+                src={userContacts[selectedContact]?.profilePic}
                 className={`h-96 w-96 cursor-pointer`}
                 alt="profile picture"
               />
             </div>
           )}
           <p className="h-10 mt-2 font-medium text-xl text-black dark:text-white">
-            {userContact?.username}
+            {userContacts[selectedContact]?.username}
           </p>
-          {userContact.about && (
+          {userContacts[selectedContact].about && (
             <div className="h-12 w-full mt-4 px-1 ">
               <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 About
               </h2>
               <p className="py-1 text-gray-950 dark:text-gray-400 font-normal">
                 {" "}
-                {userContact.about}
+                {userContacts[selectedContact].about}
               </p>
             </div>
           )}

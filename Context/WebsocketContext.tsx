@@ -15,7 +15,6 @@ import { useUserContactContext } from "./UserContactContext";
 
 type WebSocketContext = {
   roomId: string | null;
-  // setRoomId: Dispatch<SetStateAction<string | null>>;
   isConnected: boolean;
   sendMessage: (dataIs: SendMessage) => void;
   messages?: StoredMessage[] | [];
@@ -31,8 +30,7 @@ export default function WebSocketContextProvider({
 }) {
   const [messages, setMessages] = useState<StoredMessage[] | []>([]);
 
-  const { getChatMessages } = useUserContactContext();
-
+  const { getChatMessages, setContactMessages } = useUserContactContext();
   const { isConnected, sendMessage, roomId } = useWebSocket(
     `${process.env.NEXT_PUBLIC_WEBSOCKET_BACKEND_URL}`,
     {
@@ -56,7 +54,7 @@ export default function WebSocketContextProvider({
           return;
         }
 
-        setMessages((prev) => [
+        setContactMessages((prev) => [
           ...prev,
           {
             _id: parsed._id,
@@ -87,7 +85,6 @@ export default function WebSocketContextProvider({
       value={{
         isConnected,
         roomId,
-        // setRoomId,
         sendMessage,
         messages,
         setMessages,

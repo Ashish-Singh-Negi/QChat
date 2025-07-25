@@ -5,7 +5,7 @@ import { FaUser } from "react-icons/fa";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import ProfilePic from "./ProfilePic";
 
-const Profile = () => {
+const UserProfile = () => {
   const { userInfo } = useUserInfoContext();
 
   const [showFullImage, setShowFullImage] = useState(false);
@@ -102,4 +102,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default UserProfile;

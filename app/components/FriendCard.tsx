@@ -1,10 +1,7 @@
-// import axiosInstance from "@/utils/axiosinstance";
 import React, { useEffect, useState } from "react";
 
 import { UserInfo } from "../Interface/definations";
-import { IoPersonRemove } from "react-icons/io5";
-// import { useUserInfoContext } from "@/Context/UserInfoContext";
-// import toast from "react-hot-toast";
+
 import { useUserContactContext } from "@/Context/UserContactContext";
 import ProfilePic from "./ProfilePic";
 
@@ -84,13 +81,9 @@ const FriendCard = ({ friendId }: { friendId: string }) => {
     <div className="h-16 w-full animate-pulse border-gray-300 dark:border-gray-700 flex items-center justify-between px-2">
       <div className="flex gap-2 items-center">
         <div className="h-11 w-11 bg-gray-200 dark:bg-gray-900 rounded-full grid place-items-center">
-          {/* <img src={friend?.profilePic} className="h-10 w-10 rounded-full" /> */}
         </div>
         <p className="h-6 w-32 rounded-xl bg-gray-200 dark:bg-gray-900 font-medium dark:text-white mb-1"></p>
       </div>
-      <button className="h-8 w-8 flex justify-center items-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 darK:hover:bg-gray-800">
-        <IoPersonRemove className="h-5 w-5 text-gray-200 dark:text-gray-900 active:scale-95 transition-transform" />
-      </button>
     </div>
   );
 };

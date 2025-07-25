@@ -16,7 +16,7 @@ function Header(data: { css: string }) {
   const [online] = useState(false);
   const [pinned, setPinned] = useState(false);
 
-  const { userContact } = useUserContactContext();
+  const { userContacts, selectedContact } = useUserContactContext();
 
   return (
     <div
@@ -38,7 +38,7 @@ function Header(data: { css: string }) {
             onClick={() => setContactInfo(true)}
             className="self-center  text-quick-400   txt-color-lvl-4 text-xl"
           >
-            {userContact?.username}
+            {userContacts[selectedContact]?.username}
             <div className="text-xs text-quick-400">
               {online ? "online" : "last seen : 1am"}
             </div>

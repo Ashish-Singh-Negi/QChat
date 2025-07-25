@@ -4,9 +4,11 @@ import RoomMessageCard from "./RoomMessageCard";
 import SenderMessageCard from "./SenderMessageCard";
 import ReceiverMessageCard from "./ReceiverMessageCard";
 import { useUserInfoContext } from "@/Context/UserInfoContext";
+import { useUserContactContext } from "@/Context/UserContactContext";
 
-const Messages = ({ messages }: { messages: StoredMessage[] }) => {
+const Messages = () => {
   const { userInfo } = useUserInfoContext();
+  const { contactMessages } = useUserContactContext();
 
   const [sortedMessages, setSortedMessages] = useState<
     | {
@@ -28,7 +30,7 @@ const Messages = ({ messages }: { messages: StoredMessage[] }) => {
   };
 
   useEffect(() => {
-    if (!messages.length) {
+    if (!contactMessages.length) {
       setSortedMessages(null);
       return;
     }
@@ -40,23 +42,24 @@ const Messages = ({ messages }: { messages: StoredMessage[] }) => {
       }
     ] = [
       {
-        date: getMessageDate(messages.at(-1)!.createdAt!),
+        date: getMessageDate(contactMessages.at(-1)!.createdAt!),
         messages: [],
       },
     ];
 
     let i = 0;
 
-    for (let j = messages.length - 1; j >= 0; j--) {
+    for (let j = contactMessages.length - 1; j >= 0; j--) {
       if (
-        tempSortedMessages[i].date === getMessageDate(messages[j].createdAt!)
+        tempSortedMessages[i].date ===
+        getMessageDate(contactMessages[j].createdAt!)
       ) {
-        tempSortedMessages[i].messages.unshift(messages[j]);
+        tempSortedMessages[i].messages.unshift(contactMessages[j]);
       } else {
         i++;
         tempSortedMessages.push({
-          date: getMessageDate(messages[j].createdAt!),
-          messages: [messages[j]],
+          date: getMessageDate(contactMessages[j].createdAt!),
+          messages: [contactMessages[j]],
         });
       }
     }
@@ -71,7 +74,7 @@ const Messages = ({ messages }: { messages: StoredMessage[] }) => {
     console.log("Reverse  ", tempSortedMessages);
 
     setSortedMessages(tempSortedMessages);
-  }, [messages]);
+  }, [contactMessages]);
 
   return (
     <>

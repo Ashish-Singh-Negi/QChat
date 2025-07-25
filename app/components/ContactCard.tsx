@@ -5,41 +5,49 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosinstance";
 
 import { useUserContactContext } from "@/Context/UserContactContext";
-import { Room, SendMessage, UserInfo } from "../Interface/definations";
+import { Room, StoredMessage, UserInfo } from "../Interface/definations";
 import toast from "react-hot-toast";
 import { useRoomContext } from "@/Context/RoomContext";
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 import ProfilePic from "./ProfilePic";
 import { useWebSocketContext } from "@/Context/WebsocketContext";
 
-const ContactCard = ({
-  // contactId,
-  roomId,
-  sendMessage,
-}: {
-  // contactId: string;
-  roomId: string;
-  sendMessage: (dataIs: SendMessage) => void;
-}) => {
-  const { setUserContact, getChatMessages, getContactInfo } =
-    useUserContactContext();
+const ContactCard = ({ roomId }: { roomId: string }) => {
+  const { sendMessage } = useWebSocketContext();
   const { userInfo } = useUserInfoContext();
+  const {
+    
+    getChatMessages,
+    getContactInfo,
+    userContacts,
+    setUserContacts,
+    setSelectedContact,
+  } = useUserContactContext();
   const { setRoomInfo } = useRoomContext();
-
-  const { messages } = useWebSocketContext();
 
   const [contactInfo, setContactInfo] = useState<UserInfo | null>(null);
   const [contactId, setContactId] = useState<string | null>(null);
+  const [contactMessages, setContactMessages] = useState<StoredMessage[] | []>(
+    []
+  );
 
   const joinRoomHandler = () => {
-    setUserContact(contactInfo);
+    // setUserContact(contactInfo);
     sendMessage({
       action: "JOIN",
       room: roomId,
       content: "joining room " + roomId,
     });
 
-    getChatMessages(roomId);
+    (async () => {
+      // TODO NO need of this call
+      setContactMessages(await getChatMessages(roomId));
+    })();
+
+    userContacts.map((contact, index)=>{
+      if(contact._id === contactId) setSelectedContact(index)
+    })
+
     getChatRoomInfo();
   };
 
@@ -52,6 +60,8 @@ const ContactCard = ({
       const room = response.data.data;
 
       console.log(room);
+
+      setContactMessages(await getChatMessages(roomId));
 
       const friendId = room.participants.find((id) => id !== userInfo?._id);
       if (!friendId) return;
@@ -79,10 +89,13 @@ const ContactCard = ({
 
   useEffect(() => {
     if (!contactId) return;
-
     (async () => {
       const contact = await getContactInfo(contactId);
       setContactInfo(contact);
+      setUserContacts((prev) => [
+        ...prev,
+        { ...contact!, messages: [...contactMessages] },
+      ]);
     })();
   }, [contactId]);
 
@@ -99,11 +112,11 @@ const ContactCard = ({
         </div>
         <div className="h-14 w-[90%]">
           <p className="font-medium mt-1">{contactInfo?.username}</p>
-          {messages && messages.length > 0 && (
+          {contactMessages && contactMessages.length > 0 && (
             <p className="h-5 text-sm overflow-hidden">
-              {messages.at(-1)!.content.length! > 60
-                ? `${messages.at(-1)!.content.slice(0, 60)}...`
-                : messages.at(-1)!.content}
+              {contactMessages.at(-1)!.content.length! > 60
+                ? `${contactMessages.at(-1)!.content.slice(0, 60)}...`
+                : contactMessages.at(-1)!.content}
             </p>
           )}
         </div>

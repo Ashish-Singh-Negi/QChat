@@ -8,11 +8,11 @@ export type UserInfo = {
   chats: { name: string; id: string }[] | [];
   friends: { name: string; id: string }[] | [];
   friendRequests: string[];
-  favouritesContactList: string[];
-  followers: string[];
-  following: string[];
-  starMessages: string[];
-  blacklist: string[];
+  // favouritesContactList: string[];
+  // followers: string[];
+  // following: string[];
+  // starMessages: string[];
+  // blacklist: string[];
   createdAt: string;
   updatedAt: string;
 };
