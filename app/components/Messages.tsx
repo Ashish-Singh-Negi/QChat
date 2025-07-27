@@ -80,7 +80,7 @@ const Messages = () => {
     <>
       {sortedMessages?.map(({ date, messages }) => (
         <div className="px-10 mb-3" key={date}>
-          <div className="sticky top-1 z-10 w-full flex justify-center mb-3">
+          <div className="sticky top-1 w-full flex justify-center mb-3">
             <p className="text-xs bg-white dark:bg-gray-900 rounded-lg px-3 py-1 font-medium">
               {date}
             </p>

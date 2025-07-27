@@ -17,6 +17,7 @@ import { IoChatbubbles } from "react-icons/io5";
 import { FaUserFriends } from "react-icons/fa";
 import { IoMdSearch } from "react-icons/io";
 import ProfilePic from "./components/ProfilePic";
+import SearchUser from "./components/SearchUser";
 
 export default function Home() {
   const { getUserProfile } = useUserInfoContext();
@@ -24,7 +25,7 @@ export default function Home() {
   const { roomInfo } = useRoomContext();
 
   const [nav, setNav] = useState([
-    { name: "Chats", isActive: true, component: <Chats /> },
+    { name: "Chats", isActive: false, component: <Chats /> },
     {
       name: "Friends",
       isActive: false,
@@ -39,7 +40,7 @@ export default function Home() {
         </div>
       ),
     },
-    { name: "Status", isActive: false, component: <div>Status</div> },
+    { name: "Serach", isActive: true, component: <SearchUser  /> },
     { name: "Profile", isActive: false, component: <UserProfile /> },
   ]);
 
