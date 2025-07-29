@@ -78,7 +78,7 @@ const ChatSection = () => {
 
   return (
     roomId && (
-      <section className="bg-[url('../public/background.png')] dark:bg-[url('../public/dark-background.png')] bg-cover h-full w-2/3 flex">
+      <section className="bg-[url('/background.png')] dark:bg-[url('/dark-background.png')] bg-cover h-full w-2/3 flex">
         <div className="h-full w-full flex flex-col border-r-[1px] dark:border-gray-800">
           <header className="h-16 w-full bg-white dark:bg-black px-2 pr-4 flex items-center justify-between">
             {userContacts && (
