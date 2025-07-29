@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { UserInfo } from "../Interface/definations";
+import { UserInfo } from "../../Interface/definations";
 import axiosInstance from "@/utils/axiosinstance";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useUserInfoContext } from "@/Context/UserInfoContext";

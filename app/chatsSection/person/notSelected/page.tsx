@@ -1,5 +1,5 @@
 import React from "react";
-import "../../../global.css";
+import "@/app/global.css";
 function page() {
   return (
     <div>

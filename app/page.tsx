@@ -18,6 +18,7 @@ import { FaUserFriends } from "react-icons/fa";
 import { IoMdSearch } from "react-icons/io";
 import ProfilePic from "./components/ProfilePic";
 import SearchUser from "./components/SearchUser";
+import Friends from "./components/Friends";
 
 export default function Home() {
   const { getUserProfile } = useUserInfoContext();
@@ -25,22 +26,13 @@ export default function Home() {
   const { roomInfo } = useRoomContext();
 
   const [nav, setNav] = useState([
-    { name: "Chats", isActive: false, component: <Chats /> },
+    { name: "Chats", isActive: true, component: <Chats /> },
     {
       name: "Friends",
       isActive: false,
-      component: (
-        <div className="h-full w-full px-4 py-2">
-          <header className="flex justify-between">
-            <p className="w-full border-b-2 border-red-300 text-red-300 py-2 font-semibold text-xl">
-              Friends
-            </p>
-          </header>
-          <main className="py-4"></main>
-        </div>
-      ),
+      component: <Friends />,
     },
-    { name: "Serach", isActive: true, component: <SearchUser  /> },
+    { name: "Serach", isActive: false, component: <SearchUser /> },
     { name: "Profile", isActive: false, component: <UserProfile /> },
   ]);
 

@@ -1,5 +1,5 @@
 import React from "react";
-import "../global.css";
+import "../globals.css";
 import { context_val } from "../chatsSection/ContextProvider";
 
 function DeleteMessage() {

@@ -1,6 +1,6 @@
 "use client";
 
-import { StoredMessage, UserInfo } from "@/app/Interface/definations";
+import { StoredMessage, UserInfo } from "@/Interface/definations";
 import axiosInstance from "@/utils/axiosinstance";
 import {
   createContext,

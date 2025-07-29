@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import axiosInstance from "@/utils/axiosinstance";
 import Dropdown from "./Dropdown";
 
-import { StoredMessage } from "../Interface/definations";
+import { StoredMessage } from "../../Interface/definations";
 import { useWebSocketContext } from "@/Context/WebsocketContext";
 
 import { IoBanSharp } from "react-icons/io5";

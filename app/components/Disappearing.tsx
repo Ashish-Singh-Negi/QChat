@@ -1,9 +1,9 @@
 import React from "react";
 import Image from "next/image";
-import { Cross } from "../icons";
+import { Cross } from "@/app/icons";
 import Disappearingimg from "../images/image.png";
 import "../global.css";
-import { context_val } from "../chatsSection/ContextProvider";
+import { context_val } from "@/app/chatsSection/ContextProvider";
 function Disappearing( data : {css :string}) {
   const { disappearingComp, setDisappearingComp  , setSelectChats} = context_val();
   return (

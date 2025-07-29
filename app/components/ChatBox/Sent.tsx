@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IMessage } from "../../Interface/message";
+import { IMessage } from "@/Interface/message";
 import List from "./List";
 import "../../global.css";
 import { context_val } from "@/app/chatsSection/ContextProvider";

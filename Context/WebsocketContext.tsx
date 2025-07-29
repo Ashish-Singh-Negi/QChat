@@ -10,7 +10,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { SendMessage, StoredMessage } from "@/app/Interface/definations";
+import { SendMessage, StoredMessage } from "@/Interface/definations";
 import { useUserContactContext } from "./UserContactContext";
 
 type WebSocketContext = {

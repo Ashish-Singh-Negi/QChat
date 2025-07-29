@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 
-import { StoredMessage } from "../Interface/definations";
+import { StoredMessage } from "../../Interface/definations";
 
 import { IoBanSharp } from "react-icons/io5";
 import { BsPin, BsPinFill } from "react-icons/bs";

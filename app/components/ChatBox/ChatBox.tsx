@@ -1,8 +1,8 @@
 import React from "react";
 import Sent from "@/app/components/ChatBox/Sent";
-import { IMessage } from "@/app/Interface/message";
+import { IMessage } from "@/Interface/message";
 import DeleteMessage from "../DeleteMessage";
-import Recieved from "../../components/ChatBox/Recieved";
+import Recieved from "./Recieved";
 import "../style.css";
 import { context_val } from "@/app/chatsSection/ContextProvider";
 

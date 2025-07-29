@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosinstance";
 
 import { useUserContactContext } from "@/Context/UserContactContext";
-import { Room, StoredMessage, UserInfo } from "../Interface/definations";
+import { Room, StoredMessage, UserInfo } from "../../Interface/definations";
 import toast from "react-hot-toast";
 import { useRoomContext } from "@/Context/RoomContext";
 import { useUserInfoContext } from "@/Context/UserInfoContext";

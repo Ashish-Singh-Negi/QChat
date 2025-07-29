@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StoredMessage } from "../Interface/definations";
+import { StoredMessage } from "../../Interface/definations";
 import RoomMessageCard from "./RoomMessageCard";
 import SenderMessageCard from "./SenderMessageCard";
 import ReceiverMessageCard from "./ReceiverMessageCard";
@@ -79,7 +79,7 @@ const Messages = () => {
   return (
     <>
       {sortedMessages?.map(({ date, messages }) => (
-        <div className="px-10 mb-3" key={date}>
+        <div className="px-10 mb-3 flex flex-col" key={date}>
           <div className="sticky top-1 w-full flex justify-center mb-3">
             <p className="text-xs bg-white dark:bg-gray-900 rounded-lg px-3 py-1 font-medium">
               {date}

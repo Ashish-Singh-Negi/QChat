@@ -1,6 +1,6 @@
 "use client";
 
-import { Room } from "@/app/Interface/definations";
+import { Room } from "@/Interface/definations";
 import {
   createContext,
   Dispatch,

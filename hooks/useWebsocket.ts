@@ -1,4 +1,4 @@
-import { SendMessage } from "@/app/Interface/definations";
+import { SendMessage } from "@/Interface/definations";
 import axiosInstance from "@/utils/axiosinstance";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 

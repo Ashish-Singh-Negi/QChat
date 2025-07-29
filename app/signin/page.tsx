@@ -4,7 +4,7 @@ import axiosInstance from "@/utils/axiosinstance";
 import Image from "next/image";
 import React, { FormEvent, useState } from "react";
 
-import chatIllust from "@/app/public/Messaging fun-amico.svg";
+import chatIllust from "@/public/Messaging fun-amico.svg";
 import { useRouter } from "next/navigation";
 
 const LoginPage = () => {

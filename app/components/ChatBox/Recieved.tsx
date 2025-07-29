@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import List from "./List";
 import "../style.css";
 import EmojiPicker from "emoji-picker-react";
-import { IMessage } from "../../Interface/message";
+import { IMessage } from "../../../Interface/message";
 import { context_val } from "@/app/chatsSection/ContextProvider";
 import { Checked, Star, UnChecked } from "@/app/icons";
 

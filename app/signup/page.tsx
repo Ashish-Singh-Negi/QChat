@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React, { FormEvent, useState } from "react";
 
-import TextingIllust from "@/app/public/Texting-pana.svg";
+import TextingIllust from "@/public/Texting-pana.svg";
 import axiosInstance from "@/utils/axiosinstance";
 import { useRouter } from "next/navigation";
 

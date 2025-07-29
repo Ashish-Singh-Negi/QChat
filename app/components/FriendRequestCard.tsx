@@ -1,6 +1,6 @@
 import axiosInstance from "@/utils/axiosinstance";
 import React, { useEffect, useState } from "react";
-import { FriendRequest, UserInfo } from "../Interface/definations";
+import { FriendRequest, UserInfo } from "../../Interface/definations";
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 import toast from "react-hot-toast";
 import ProfilePic from "./ProfilePic";
