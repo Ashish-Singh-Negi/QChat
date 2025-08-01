@@ -12,11 +12,12 @@ import { useUserInfoContext } from "@/Context/UserInfoContext";
 import ProfilePic from "./ProfilePic";
 import { useWebSocketContext } from "@/Context/WebsocketContext";
 
-const ContactCard = ({ roomId }: { roomId: string }) => {
+// TODO  1. show contacts online status to user
+
+const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
   const { sendMessage } = useWebSocketContext();
   const { userInfo } = useUserInfoContext();
   const {
-    
     getChatMessages,
     getContactInfo,
     userContacts,
@@ -44,9 +45,9 @@ const ContactCard = ({ roomId }: { roomId: string }) => {
       setContactMessages(await getChatMessages(roomId));
     })();
 
-    userContacts.map((contact, index)=>{
-      if(contact._id === contactId) setSelectedContact(index)
-    })
+    userContacts.map((contact, index) => {
+      if (contact._id === contactId) setSelectedContact(index);
+    });
 
     getChatRoomInfo();
   };
@@ -106,12 +107,18 @@ const ContactCard = ({ roomId }: { roomId: string }) => {
       <div className="h-full w-full hover:bg-gray-200 cursor-pointer dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4">
         <div className="h-14 w-14 text-2xl">
           <ProfilePic
-            profilePic={contactInfo.profilePic}
-            username={contactInfo.username}
+            profilePic={userContacts[index].profilePic}
+            username={userContacts[index].username}
           />
         </div>
         <div className="h-14 w-[90%]">
-          <p className="font-medium mt-1">{contactInfo?.username}</p>
+          <p className="font-medium mt-1">{userContacts[index]?.username}</p>
+
+          {userContacts[index].isOnline ? (
+            <span className="text-emerald-500">Online</span>
+          ) : (
+            <span className="text-red-500">Offline</span>
+          )}
           {contactMessages && contactMessages.length > 0 && (
             <p className="h-5 text-sm overflow-hidden">
               {contactMessages.at(-1)!.content.length! > 60

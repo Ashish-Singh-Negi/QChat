@@ -34,9 +34,15 @@ export type FriendRequest = {
 
 export type SendMessage = {
   _id?: string;
-  action: "JOIN" | "LEAVE" | "MESSAGE" | "UPDATE";
+  action:
+    | "JOIN"
+    | "MESSAGE"
+    | "LEAVE"
+    | "UPDATE"
+    | "ONLINE_STATUS_HEARTBEAT"
+    | "OFFLINE_STATUS";
   content?: string;
-  room: string;
+  room?: string;
   sender?: string;
   receiver?: string;
 };

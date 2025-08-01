@@ -1,3 +1,4 @@
+import { useUserInfoContext } from "@/Context/UserInfoContext";
 import { SendMessage } from "@/Interface/definations";
 import axiosInstance from "@/utils/axiosinstance";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
@@ -29,10 +30,14 @@ export const useWebSocket = (
   const [isConnected, setIsConnected] = useState(false);
   const [isReconnecting, setIsReconnecting] = useState(false);
 
+  const { userInfo } = useUserInfoContext();
+
   const [roomId, setRoomId] = useState<string | null>(null);
 
   const webSocketRef = useRef<WebSocket | null>(null);
   const attemptRef = useRef(0);
+
+  let pingInterval: ReturnType<typeof setInterval> | undefined;
 
   const connectWebSocket = () => {
     if (!url) return;
@@ -47,6 +52,13 @@ export const useWebSocket = (
       setIsConnected(true);
       setIsReconnecting(false);
       if (onOpen) onOpen(event);
+
+      pingInterval = setInterval(() => {
+        sendMessage({
+          action: "ONLINE_STATUS_HEARTBEAT",
+          sender: userInfo?._id,
+        });
+      }, 3000);
     };
 
     ws.onmessage = (event) => {
@@ -74,15 +86,18 @@ export const useWebSocket = (
   };
 
   useEffect(() => {
+    console.log(userInfo);
+    if (!userInfo) return;
+
     if (!isConnected && url) connectWebSocket();
 
-    // Cleanup on component unmout
+    // Cleanup on component unmount
     return () => {
       if (webSocketRef.current) {
         webSocketRef.current.close();
       }
     };
-  }, [url]);
+  }, [url, userInfo]);
 
   useEffect(() => {
     console.log("useWebSocket ROOM ID : ", roomId);
@@ -94,30 +109,30 @@ export const useWebSocket = (
       webSocketRef.current.readyState === WebSocket.OPEN
     ) {
       // if previous roomID not match with current roomID -> LEAVE previous Room and join to new Room
-      if (roomId !== dataIs.room) {
-        const leaveRoom = {
-          action: "LEAVE",
-          message: "Leaving Room : " + roomId,
-          room: roomId,
-        };
+      // if (roomId !== dataIs.room) {
+      //   const leaveRoom = {
+      //     action: "LEAVE",
+      //     message: "Leaving Room : " + roomId,
+      //     room: roomId,
+      //   };
 
-        // send action message to Leave previous Room
-        const buffer = Buffer.from(JSON.stringify(leaveRoom));
-        webSocketRef.current.send(buffer);
+      //   // send action message to Leave previous Room
+      //   const buffer = Buffer.from(JSON.stringify(leaveRoom));
+      //   webSocketRef.current.send(buffer);
 
-        // Set new roomID
-        setRoomId(dataIs.room);
-      }
+      //   // Set new roomID
+      //   setRoomId(dataIs.room);
+      // }
 
       const buffer = Buffer.from(JSON.stringify(dataIs));
       webSocketRef.current.send(buffer);
 
       // if (dataIs.action === "MESSAGE") {
-        // const { data } = await axiosInstance.post(
-        //   "users/chat/messages",
-        //   dataIs
-        // );
-        // console.log(data);
+      // const { data } = await axiosInstance.post(
+      //   "users/chat/messages",
+      //   dataIs
+      // );
+      // console.log(data);
       // }
     } else {
       console.error("WebSocket is not open, unable to send message.");

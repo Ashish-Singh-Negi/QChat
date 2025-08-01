@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 
 import ContactCard from "./ContactCard";
 import FriendCard from "./FriendCard";
+import { useUserContactContext } from "@/Context/UserContactContext";
 
 const Chats = () => {
   const { userInfo } = useUserInfoContext();
+  const { userContacts } = useUserContactContext();
 
   const [search, setSearch] = useState("");
+
+  useEffect(() => {}, [userContacts]);
 
   return (
     <>
@@ -30,8 +34,8 @@ const Chats = () => {
       <main className="flex-1 w-full mt-2 py-1 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-800">
         {!search &&
           userInfo &&
-          userInfo.chats.map((chat) => (
-            <ContactCard key={chat.id} roomId={chat.id} />
+          userInfo.chats.map((chat, i) => (
+            <ContactCard index={i} key={chat.id} roomId={chat.id} />
           ))}
         {search && (
           <>

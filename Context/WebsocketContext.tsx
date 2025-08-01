@@ -30,7 +30,8 @@ export default function WebSocketContextProvider({
 }) {
   const [messages, setMessages] = useState<StoredMessage[] | []>([]);
 
-  const { getChatMessages, setContactMessages } = useUserContactContext();
+  const { getChatMessages, setContactMessages, setUserContacts } =
+    useUserContactContext();
   const { isConnected, sendMessage, roomId } = useWebSocket(
     `${process.env.NEXT_PUBLIC_WEBSOCKET_BACKEND_URL}`,
     {
@@ -39,6 +40,13 @@ export default function WebSocketContextProvider({
         console.log("Received message:", event.data);
 
         const parsed: {
+          action:
+            | "JOIN"
+            | "MESSAGE"
+            | "LEAVE"
+            | "UPDATE"
+            | "ONLINE_STATUS_HEARTBEAT"
+            | "OFFLINE_STATUS";
           _id: string;
           sender: string;
           receiver: string;
@@ -49,27 +57,56 @@ export default function WebSocketContextProvider({
 
         console.log("Received message : ", parsed);
 
-        if (!parsed.sender || !parsed.receiver || parsed.content === "UPDATE") {
+        if (parsed.action === "UPDATE") {
           getChatMessages(parsed.roomId!);
           return;
         }
 
-        setContactMessages((prev) => [
-          ...prev,
-          {
-            _id: parsed._id,
-            senderId: parsed.sender,
-            receiverId: parsed.receiver,
-            content: parsed.content,
-            createdAt: parsed.createdAt,
-            updatedAt: new Date().toISOString(),
-            isEdited: false,
-            isPinned: false,
-            isStar: false,
-            visibleToEveryone: true,
-            visibleToSender: true,
-          },
-        ]);
+        if (parsed.action === "ONLINE_STATUS_HEARTBEAT") {
+          console.log(parsed);
+
+          setUserContacts((prev) =>
+            prev.map((contact) =>
+              contact._id === parsed.sender
+                ? { ...contact, isOnline: true }
+                : contact
+            )
+          );
+
+          return;
+        }
+
+        if (parsed.action === "OFFLINE_STATUS") {
+          console.log(parsed);
+
+          setUserContacts((prev) =>
+            prev.map((contact) =>
+              contact._id === parsed.sender
+                ? { ...contact, isOnline: false }
+                : contact
+            )
+          );
+
+          return;
+        }
+
+        if (parsed.action === "MESSAGE")
+          setContactMessages((prev) => [
+            ...prev,
+            {
+              _id: parsed._id,
+              senderId: parsed.sender,
+              receiverId: parsed.receiver,
+              content: parsed.content,
+              createdAt: parsed.createdAt,
+              updatedAt: new Date().toISOString(),
+              isEdited: false,
+              isPinned: false,
+              isStar: false,
+              visibleToEveryone: true,
+              visibleToSender: true,
+            },
+          ]);
       },
       onClose: () => console.log("WebSocket disconnected"),
       onError: (event) => console.error("WebSocket error:", event),
