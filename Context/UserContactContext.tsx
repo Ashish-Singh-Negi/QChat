@@ -39,10 +39,12 @@ export default function UserContactContextProvider({
     []
   );
   const [userContacts, setUserContacts] = useState<Contacts[] | []>([]);
-  const [selectedContact, setSelectedContact] = useState(0);
+  const [selectedContact, setSelectedContact] = useState(-1);
 
   useEffect(() => {
     console.log(userContacts);
+
+    console.log(selectedContact);
   }, [userContacts]);
 
   useEffect(() => {

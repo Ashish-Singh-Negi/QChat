@@ -40,7 +40,7 @@ export type SendMessage = {
     | "LEAVE"
     | "UPDATE"
     | "ONLINE_STATUS_HEARTBEAT"
-    | "OFFLINE_STATUS";
+    | "CHECK_ONLINE_STATUS";
   content?: string;
   room?: string;
   sender?: string;

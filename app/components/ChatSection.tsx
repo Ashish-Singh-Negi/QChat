@@ -65,7 +65,7 @@ const ChatSection = () => {
         data: UserInfo;
         message: string;
       }>(`/friends/requests`, {
-        friendUsername: userContacts[selectedContact].username,
+        friendUsername: userContacts[selectedContact!].username,
       });
 
       console.log(response.data.data);
@@ -77,7 +77,8 @@ const ChatSection = () => {
   };
 
   return (
-    roomId && (
+    selectedContact >= 0 &&
+    userContacts[selectedContact] && (
       <section className="bg-[url('/background.png')] dark:bg-[url('/dark-background.png')] bg-cover h-full w-2/3 flex">
         <div className="h-full w-full flex flex-col border-r-[1px] dark:border-gray-800">
           <header className="h-16 w-full bg-white dark:bg-black px-2 pr-4 flex items-center justify-between">
@@ -92,7 +93,14 @@ const ChatSection = () => {
                     username={userContacts[selectedContact].username!}
                   />
                 </div>
-                {userContacts[selectedContact].username}
+                <div className="flex flex-col">
+                  {userContacts[selectedContact].username}
+                  <span className="font-normal text-xs dark:text-gray-400">
+                    {userContacts[selectedContact].isOnline
+                      ? "online"
+                      : "offline"}
+                  </span>
+                </div>
               </div>
             )}
             <div

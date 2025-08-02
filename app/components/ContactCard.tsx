@@ -5,14 +5,12 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosinstance";
 
 import { useUserContactContext } from "@/Context/UserContactContext";
-import { Room, StoredMessage, UserInfo } from "../../Interface/definations";
+import { Room, StoredMessage } from "../../Interface/definations";
 import toast from "react-hot-toast";
 import { useRoomContext } from "@/Context/RoomContext";
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 import ProfilePic from "./ProfilePic";
 import { useWebSocketContext } from "@/Context/WebsocketContext";
-
-// TODO  1. show contacts online status to user
 
 const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
   const { sendMessage } = useWebSocketContext();
@@ -26,7 +24,7 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
   } = useUserContactContext();
   const { setRoomInfo } = useRoomContext();
 
-  const [contactInfo, setContactInfo] = useState<UserInfo | null>(null);
+  // const [contactInfo, setContactInfo] = useState<UserInfo | null>(null);
   const [contactId, setContactId] = useState<string | null>(null);
   const [contactMessages, setContactMessages] = useState<StoredMessage[] | []>(
     []
@@ -41,7 +39,7 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
     });
 
     (async () => {
-      // TODO NO need of this call
+      // ? NO need of this call
       setContactMessages(await getChatMessages(roomId));
     })();
 
@@ -88,11 +86,33 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
     getChatRoomInfo();
   }, []);
 
+  // let activeIntervals = 0;
+
+  useEffect(() => {
+    if (userContacts.length === 0) return;
+
+    // activeIntervals++;
+    // console.log("Active intervals:", activeIntervals);
+
+    const intervalId = setInterval(() => {
+      sendMessage({
+        action: "CHECK_ONLINE_STATUS",
+        receiver: userContacts[index]._id,
+      });
+    }, 7000);
+
+    return () => {
+      clearInterval(intervalId);
+      // activeIntervals--;
+      // console.log("Active intervals after cleanup:", activeIntervals);
+    };
+  }, [userContacts]);
+
   useEffect(() => {
     if (!contactId) return;
     (async () => {
       const contact = await getContactInfo(contactId);
-      setContactInfo(contact);
+      // setContactInfo(contact);
       setUserContacts((prev) => [
         ...prev,
         { ...contact!, messages: [...contactMessages] },
@@ -100,25 +120,28 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
     })();
   }, [contactId]);
 
-  if (!contactInfo) return;
+  if (userContacts.length == 0) return;
 
   return (
     <div onClick={joinRoomHandler} className="h-[72px] w-full px-2 mb-1">
       <div className="h-full w-full hover:bg-gray-200 cursor-pointer dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4">
         <div className="h-14 w-14 text-2xl">
-          <ProfilePic
-            profilePic={userContacts[index].profilePic}
-            username={userContacts[index].username}
-          />
+          {userContacts[index].profilePic && (
+            <ProfilePic
+              profilePic={userContacts[index].profilePic}
+              username={userContacts[index].username}
+            />
+          )}
         </div>
         <div className="h-14 w-[90%]">
-          <p className="font-medium mt-1">{userContacts[index]?.username}</p>
-
-          {userContacts[index].isOnline ? (
-            <span className="text-emerald-500">Online</span>
-          ) : (
-            <span className="text-red-500">Offline</span>
-          )}
+          <p className="font-medium mt-1 flex items-center gap-1">
+            {userContacts[index]?.username}{" "}
+            {userContacts[index].isOnline ? (
+              <span className="h-2 w-2 bg-emerald-500 rounded-full"></span>
+            ) : (
+              <span className="h-2 w-2 bg-red-500 rounded-full"></span>
+            )}
+          </p>
           {contactMessages && contactMessages.length > 0 && (
             <p className="h-5 text-sm overflow-hidden">
               {contactMessages.at(-1)!.content.length! > 60

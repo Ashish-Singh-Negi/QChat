@@ -46,13 +46,15 @@ export default function WebSocketContextProvider({
             | "LEAVE"
             | "UPDATE"
             | "ONLINE_STATUS_HEARTBEAT"
-            | "OFFLINE_STATUS";
+            | "OFFLINE_STATUS"
+            | "CHECK_ONLINE_STATUS";
           _id: string;
           sender: string;
           receiver: string;
           content: string;
           createdAt: string;
           roomId?: string;
+          isOnline: boolean;
         } = JSON.parse(event.data);
 
         console.log("Received message : ", parsed);
@@ -76,13 +78,11 @@ export default function WebSocketContextProvider({
           return;
         }
 
-        if (parsed.action === "OFFLINE_STATUS") {
-          console.log(parsed);
-
+        if (parsed.action === "CHECK_ONLINE_STATUS") {
           setUserContacts((prev) =>
             prev.map((contact) =>
-              contact._id === parsed.sender
-                ? { ...contact, isOnline: false }
+              contact._id === parsed.receiver
+                ? { ...contact, isOnline: parsed.isOnline }
                 : contact
             )
           );
