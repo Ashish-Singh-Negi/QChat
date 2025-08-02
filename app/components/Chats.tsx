@@ -47,7 +47,7 @@ const Chats = () => {
                 friend.name.toLowerCase().startsWith(search.toLowerCase())
               )
               .map((friend) => (
-                <FriendCard friendId={friend.id} key={friend.name} />
+                <FriendCard friendId={friend.id} key={friend.id} />
               ))}
           </>
         )}

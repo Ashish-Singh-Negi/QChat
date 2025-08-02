@@ -20,7 +20,7 @@ const Dropdown = ({
 
     const rect = dropdownRef?.current!.getBoundingClientRect();
 
-    console.log(rect);
+    // console.log(rect);
 
     // setDropdownPosition(`left-${rect.left} top-${rect.top}`);
 
@@ -29,7 +29,7 @@ const Dropdown = ({
     const spaceLeft = rect.left;
     const spaceRight = window.innerWidth - rect.left;
 
-    console.log({ spaceAbove, spaceBelow, spaceLeft, spaceRight });
+    // console.log({ spaceAbove, spaceBelow, spaceLeft, spaceRight });
 
     if (spaceBelow > 200)
       setDropdownPosition(

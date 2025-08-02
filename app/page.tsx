@@ -32,7 +32,7 @@ export default function Home() {
       isActive: false,
       component: <Friends />,
     },
-    { name: "Serach", isActive: false, component: <SearchUser /> },
+    { name: "Search", isActive: false, component: <SearchUser /> },
     { name: "Profile", isActive: false, component: <UserProfile /> },
   ]);
 
@@ -139,7 +139,7 @@ export default function Home() {
         </nav>
 
         <section className="h-full w-[30%] flex flex-col border-r-[1px] dark:border-gray-800 dark:bg-black">
-          {nav.map((value) => value.isActive && <>{value.component}</>)}
+          {nav.map((value) => value.isActive && value.component)}
         </section>
         <ChatSection />
       </main>

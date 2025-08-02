@@ -120,7 +120,7 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
     })();
   }, [contactId]);
 
-  if (userContacts.length == 0) return;
+  if (!userContacts[index]) return;
 
   return (
     <div onClick={joinRoomHandler} className="h-[72px] w-full px-2 mb-1">
