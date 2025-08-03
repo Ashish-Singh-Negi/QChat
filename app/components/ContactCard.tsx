@@ -1,14 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { useUserContactContext } from "@/Context/UserContactContext";
 import { Room, StoredMessage } from "../../Interface/definations";
-import toast from "react-hot-toast";
+
 import { useRoomContext } from "@/Context/RoomContext";
+import { useUserContactContext } from "@/Context/UserContactContext";
 import { useUserInfoContext } from "@/Context/UserInfoContext";
+
 import ProfilePic from "./ProfilePic";
 import { useWebSocketContext } from "@/Context/WebsocketContext";
 
@@ -32,11 +34,11 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
 
   const joinRoomHandler = () => {
     // setUserContact(contactInfo);
-    sendMessage({
-      action: "JOIN",
-      room: roomId,
-      content: "joining room " + roomId,
-    });
+    // sendMessage({
+    //   action: "JOIN",
+    //   chatId: roomId,
+    //   content: "joining room " + roomId,
+    // });
 
     (async () => {
       // ? NO need of this call
@@ -49,6 +51,8 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
 
     getChatRoomInfo();
   };
+
+  // TODO send RoomId with message
 
   const getChatRoomInfo = async () => {
     try {

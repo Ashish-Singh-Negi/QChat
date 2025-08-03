@@ -30,8 +30,7 @@ export default function WebSocketContextProvider({
 }) {
   const [messages, setMessages] = useState<StoredMessage[] | []>([]);
 
-  const { getChatMessages, setContactMessages, setUserContacts } =
-    useUserContactContext();
+  const { setContactMessages, setUserContacts } = useUserContactContext();
   const { isConnected, sendMessage, roomId } = useWebSocket(
     `${process.env.NEXT_PUBLIC_WEBSOCKET_BACKEND_URL}`,
     {
@@ -42,27 +41,26 @@ export default function WebSocketContextProvider({
         const parsed: {
           action:
             | "JOIN"
-            | "MESSAGE"
+            | "CHAT_MESSAGE"
             | "LEAVE"
             | "UPDATE"
             | "ONLINE_STATUS_HEARTBEAT"
-            | "OFFLINE_STATUS"
             | "CHECK_ONLINE_STATUS";
           _id: string;
           sender: string;
           receiver: string;
+          chatId?: string;
           content: string;
           createdAt: string;
-          roomId?: string;
           isOnline: boolean;
         } = JSON.parse(event.data);
 
         console.log("Received message : ", parsed);
 
-        if (parsed.action === "UPDATE") {
-          getChatMessages(parsed.roomId!);
-          return;
-        }
+        // if (parsed.action === "UPDATE") {
+        //   getChatMessages(parsed.roomId!);
+        //   return;
+        // }
 
         if (parsed.action === "ONLINE_STATUS_HEARTBEAT") {
           console.log(parsed);
@@ -90,7 +88,7 @@ export default function WebSocketContextProvider({
           return;
         }
 
-        if (parsed.action === "MESSAGE")
+        if (parsed.action === "CHAT_MESSAGE")
           setContactMessages((prev) => [
             ...prev,
             {

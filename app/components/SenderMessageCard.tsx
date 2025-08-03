@@ -1,21 +1,23 @@
 import React, { useRef, useState } from "react";
-
-import axiosInstance from "@/utils/axiosinstance";
-import Dropdown from "./Dropdown";
-
-import { StoredMessage } from "../../Interface/definations";
-import { useWebSocketContext } from "@/Context/WebsocketContext";
+import toast from "react-hot-toast";
 
 import { IoBanSharp } from "react-icons/io5";
 import { BsPin, BsPinFill } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import DropdownActionCard from "./DropdownActionCard";
 import { MdOutlineModeEditOutline } from "react-icons/md";
-import toast from "react-hot-toast";
+
+import axiosInstance from "@/utils/axiosinstance";
+
+import { StoredMessage } from "../../Interface/definations";
+
+import { useWebSocketContext } from "@/Context/WebsocketContext";
+
+import Dropdown from "./Dropdown";
+import DropdownActionCard from "./DropdownActionCard";
 import EditDialogBox from "./EditDialogBox";
 
 const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
-  const { sendMessage, roomId } = useWebSocketContext();
+  const { roomId } = useWebSocketContext();
 
   const [edit, setEdit] = useState(false);
 
@@ -35,10 +37,10 @@ const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
             console.log(error);
           }
 
-          sendMessage({
-            action: "UPDATE",
-            room: roomId!,
-          });
+          // sendMessage({
+          //   action: "UPDATE",
+          //   room: roomId!,
+          // });
         })();
       },
     },
@@ -81,10 +83,10 @@ const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
       console.error(error);
     }
 
-    sendMessage({
-      action: "UPDATE",
-      room: roomId!,
-    });
+    // sendMessage({
+    //   action: "UPDATE",
+    //   room: roomId!,
+    // });
   };
 
   return (

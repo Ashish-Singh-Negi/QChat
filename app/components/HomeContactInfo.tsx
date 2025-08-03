@@ -1,11 +1,15 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
+
+import axiosInstance from "@/utils/axiosinstance";
+
+import { IoMdClose } from "react-icons/io";
+
 import { useRoomContext } from "@/Context/RoomContext";
 import { useUserContactContext } from "@/Context/UserContactContext";
 import { useWebSocketContext } from "@/Context/WebsocketContext";
-import axiosInstance from "@/utils/axiosinstance";
-import React, { useEffect, useState } from "react";
-import { IoMdClose } from "react-icons/io";
+
 import ProfilePic from "./ProfilePic";
 
 const HomeContactInfo = ({
@@ -15,7 +19,7 @@ const HomeContactInfo = ({
 }) => {
   const { userContacts, selectedContact } = useUserContactContext();
   const { roomInfo } = useRoomContext();
-  const { roomId, sendMessage } = useWebSocketContext();
+  const { roomId } = useWebSocketContext();
 
   const [showFullImage, setShowFullImage] = useState(false);
   const [muteNotifications, setMuteNotifications] = useState(false);
@@ -33,10 +37,10 @@ const HomeContactInfo = ({
       );
       console.log(data);
 
-      sendMessage({
-        action: "UPDATE",
-        room: roomId!,
-      });
+      // sendMessage({
+      //   action: "UPDATE",
+      //   room: roomId!,
+      // });
     } catch (error) {
       console.error(error);
     }

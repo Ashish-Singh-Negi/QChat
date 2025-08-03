@@ -1,18 +1,21 @@
 import React, { useRef, useState } from "react";
+import toast from "react-hot-toast";
 
-import { StoredMessage } from "../../Interface/definations";
+import axiosInstance from "@/utils/axiosinstance";
 
 import { IoBanSharp } from "react-icons/io5";
 import { BsPin, BsPinFill } from "react-icons/bs";
-import Dropdown from "./Dropdown";
-import DropdownActionCard from "./DropdownActionCard";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import toast from "react-hot-toast";
-import axiosInstance from "@/utils/axiosinstance";
+
+import { StoredMessage } from "../../Interface/definations";
+
 import { useWebSocketContext } from "@/Context/WebsocketContext";
 
+import Dropdown from "./Dropdown";
+import DropdownActionCard from "./DropdownActionCard";
+
 const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
-  const { roomId, sendMessage } = useWebSocketContext();
+  const { roomId } = useWebSocketContext();
   const [dropdown, setDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const dropdownActions = [
@@ -29,10 +32,10 @@ const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
             console.log(error);
           }
 
-          sendMessage({
-            action: "UPDATE",
-            room: roomId!,
-          });
+          // sendMessage({
+          //   action: "UPDATE",
+          //   room: roomId!,
+          // });
         })();
       },
     },

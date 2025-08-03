@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 
 import ContactCard from "./ContactCard";
 import FriendCard from "./FriendCard";
-import { useUserContactContext } from "@/Context/UserContactContext";
+// import { useUserContactContext } from "@/Context/UserContactContext";
+
+// ! FIX bug -> whenever chats re-rendered userContacts set method call due to which same users are pushed agains which leads to redundant users details. like whenever a user use search bar
 
 const Chats = () => {
   const { userInfo } = useUserInfoContext();
-  const { userContacts } = useUserContactContext();
+  // const { userContacts } = useUserContactContext();
 
   const [search, setSearch] = useState("");
 
-  useEffect(() => {}, [userContacts]);
+  // useEffect(() => {}, [userContacts]);
 
   return (
     <>

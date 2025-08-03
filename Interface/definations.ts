@@ -36,13 +36,13 @@ export type SendMessage = {
   _id?: string;
   action:
     | "JOIN"
-    | "MESSAGE"
+    | "CHAT_MESSAGE"
     | "LEAVE"
     | "UPDATE"
     | "ONLINE_STATUS_HEARTBEAT"
     | "CHECK_ONLINE_STATUS";
   content?: string;
-  room?: string;
+  chatId?: string;
   sender?: string;
   receiver?: string;
 };

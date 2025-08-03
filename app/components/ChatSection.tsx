@@ -1,19 +1,25 @@
-import { useUserContactContext } from "@/Context/UserContactContext";
 import React, { useEffect, useRef, useState } from "react";
-import ProfilePic from "./ProfilePic";
-import { FiMinusCircle } from "react-icons/fi";
-import { useWebSocketContext } from "@/Context/WebsocketContext";
-import axiosInstance from "@/utils/axiosinstance";
 import toast from "react-hot-toast";
-import { RiDeleteBin6Line, RiSendPlaneFill } from "react-icons/ri";
+
+import { FiMinusCircle } from "react-icons/fi";
 import { IoMdMore } from "react-icons/io";
+import { RiDeleteBin6Line, RiSendPlaneFill } from "react-icons/ri";
+
+import { UserInfo } from "../../Interface/definations";
+
+import { useUserContactContext } from "@/Context/UserContactContext";
+import { useWebSocketContext } from "@/Context/WebsocketContext";
+import { useRoomContext } from "@/Context/RoomContext";
+
+import axiosInstance from "@/utils/axiosinstance";
+
+import ProfilePic from "./ProfilePic";
+
 import Dropdown from "./Dropdown";
 import DropdownActionCard from "./DropdownActionCard";
 import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import HomeContactInfo from "./HomeContactInfo";
-import { UserInfo } from "../../Interface/definations";
-import { useRoomContext } from "@/Context/RoomContext";
 
 const ChatSection = () => {
   const { roomId } = useWebSocketContext();
@@ -95,7 +101,7 @@ const ChatSection = () => {
                 </div>
                 <div className="flex flex-col">
                   {userContacts[selectedContact].username}
-                  <span className="font-normal text-xs dark:text-gray-400">
+                  <span className="font-normal text-xs dark:text-gray-400 animate-dropdownOpen">
                     {userContacts[selectedContact].isOnline
                       ? "online"
                       : "offline"}

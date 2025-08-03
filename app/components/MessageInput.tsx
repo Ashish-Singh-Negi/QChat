@@ -1,14 +1,16 @@
-import { useRoomContext } from "@/Context/RoomContext";
-import { useUserContactContext } from "@/Context/UserContactContext";
-import { useUserInfoContext } from "@/Context/UserInfoContext";
-import { useWebSocketContext } from "@/Context/WebsocketContext";
 import React, { FormEvent, useState } from "react";
+
 import { RiSendPlaneFill } from "react-icons/ri";
+
+import { useWebSocketContext } from "@/Context/WebsocketContext";
+import { useUserInfoContext } from "@/Context/UserInfoContext";
+import { useUserContactContext } from "@/Context/UserContactContext";
+import { useRoomContext } from "@/Context/RoomContext";
 
 const MessageInput = () => {
   const [textMessage, setTextMessage] = useState<string | null>(null);
 
-  const { sendMessage, roomId } = useWebSocketContext();
+  const { sendMessage } = useWebSocketContext();
   const { userInfo } = useUserInfoContext();
   const { userContacts, selectedContact } = useUserContactContext();
   const { roomInfo } = useRoomContext();
@@ -19,17 +21,15 @@ const MessageInput = () => {
     if (!textMessage?.trim()) return;
 
     sendMessage({
-      action: "MESSAGE",
+      action: "CHAT_MESSAGE",
       content: textMessage.trim(),
-      room: roomId!,
+      chatId: roomInfo?._id,
       sender: userInfo!._id,
       receiver: userContacts[selectedContact]?._id,
     });
 
     setTextMessage(null);
   };
-
-  // TODO store messages to corresponding contact 
 
   return (
     <>

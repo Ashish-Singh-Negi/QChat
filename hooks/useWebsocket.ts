@@ -1,7 +1,7 @@
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 import { SendMessage } from "@/Interface/definations";
-import axiosInstance from "@/utils/axiosinstance";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 interface UseWebSocketOptions {
   onOpen?: (event: Event) => void;
@@ -139,5 +139,5 @@ export const useWebSocket = (
     }
   };
 
-  return { isConnected, isReconnecting, sendMessage, roomId };
+  return { isConnected, isReconnecting, sendMessage, roomId, setRoomId };
 };
