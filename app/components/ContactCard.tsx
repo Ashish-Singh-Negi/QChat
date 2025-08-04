@@ -140,11 +140,12 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
         <div className="h-14 w-[90%]">
           <p className="font-medium mt-1 flex items-center gap-1">
             {userContacts[index]?.username}{" "}
-            {userContacts[index].isOnline ? (
-              <span className="h-2 w-2 bg-emerald-500 rounded-full"></span>
-            ) : (
-              <span className="h-2 w-2 bg-red-500 rounded-full"></span>
-            )}
+            {userContacts[index] &&
+              (userContacts[index].isOnline ? (
+                <span className="h-2 w-2 bg-emerald-500 rounded-full"></span>
+              ) : (
+                <span className="h-2 w-2 bg-red-500 rounded-full"></span>
+              ))}
           </p>
           {contactMessages && contactMessages.length > 0 && (
             <p className="h-5 text-sm overflow-hidden">
