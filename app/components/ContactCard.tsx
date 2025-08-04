@@ -92,25 +92,25 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
 
   // let activeIntervals = 0;
 
-  // useEffect(() => {
-  //   if (userContacts.length === 0) return;
+  useEffect(() => {
+    if (userContacts.length === 0) return;
 
-  //   // activeIntervals++;
-  //   // console.log("Active intervals:", activeIntervals);
+    // activeIntervals++;
+    // console.log("Active intervals:", activeIntervals);
 
-  //   const intervalId = setInterval(() => {
-  //     sendMessage({
-  //       action: "CHECK_ONLINE_STATUS",
-  //       receiver: userContacts[index]._id,
-  //     });
-  //   }, 7000);
+    const intervalId = setInterval(() => {
+      sendMessage({
+        action: "CHECK_ONLINE_STATUS",
+        receiver: userContacts[index]._id,
+      });
+    }, 7000);
 
-  //   return () => {
-  //     clearInterval(intervalId);
-  //     // activeIntervals--;
-  //     // console.log("Active intervals after cleanup:", activeIntervals);
-  //   };
-  // }, [userContacts]);
+    return () => {
+      clearInterval(intervalId);
+      // activeIntervals--;
+      // console.log("Active intervals after cleanup:", activeIntervals);
+    };
+  }, [userContacts]);
 
   useEffect(() => {
     if (!contactId) return;
