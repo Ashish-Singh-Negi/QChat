@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { Room, StoredMessage } from "../../Interface/definations";
+import { Room, StoredMessage, UserInfo } from "../../Interface/definations";
 
 import { useRoomContext } from "@/Context/RoomContext";
 import { useUserContactContext } from "@/Context/UserContactContext";
@@ -26,7 +26,7 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
   } = useUserContactContext();
   const { setRoomInfo } = useRoomContext();
 
-  // const [contactInfo, setContactInfo] = useState<UserInfo | null>(null);
+  const [contactInfo, setContactInfo] = useState<UserInfo | null>(null);
   const [contactId, setContactId] = useState<string | null>(null);
   const [contactMessages, setContactMessages] = useState<StoredMessage[] | []>(
     []
@@ -92,31 +92,31 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
 
   // let activeIntervals = 0;
 
-  useEffect(() => {
-    if (userContacts.length === 0) return;
+  // useEffect(() => {
+  //   if (userContacts.length === 0) return;
 
-    // activeIntervals++;
-    // console.log("Active intervals:", activeIntervals);
+  //   // activeIntervals++;
+  //   // console.log("Active intervals:", activeIntervals);
 
-    const intervalId = setInterval(() => {
-      sendMessage({
-        action: "CHECK_ONLINE_STATUS",
-        receiver: userContacts[index]._id,
-      });
-    }, 7000);
+  //   const intervalId = setInterval(() => {
+  //     sendMessage({
+  //       action: "CHECK_ONLINE_STATUS",
+  //       receiver: userContacts[index]._id,
+  //     });
+  //   }, 7000);
 
-    return () => {
-      clearInterval(intervalId);
-      // activeIntervals--;
-      // console.log("Active intervals after cleanup:", activeIntervals);
-    };
-  }, [userContacts]);
+  //   return () => {
+  //     clearInterval(intervalId);
+  //     // activeIntervals--;
+  //     // console.log("Active intervals after cleanup:", activeIntervals);
+  //   };
+  // }, [userContacts]);
 
   useEffect(() => {
     if (!contactId) return;
     (async () => {
       const contact = await getContactInfo(contactId);
-      // setContactInfo(contact);
+      setContactInfo(contact);
       setUserContacts((prev) => [
         ...prev,
         { ...contact!, messages: [...contactMessages] },
@@ -124,16 +124,16 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
     })();
   }, [contactId]);
 
-  if (!userContacts[index]) return;
+  if (!contactInfo) return;
 
   return (
     <div onClick={joinRoomHandler} className="h-[72px] w-full px-2 mb-1">
       <div className="h-full w-full hover:bg-gray-200 cursor-pointer dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4">
         <div className="h-14 w-14 text-2xl">
-          {userContacts[index].profilePic && (
+          {contactInfo.profilePic && (
             <ProfilePic
-              profilePic={userContacts[index].profilePic}
-              username={userContacts[index].username}
+              profilePic={contactInfo.profilePic}
+              username={contactInfo.username}
             />
           )}
         </div>

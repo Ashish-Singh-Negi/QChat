@@ -30,7 +30,8 @@ export default function WebSocketContextProvider({
 }) {
   const [messages, setMessages] = useState<StoredMessage[] | []>([]);
 
-  const { setContactMessages, setUserContacts } = useUserContactContext();
+  const { setContactMessages, setUserContacts } =
+    useUserContactContext();
   const { isConnected, sendMessage, roomId } = useWebSocket(
     `${process.env.NEXT_PUBLIC_WEBSOCKET_BACKEND_URL}`,
     {
