@@ -1,9 +1,8 @@
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 import React, { useState } from "react";
-import { IoMdClose } from "react-icons/io";
-import { FaUser } from "react-icons/fa";
-import { MdOutlineAlternateEmail } from "react-icons/md";
+
 import ProfilePic from "./ProfilePic";
+import { AtSign, UserRound, X } from "lucide-react";
 
 const UserProfile = () => {
   const { userInfo } = useUserInfoContext();
@@ -44,7 +43,7 @@ const UserProfile = () => {
                 onClick={() => setEditProfile(!editProfile)}
                 className="h-8 w-8 flex justify-center items-center rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-900 active:scale-90 transition-all"
               >
-                <IoMdClose className="h-6 w-6" />
+                <X className="h-6 w-6" />
               </button>
             </header>
             <div className="h-40 w-full rounded-full flex justify-center">
@@ -56,7 +55,7 @@ const UserProfile = () => {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <FaUser className="h-6 w-6" />
+              <UserRound className="h-6 w-6" />
               <div className="w-full flex flex-col">
                 <label className="text-xs mb-1 px-1 font-medium">
                   username
@@ -69,7 +68,7 @@ const UserProfile = () => {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <MdOutlineAlternateEmail className="h-6 w-6" />
+              <AtSign className="h-6 w-6" />
               <div className="w-full flex flex-col">
                 <label className="text-xs mb-1 px-1 font-medium">email</label>
                 <input

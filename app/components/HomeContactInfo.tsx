@@ -4,13 +4,12 @@ import React, { useEffect, useState } from "react";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { IoMdClose } from "react-icons/io";
-
 import { useRoomContext } from "@/Context/RoomContext";
 import { useUserContactContext } from "@/Context/UserContactContext";
 import { useWebSocketContext } from "@/Context/WebsocketContext";
 
 import ProfilePic from "./ProfilePic";
+import { X } from "lucide-react";
 
 const HomeContactInfo = ({
   setOpenContactInfo,
@@ -103,7 +102,7 @@ const HomeContactInfo = ({
     <section className="h-full w-2/3 px-4 pt-2 bg-white dark:bg-black animate-slideIn">
       <header className="h-10 w-full font-semibold flex items-center mb-6">
         <button className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-full mr-2 grid place-items-center">
-          <IoMdClose
+          <X
             onClick={() => setOpenContactInfo(false)}
             className="h-6 w-6 inline cursor-pointer active:scale-95"
           />

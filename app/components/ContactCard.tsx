@@ -26,25 +26,13 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
   } = useUserContactContext();
   const { setRoomInfo } = useRoomContext();
 
-  const [contactInfo, setContactInfo] = useState<UserInfo | null>(null);
+  // const [contactInfo, setContactInfo] = useState<UserInfo | null>(null);
   const [contactId, setContactId] = useState<string | null>(null);
   const [contactMessages, setContactMessages] = useState<StoredMessage[] | []>(
     []
   );
 
   const joinRoomHandler = () => {
-    // setUserContact(contactInfo);
-    // sendMessage({
-    //   action: "JOIN",
-    //   chatId: roomId,
-    //   content: "joining room " + roomId,
-    // });
-
-    (async () => {
-      // ? NO need of this call
-      setContactMessages(await getChatMessages(roomId));
-    })();
-
     userContacts.map((contact, index) => {
       if (contact._id === contactId) setSelectedContact(index);
     });
@@ -92,6 +80,7 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
 
   // let activeIntervals = 0;
 
+  
   useEffect(() => {
     if (userContacts.length === 0) return;
 
@@ -116,7 +105,7 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
     if (!contactId) return;
     (async () => {
       const contact = await getContactInfo(contactId);
-      setContactInfo(contact);
+      // setContactInfo(contact);
       setUserContacts((prev) => [
         ...prev,
         { ...contact!, messages: [...contactMessages] },
@@ -124,16 +113,16 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
     })();
   }, [contactId]);
 
-  if (!contactInfo) return;
+  if (!userContacts[index]) return;
 
   return (
     <div onClick={joinRoomHandler} className="h-[72px] w-full px-2 mb-1">
       <div className="h-full w-full hover:bg-gray-200 cursor-pointer dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4">
         <div className="h-14 w-14 text-2xl">
-          {contactInfo.profilePic && (
+          {userContacts[index].profilePic && (
             <ProfilePic
-              profilePic={contactInfo.profilePic}
-              username={contactInfo.username}
+              profilePic={userContacts[index].profilePic}
+              username={userContacts[index].username}
             />
           )}
         </div>

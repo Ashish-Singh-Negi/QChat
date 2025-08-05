@@ -1,9 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { CircleMinus, EllipsisVertical, Send, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
-
-import { FiMinusCircle } from "react-icons/fi";
-import { IoMdMore } from "react-icons/io";
-import { RiDeleteBin6Line, RiSendPlaneFill } from "react-icons/ri";
 
 import { UserInfo } from "../../Interface/definations";
 
@@ -45,7 +42,7 @@ const ChatSection = () => {
   const dropdownActions = [
     {
       name: "Clear chat",
-      Icon: FiMinusCircle,
+      Icon: CircleMinus ,
       action: async () => {
         try {
           await axiosInstance.delete(`/chats/${roomId}/clear`);
@@ -57,7 +54,7 @@ const ChatSection = () => {
     },
     {
       name: "Delete chat",
-      Icon: RiDeleteBin6Line,
+      Icon: Trash2,
       action: () => {
         // console.log(" DELETE  ", message.content);
         toast.error("Coming soon");
@@ -116,7 +113,7 @@ const ChatSection = () => {
                 dropdown && "bg-gray-200 dark:bg-gray-900"
               } hover:bg-gray-200 dark:hover:bg-gray-900 transition-colors flex items-center justify-center rounded-full`}
             >
-              <IoMdMore className="h-6 w-6" />
+              <EllipsisVertical className="h-6 w-6" />
               {dropdown && (
                 <Dropdown
                   dropdownRef={dropdownRef}
@@ -160,7 +157,7 @@ const ChatSection = () => {
                     className="h-10 w-full px-4 py-1 flex justify-center items-center gap-1 bg-blue-600 text-white font-medium active:scale-x-95 transition-all"
                   >
                     send
-                    <RiSendPlaneFill className="inline mt-1 h-3 w-3" />
+                    <Send className="inline mt-1 h-3 w-3" />
                   </button>
                 </div>
               </div>

@@ -1,5 +1,5 @@
+import { LucideIcon } from "lucide-react";
 import React from "react";
-import { IconType } from "react-icons";
 
 const DropdownActionCard = ({
   name,
@@ -7,7 +7,7 @@ const DropdownActionCard = ({
   action,
 }: {
   name: string;
-  Icon: IconType;
+  Icon: LucideIcon;
   action: () => void;
 }) => {
   return (

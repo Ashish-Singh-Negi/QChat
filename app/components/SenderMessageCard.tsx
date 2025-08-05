@@ -1,12 +1,9 @@
 import React, { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
-import { IoBanSharp } from "react-icons/io5";
-import { BsPin, BsPinFill } from "react-icons/bs";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { MdOutlineModeEditOutline } from "react-icons/md";
-
 import axiosInstance from "@/utils/axiosinstance";
+
+import { Ban, LucideIcon, Pencil, Pin, PinOff, Trash2 } from "lucide-react";
 
 import { StoredMessage } from "../../Interface/definations";
 
@@ -16,6 +13,8 @@ import Dropdown from "./Dropdown";
 import DropdownActionCard from "./DropdownActionCard";
 import EditDialogBox from "./EditDialogBox";
 
+
+
 const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
   const { roomId } = useWebSocketContext();
 
@@ -23,10 +22,10 @@ const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
 
   const [dropdown, setDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const dropdownActions = [
+  const dropdownActions  = [
     {
       name: message.isPinned ? "Unpin" : "Pin",
-      Icon: BsPin,
+      Icon: message.isPinned ? PinOff : Pin,
       action: () => {
         (async () => {
           try {
@@ -46,14 +45,14 @@ const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
     },
     {
       name: "Edit",
-      Icon: MdOutlineModeEditOutline,
+      Icon: Pencil,
       action: () => {
         setEdit(!edit);
       },
     },
     {
       name: "Delete",
-      Icon: RiDeleteBin6Line,
+      Icon: Trash2,
       action: () => {
         // console.log(" DELETE  ", message.content);
         toast.error("Coming soon");
@@ -117,9 +116,10 @@ const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
                 <p className="px-1">{message.content}</p>
                 <p className="h-fit w-full text-[10px] px-1 text-gray-700 dark:text-gray-300 flex justify-end items-end gap-0.5">
                   {/* {message.isStar && <TiStar className="h-3 w-3" />} */}
-                  {message.isPinned && <BsPinFill className="h-3 w-3" />}
+                  {message.isPinned && <Pin className="h-3 w-3" />}
                   {message.isEdited && <span>Edited</span>}
                   {formattedTime}
+                  {}
                 </p>
                 <div className="absolute right-1 top-1 blur-sm bg-red-200 dark:bg-slate-950 h-6 w-6 rounded-full flex justify-center items-center opacity-0 group-hover:opacity-100 transition-all"></div>
                 <button
@@ -168,7 +168,7 @@ const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
                 <p className="px-1">{message.content}</p>
                 <span className="h-full w-fit text-[10px] px-1 text-gray-700 dark:text-gray-300 flex items-end gap-1">
                   {/* {message.isStar && <TiStar className="h-3 w-3" />} */}
-                  {message.isPinned && <BsPinFill className="h-3 w-3" />}
+                  {message.isPinned && <Pin className="h-3 w-3" />}
                   {message.isEdited && <span>Edited</span>}
                   {formattedTime}
                 </span>
@@ -226,7 +226,7 @@ const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
           <div
             className={`h-full w-fit px-2 py-1 rounded-lg bg-red-200 text-black dark:bg-slate-950 dark:text-gray-400 flex items-center`}
           >
-            <IoBanSharp className="inline" />
+            <Ban className="inline" />
             <p className="px-1 italic">You deleted this message</p>
             <span className="h-full text-[10px] px-1 text-black dark:text-gray-400 flex items-end">
               {formattedTime}

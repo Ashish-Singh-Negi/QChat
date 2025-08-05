@@ -1,11 +1,10 @@
 import React, { FormEvent, useState } from "react";
 
-import { RiSendPlaneFill } from "react-icons/ri";
-
 import { useWebSocketContext } from "@/Context/WebsocketContext";
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 import { useUserContactContext } from "@/Context/UserContactContext";
 import { useRoomContext } from "@/Context/RoomContext";
+import { Send } from "lucide-react";
 
 const MessageInput = () => {
   const [textMessage, setTextMessage] = useState<string | null>(null);
@@ -42,7 +41,7 @@ const MessageInput = () => {
             placeholder="Type a message"
           />
           <button className="p-2 cursor-not-allowed flex justify-center items-center bg-gray-500 rounded-full text-white font-medium">
-            <RiSendPlaneFill className="inline h-6 w-6" />
+            <Send className="inline h-6 w-6" />
           </button>
         </div>
       ) : (
@@ -58,7 +57,7 @@ const MessageInput = () => {
             placeholder="Type a message"
           />
           <button className="p-2 flex justify-center items-center bg-red-500 rounded-full text-white font-medium active:scale-95 transition-all">
-            <RiSendPlaneFill className="inline h-6 w-6" />
+            <Send className="inline h-6 w-6" />
           </button>
         </form>
       )}

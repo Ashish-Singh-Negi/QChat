@@ -1,7 +1,7 @@
 import { useUserContactContext } from "@/Context/UserContactContext";
 import { useUserInfoContext } from "@/Context/UserInfoContext";
+import { ClockFading } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { PiClockCountdown } from "react-icons/pi";
 
 const RoomMessageCard = ({ message }: { message: string }) => {
   const { userInfo } = useUserInfoContext();
@@ -26,7 +26,7 @@ const RoomMessageCard = ({ message }: { message: string }) => {
   return (
     <div className="h-fit w-full px-16 flex justify-center mb-3">
       <p className="w-fit bg-white dark:bg-gray-900 text-xs text-center rounded-lg font-normal px-4 py-1">
-        <PiClockCountdown className="inline" /> {roomMessage}
+        <ClockFading className="inline" /> {roomMessage}
       </p>
     </div>
   );

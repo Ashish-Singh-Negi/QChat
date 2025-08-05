@@ -1,7 +1,7 @@
 "use client";
 
+import { X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { IoMdClose } from "react-icons/io";
 
 const EditDialogBox = ({
   isOpen,
@@ -47,7 +47,7 @@ const EditDialogBox = ({
           >
             <div className=" w-full flex items-center">
               <button className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-full mr-2 grid place-items-center">
-                <IoMdClose
+                <X
                   onClick={() => closeEditDialogBox()}
                   className="h-6 w-6 inline cursor-pointer active:scale-95"
                 />

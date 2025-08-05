@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { UserInfo } from "../../Interface/definations";
-import axiosInstance from "@/utils/axiosinstance";
-import { RiSendPlaneFill } from "react-icons/ri";
-import { useUserInfoContext } from "@/Context/UserInfoContext";
 import toast from "react-hot-toast";
+
+import axiosInstance from "@/utils/axiosinstance";
+
+import { UserInfo } from "../../Interface/definations";
+
+import { useUserInfoContext } from "@/Context/UserInfoContext";
+
 import ProfilePic from "./ProfilePic";
+import { Send } from "lucide-react";
 
 const SearchUser = () => {
   const { userInfo } = useUserInfoContext();
@@ -103,7 +107,7 @@ const SearchUser = () => {
                       onClick={() => sendFriendRequestHandler(user.username)}
                       className="h-8 flex items-center cursor-pointer gap-1 px-4 py-1 rounded-md font-semibold text-white bg-red-600 active:scale-95 transition-all"
                     >
-                      send <RiSendPlaneFill className="inline mt-1 h-3 w-3" />
+                      send <Send className="inline mt-1 h-3 w-3" />
                     </button>
                   </div>
                 </div>

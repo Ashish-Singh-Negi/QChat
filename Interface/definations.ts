@@ -35,12 +35,10 @@ export type FriendRequest = {
 export type SendMessage = {
   _id?: string;
   action:
-    | "JOIN"
     | "CHAT_MESSAGE"
-    | "LEAVE"
-    | "UPDATE"
     | "ONLINE_STATUS_HEARTBEAT"
-    | "CHECK_ONLINE_STATUS";
+    | "CHECK_ONLINE_STATUS"
+    | "MESSAGE_DELIVERED_ACKNOWLEDGEMENT";
   content?: string;
   chatId?: string;
   sender?: string;
@@ -68,6 +66,7 @@ export type StoredMessage = {
   isStar: boolean;
   visibleToEveryone?: boolean;
   visibleToSender?: boolean;
+  status: "SEND" | "DELIVERED" | "SEEN";
   updatedAt?: string;
   createdAt?: string;
 };

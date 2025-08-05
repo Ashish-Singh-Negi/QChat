@@ -3,16 +3,13 @@ import toast from "react-hot-toast";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { IoBanSharp } from "react-icons/io5";
-import { BsPin, BsPinFill } from "react-icons/bs";
-import { RiDeleteBin6Line } from "react-icons/ri";
-
 import { StoredMessage } from "../../Interface/definations";
 
 import { useWebSocketContext } from "@/Context/WebsocketContext";
 
 import Dropdown from "./Dropdown";
 import DropdownActionCard from "./DropdownActionCard";
+import { Ban, Pin, PinOff, Trash2 } from "lucide-react";
 
 const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
   const { roomId } = useWebSocketContext();
@@ -21,7 +18,7 @@ const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
   const dropdownActions = [
     {
       name: message.isPinned ? "Unpin" : "Pin",
-      Icon: BsPin,
+      Icon: message.isPinned ? PinOff : Pin,
       action: () => {
         (async () => {
           try {
@@ -41,7 +38,7 @@ const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
     },
     {
       name: "Delete",
-      Icon: RiDeleteBin6Line,
+      Icon: Trash2,
       action: () => {
         toast.error("Coming soon");
       },
@@ -70,7 +67,7 @@ const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
               <p className="px-1">{message.content}</p>
               <span className="h-fit text-[10px] px-1 text-gray-800 dark:text-gray-400 flex justify-end items-end gap-0.5">
                 {/* {message.isStar && <TiStar className="h-3 w-3" />} */}
-                {message.isPinned && <BsPinFill className="h-3 w-3" />}
+                {message.isPinned && <Pin className="h-3 w-3" />}
                 {message.isEdited && <span>Edited</span>}
                 {formattedTime}
               </span>
@@ -121,7 +118,7 @@ const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
               <p className="px-1">{message.content}</p>
               <span className="h-full text-[10px] px-1 text-gray-800 dark:text-gray-400 flex items-end gap-0.5">
                 {/* {message.isStar && <TiStar className="h-3 w-3" />} */}
-                {message.isPinned && <BsPinFill className="h-3 w-3" />}
+                {message.isPinned && <Pin className="h-3 w-3" />}
                 {message.isEdited && <span>Edited</span>}
                 {formattedTime}
               </span>
@@ -173,7 +170,7 @@ const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
           <div
             className={`h-full w-fit px-2 py-1 font-normal rounded-lg bg-gray-100 dark:bg-slate-800 text-gray-950 dark:text-gray-400 flex items-center`}
           >
-            <IoBanSharp className="inline" />
+            <Ban className="inline" />
             <p className="px-1 italic">This message was deleted</p>
             <span className="h-full text-[10px] px-1 text-gray-800 dark:text-gray-400 flex items-end">
               {formattedTime}

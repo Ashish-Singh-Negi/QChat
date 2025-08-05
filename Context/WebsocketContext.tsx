@@ -40,12 +40,10 @@ export default function WebSocketContextProvider({
 
         const parsed: {
           action:
-            | "JOIN"
             | "CHAT_MESSAGE"
-            | "LEAVE"
-            | "UPDATE"
             | "ONLINE_STATUS_HEARTBEAT"
-            | "CHECK_ONLINE_STATUS";
+            | "CHECK_ONLINE_STATUS"
+            | "MESSAGE_DELIVERED_ACKNOWLEDGEMENT";
           _id: string;
           sender: string;
           receiver: string;
@@ -57,14 +55,7 @@ export default function WebSocketContextProvider({
 
         console.log("Received message : ", parsed);
 
-        // if (parsed.action === "UPDATE") {
-        //   getChatMessages(parsed.roomId!);
-        //   return;
-        // }
-
-        if (parsed.action === "ONLINE_STATUS_HEARTBEAT") {
-          console.log(parsed);
-
+        if (parsed.action === "ONLINE_STATUS_HEARTBEAT")
           setUserContacts((prev) =>
             prev.map((contact) =>
               contact._id === parsed.sender
@@ -73,10 +64,7 @@ export default function WebSocketContextProvider({
             )
           );
 
-          return;
-        }
-
-        if (parsed.action === "CHECK_ONLINE_STATUS") {
+        if (parsed.action === "CHECK_ONLINE_STATUS")
           setUserContacts((prev) =>
             prev.map((contact) =>
               contact._id === parsed.receiver
@@ -85,10 +73,7 @@ export default function WebSocketContextProvider({
             )
           );
 
-          return;
-        }
-
-        if (parsed.action === "CHAT_MESSAGE")
+        if (parsed.action === "CHAT_MESSAGE") {
           setContactMessages((prev) => [
             ...prev,
             {
@@ -103,8 +88,25 @@ export default function WebSocketContextProvider({
               isStar: false,
               visibleToEveryone: true,
               visibleToSender: true,
+              status: "SEND", // TODO change this to DELIVERED before commit
             },
           ]);
+
+          sendMessage({
+            action: "MESSAGE_DELIVERED_ACKNOWLEDGEMENT",
+            _id: parsed._id,
+            receiver: parsed.sender,
+          });
+        }
+
+        if (parsed.action === "MESSAGE_DELIVERED_ACKNOWLEDGEMENT")
+          setContactMessages((prev) => {
+            prev.map((message) => {
+              if (message._id) message.status = "DELIVERED";
+            });
+
+            return prev;
+          });
       },
       onClose: () => console.log("WebSocket disconnected"),
       onError: (event) => console.error("WebSocket error:", event),

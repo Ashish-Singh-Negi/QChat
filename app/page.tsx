@@ -13,12 +13,10 @@ import ChatSection from "./components/ChatSection";
 import Chats from "./components/Chats";
 import UserProfile from "./components/UserProfile";
 
-import { IoChatbubbles } from "react-icons/io5";
-import { FaUserFriends } from "react-icons/fa";
-import { IoMdSearch } from "react-icons/io";
 import ProfilePic from "./components/ProfilePic";
 import SearchUser from "./components/SearchUser";
 import Friends from "./components/Friends";
+import { MessageCircleMore, Search, UsersRound } from "lucide-react";
 
 export default function Home() {
   const { getUserProfile } = useUserInfoContext();
@@ -86,7 +84,7 @@ export default function Home() {
                 nav[0].isActive && "bg-gray-300 dark:bg-slate-700"
               } h-10 w-10 mb-4 bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-slate-700 flex items-center justify-center rounded-full cursor-pointer active:scale-95 transition-all`}
             >
-              <IoChatbubbles className="h-6 w-6 text-black dark:text-white" />
+              <MessageCircleMore className="h-6 w-6 text-black dark:text-white" />
             </button>
             <button
               onClick={() =>
@@ -101,7 +99,7 @@ export default function Home() {
                 nav[1].isActive && "bg-gray-300 dark:bg-slate-700"
               } h-10 w-10 bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-slate-700 flex items-center justify-center mb-4 rounded-full cursor-pointer active:scale-95 transition-all `}
             >
-              <FaUserFriends className="h-6 w-6 text-black dark:text-white" />
+              <UsersRound className="h-6 w-6 text-black dark:text-white" />
             </button>
             <button
               onClick={() =>
@@ -116,7 +114,7 @@ export default function Home() {
                 nav[2].isActive && "bg-gray-300 dark:bg-slate-700"
               } h-10 w-10 bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-slate-700 flex items-center justify-center mb-4 rounded-full cursor-pointer active:scale-95 transition-all `}
             >
-              <IoMdSearch className="h-6 w-6 text-black dark:text-white" />
+              <Search className="h-6 w-6 text-black dark:text-white" />
             </button>
           </div>
           <div className="h-fit w-full flex flex-col items-center">
