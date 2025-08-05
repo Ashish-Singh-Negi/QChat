@@ -3,7 +3,15 @@ import toast from "react-hot-toast";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { Ban, LucideIcon, Pencil, Pin, PinOff, Trash2 } from "lucide-react";
+import {
+  Ban,
+  Check,
+  CheckCheck,
+  Pencil,
+  Pin,
+  PinOff,
+  Trash2,
+} from "lucide-react";
 
 import { StoredMessage } from "../../Interface/definations";
 
@@ -13,8 +21,6 @@ import Dropdown from "./Dropdown";
 import DropdownActionCard from "./DropdownActionCard";
 import EditDialogBox from "./EditDialogBox";
 
-
-
 const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
   const { roomId } = useWebSocketContext();
 
@@ -22,7 +28,7 @@ const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
 
   const [dropdown, setDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const dropdownActions  = [
+  const dropdownActions = [
     {
       name: message.isPinned ? "Unpin" : "Pin",
       Icon: message.isPinned ? PinOff : Pin,
@@ -119,7 +125,21 @@ const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
                   {message.isPinned && <Pin className="h-3 w-3" />}
                   {message.isEdited && <span>Edited</span>}
                   {formattedTime}
-                  {}
+                  {message.status === "SEND" && (
+                    <span className="text-gray-700 animate-flip">
+                      <Check size={16} strokeWidth={1.5} />
+                    </span>
+                  )}
+                  {message.status === "DELIVERED" && (
+                    <span className="text-gray-700 animate-flip">
+                      <CheckCheck size={16} strokeWidth={1.5} />
+                    </span>
+                  )}
+                  {message.status === "SEEN" && (
+                    <span className="text-red-500 animate-flip">
+                      <CheckCheck size={16} strokeWidth={1.5} />
+                    </span>
+                  )}
                 </p>
                 <div className="absolute right-1 top-1 blur-sm bg-red-200 dark:bg-slate-950 h-6 w-6 rounded-full flex justify-center items-center opacity-0 group-hover:opacity-100 transition-all"></div>
                 <button
@@ -171,6 +191,21 @@ const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
                   {message.isPinned && <Pin className="h-3 w-3" />}
                   {message.isEdited && <span>Edited</span>}
                   {formattedTime}
+                  {message.status === "SEND" && (
+                    <span className="text-gray-400 animate-flip">
+                      <Check size={16} strokeWidth={1.5} />
+                    </span>
+                  )}
+                  {message.status === "DELIVERED" && (
+                    <span className="text-gray-400 animate-flip">
+                      <CheckCheck size={16} strokeWidth={1.5} />
+                    </span>
+                  )}
+                  {message.status === "SEEN" && (
+                    <span className="text-red-500 animate-flip">
+                      <CheckCheck size={16} strokeWidth={1.5} />
+                    </span>
+                  )}
                 </span>
                 <div className="absolute right-1 top-1 blur-sm bg-red-200 dark:bg-slate-950 h-6 w-6 rounded-full flex justify-center items-center opacity-0 group-hover:opacity-100 transition-all"></div>
                 <button

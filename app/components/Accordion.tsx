@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from "react";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { AArrowDown } from "lucide-react";
 
 const Accordion = ({
   children,
@@ -17,7 +17,7 @@ const Accordion = ({
         className="h-8 font-medium mb-2 border-l-2 border-gray-400 dark:border-white px-2 text-lg text-black dark:text-white flex justify-between items-center hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer"
       >
         {title}
-        <MdOutlineKeyboardArrowDown
+        <AArrowDown
           className={`${
             isOpen && "rotate-180"
           } inline h-6 w-6 transition-transform`}

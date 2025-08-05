@@ -12,6 +12,7 @@ import {
 } from "react";
 import { SendMessage, StoredMessage } from "@/Interface/definations";
 import { useUserContactContext } from "./UserContactContext";
+import { useUserInfoContext } from "./UserInfoContext";
 
 type WebSocketContext = {
   roomId: string | null;
@@ -29,6 +30,8 @@ export default function WebSocketContextProvider({
   children: ReactNode;
 }) {
   const [messages, setMessages] = useState<StoredMessage[] | []>([]);
+
+  const { userInfo } = useUserInfoContext();
 
   const { setContactMessages, setUserContacts } = useUserContactContext();
   const { isConnected, sendMessage, roomId } = useWebSocket(
@@ -53,7 +56,7 @@ export default function WebSocketContextProvider({
           isOnline: boolean;
         } = JSON.parse(event.data);
 
-        console.log("Received message : ", parsed);
+        // console.log("Received message : ", parsed);
 
         if (parsed.action === "ONLINE_STATUS_HEARTBEAT")
           setUserContacts((prev) =>
@@ -92,21 +95,26 @@ export default function WebSocketContextProvider({
             },
           ]);
 
-          sendMessage({
-            action: "MESSAGE_DELIVERED_ACKNOWLEDGEMENT",
-            _id: parsed._id,
-            receiver: parsed.sender,
-          });
+          // After recieving message Receiver will send MESSAGE_DELIVERED_ACKNOWLEDGEMENT to sender
+          if (parsed.sender !== userInfo?._id)
+            sendMessage({
+              action: "MESSAGE_DELIVERED_ACKNOWLEDGEMENT",
+              _id: parsed._id,
+              sender: parsed.sender,
+            });
         }
 
         if (parsed.action === "MESSAGE_DELIVERED_ACKNOWLEDGEMENT")
-          setContactMessages((prev) => {
+          setContactMessages((prev) =>
             prev.map((message) => {
-              if (message._id) message.status = "DELIVERED";
-            });
-
-            return prev;
-          });
+              if (message._id === parsed._id) {
+                console.log("DELIVERED MESSAGE  :  ", message);
+                return { ...message, status: "DELIVERED" };
+              } else {
+                return message;
+              }
+            })
+          );
       },
       onClose: () => console.log("WebSocket disconnected"),
       onError: (event) => console.error("WebSocket error:", event),

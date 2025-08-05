@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { Room, StoredMessage, UserInfo } from "../../Interface/definations";
+import { Room, StoredMessage } from "../../Interface/definations";
 
 import { useRoomContext } from "@/Context/RoomContext";
 import { useUserContactContext } from "@/Context/UserContactContext";
@@ -80,7 +80,6 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
 
   // let activeIntervals = 0;
 
-  
   useEffect(() => {
     if (userContacts.length === 0) return;
 

@@ -1,51 +1,50 @@
-import { IoMdSearch } from "react-icons/io";
-import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
-import { IoMdAdd } from "react-icons/io";
-import { SlCalender } from "react-icons/sl";
-import { LuSmilePlus } from "react-icons/lu";
-import { FaMicrophone } from "react-icons/fa";
-import { IoMdSend } from "react-icons/io";
-import { IoIosArrowDown } from "react-icons/io";
-import { RxCross2 } from "react-icons/rx";
-import { FaArrowLeft } from "react-icons/fa6";
-import { FaStar } from "react-icons/fa";
-import { FaBell } from "react-icons/fa";
-import { FaTrash } from "react-icons/fa";
-import { BsFillChatSquareTextFill } from "react-icons/bs";
-import { MdOutlineCheckBox } from "react-icons/md";
-import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
-import { FaChevronRight } from "react-icons/fa";
-import { FaFileSignature } from "react-icons/fa6";
-import { TiPinOutline } from "react-icons/ti";
-import { FiLogOut } from "react-icons/fi";
-import { MdEdit } from "react-icons/md";
-import { IoSettings } from "react-icons/io5";
-import { RiHistoryLine } from "react-icons/ri";
-import { MdOutlineAddComment } from "react-icons/md";
+import { Search } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
+import { ArrowDownToDot } from "lucide-react";
+import { Calendar } from "lucide-react";
+import { Smile } from "lucide-react";
+import { Mic } from "lucide-react";
+import { Send } from "lucide-react";
+import { Underline } from "lucide-react";
+import { Cross } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { Star } from "lucide-react";
+import { Bell } from "lucide-react";
+import { Trash } from "lucide-react";
+import { MessageCircle } from "lucide-react";
+import { Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { File } from "lucide-react";
+import { Pin } from "lucide-react";
+import { LogOut } from "lucide-react";
+import { Edit } from "lucide-react";
+import { Settings } from "lucide-react";
+import { History } from "lucide-react";
+import { Reply } from "lucide-react";
 export {
-  FiLogOut as LogOut,
-  MdOutlineAddComment as Privacy,
-  IoMdSearch as Search,
-  FaBell as Bell ,
-  PiDotsThreeOutlineVerticalFill as Three_dot,
-  IoMdAdd as Add,
-  LuSmilePlus as Emogi,
-  FaMicrophone as Microphone,
-  IoMdSend as Send,
-  IoIosArrowDown as Down,
-  RxCross2 as Cross,
-  FaArrowLeft as ALeft,
-  FaChevronRight as ARight,
-  SlCalender as Calender,
-  FaStar as Star,
-  FaTrash as Trash,
-  MdOutlineCheckBox as Checked,
-  MdOutlineCheckBoxOutlineBlank as UnChecked,
-  FaFileSignature as Files,
-  TiPinOutline as Pin ,
-  BsFillChatSquareTextFill as Chats,
-  RiHistoryLine as Story,
- IoSettings as Setting,
- MdEdit as Edit ,
- MdOutlineAddComment as AddChat
+  LogOut as LogOut,
+  Reply as Privacy,
+  Search as Search,
+  Bell as Bell,
+  MoreHorizontal as Three_dot,
+  ArrowDownToDot as Add,
+  Smile as Emogi,
+  Mic as Microphone,
+  Send as Send,
+  ArrowDownToDot as Down,
+  Cross as Cross,
+  ArrowLeft as ALeft,
+  ArrowRight as ARight,
+  Calendar as Calender,
+  Star as Star,
+  Trash as Trash,
+  Check as Checked,
+  Underline as UnChecked,
+  File as Files,
+  Pin as Pin,
+  MessageCircle as Chats,
+  History as Story,
+  Settings as Setting,
+  Edit as Edit,
+  Reply as AddChat,
 };
