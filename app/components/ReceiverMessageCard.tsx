@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 import axiosInstance from "@/utils/axiosinstance";
@@ -10,9 +10,10 @@ import { useWebSocketContext } from "@/Context/WebsocketContext";
 import Dropdown from "./Dropdown";
 import DropdownActionCard from "./DropdownActionCard";
 import { Ban, Pin, PinOff, Trash2 } from "lucide-react";
+// import { useUserContactContext } from "@/Context/UserContactContext";
 
 const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
-  const { roomId } = useWebSocketContext();
+  const { roomId, sendMessage } = useWebSocketContext();
   const [dropdown, setDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const dropdownActions = [
@@ -28,11 +29,6 @@ const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
           } catch (error) {
             console.log(error);
           }
-
-          // sendMessage({
-          //   action: "UPDATE",
-          //   room: roomId!,
-          // });
         })();
       },
     },
@@ -54,6 +50,15 @@ const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
 
   // Combine them all
   const formattedTime = `${hours}:${minutes}`;
+
+  useEffect(() => {
+    if (message.status === "SEND")
+      sendMessage({
+        action: "MESSAGE_DELIVERED_ACKNOWLEDGEMENT",
+        _id: message._id,
+        sender: message.senderId,
+      });
+  }, []);
 
   return (
     <>

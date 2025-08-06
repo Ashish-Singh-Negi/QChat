@@ -54,6 +54,7 @@ export default function WebSocketContextProvider({
           content: string;
           createdAt: string;
           isOnline: boolean;
+          status: "SEND" | "DELIVERED" | "SEEN";
         } = JSON.parse(event.data);
 
         // console.log("Received message : ", parsed);
@@ -91,7 +92,7 @@ export default function WebSocketContextProvider({
               isStar: false,
               visibleToEveryone: true,
               visibleToSender: true,
-              status: "SEND", // TODO change this to DELIVERED before commit
+              status: parsed.status,
             },
           ]);
 
@@ -109,7 +110,7 @@ export default function WebSocketContextProvider({
             prev.map((message) => {
               if (message._id === parsed._id) {
                 console.log("DELIVERED MESSAGE  :  ", message);
-                return { ...message, status: "DELIVERED" };
+                return { ...message, status: parsed.status };
               } else {
                 return message;
               }
