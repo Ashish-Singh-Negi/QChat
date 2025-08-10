@@ -5,8 +5,8 @@ export type UserInfo = {
   about: string;
   profilePic: string;
   isOnline: boolean;
-  chats: { name: string; id: string }[] | [];
-  friends: { name: string; id: string }[] | [];
+  chats: { name: string; contactId: string; chatId: string }[] | [];
+  friends: { name: string; fid: string }[] | [];
   friendRequests: string[];
   // favouritesContactList: string[];
   // followers: string[];

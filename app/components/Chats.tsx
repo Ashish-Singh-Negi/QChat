@@ -1,20 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 
 import ContactCard from "./ContactCard";
 import FriendCard from "./FriendCard";
-// import { useUserContactContext } from "@/Context/UserContactContext";
+import { useUserContactContext } from "@/Context/UserContactContext";
+import axiosInstance from "@/utils/axiosinstance";
+import { UserInfo } from "@/Interface/definations";
+import toast from "react-hot-toast";
 
-// ! FIX bug -> whenever chats re-rendered userContacts set method call due to which same users are pushed agains which leads to redundant users details. like whenever a user use search bar
+// ! FIX bug -> whenever chats re-rendered userContacts set method call due to which same contacts are pushed agains which leads to redundant contacts details. like whenever a user use search bar
 
 const Chats = () => {
   const { userInfo } = useUserInfoContext();
-  // const { userContacts } = useUserContactContext();
+  const { setUserContacts } = useUserContactContext();
 
   const [search, setSearch] = useState("");
 
-  // useEffect(() => {}, [userContacts]);
+  const getContactInfo = async (contactId: string) => {
+    console.log(contactId);
+    if (!contactId) return null;
+
+    try {
+      const response = await axiosInstance.get<{ data: UserInfo }>(
+        `/friends/${contactId}`
+      );
+
+      console.log(response);
+
+      const contact = response.data.data;
+
+      console.log("Contact : ", contact);
+      return contact;
+    } catch (error: any) {
+      toast.error(error.response.data.error || "An error occured");
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    if (!userInfo) return;
+
+    const fetchContacts = async () => {
+      try {
+        const contactPromises = userInfo.chats.map((chat) =>
+          getContactInfo(chat.contactId)
+        );
+
+        const contacts = await Promise.all(contactPromises);
+        console.log(contacts);
+        setUserContacts(contacts as UserInfo[]);
+      } catch (error) {
+        console.error("Failed to fetch contacts:", error);
+      }
+    };
+
+    fetchContacts();
+  }, [userInfo]);
 
   return (
     <>
@@ -37,8 +79,26 @@ const Chats = () => {
         {!search &&
           userInfo &&
           userInfo.chats.map((chat, i) => (
-            <ContactCard index={i} key={chat.id} roomId={chat.id} />
+            <ContactCard
+              index={i}
+              key={chat.chatId}
+              chatId={chat.chatId}
+              contactId={chat.contactId}
+            />
           ))}
+        {/* {!search &&
+          userContacts &&
+          userContacts.map((contact) => (
+            <ContactCard
+              key={contact._id}
+              contact={{
+                profilePic: contact.profilePic,
+                username: contact.username,
+              }}
+              isOnline={contact.isOnline}
+              roomId={contact._id}
+            />
+          ))} */}
         {search && (
           <>
             <p className="h-8 w-full bg-gray-200 dark:bg-gray-800 px-4 py-1 mb-2 animate-slideIn">
@@ -49,7 +109,7 @@ const Chats = () => {
                 friend.name.toLowerCase().startsWith(search.toLowerCase())
               )
               .map((friend) => (
-                <FriendCard friendId={friend.id} key={friend.id} />
+                <FriendCard friendId={friend.fid} key={friend.fid} />
               ))}
           </>
         )}

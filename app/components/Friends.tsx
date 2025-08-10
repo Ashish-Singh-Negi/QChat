@@ -11,7 +11,7 @@ const Friends = () => {
       </header>
       <main className="py-4 -mx-2">
         {userInfo?.friends.map((friend) => (
-          <FriendCard friendId={friend.id} key={friend.id} />
+          <FriendCard friendId={friend.fid} key={friend.fid} />
         ))}
       </main>
     </div>

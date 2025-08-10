@@ -5,17 +5,28 @@ import toast from "react-hot-toast";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { Room, StoredMessage } from "../../Interface/definations";
+import { Room, StoredMessage, UserInfo } from "../../Interface/definations";
 
 import { useRoomContext } from "@/Context/RoomContext";
 import { useUserContactContext } from "@/Context/UserContactContext";
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 
 import ProfilePic from "./ProfilePic";
-import { useWebSocketContext } from "@/Context/WebsocketContext";
 
-const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
-  const { sendMessage } = useWebSocketContext();
+const ContactCard = ({
+  chatId,
+  contactId,
+  index,
+}: {
+  chatId: string;
+  // contact: {
+  //   profilePic: string;
+  //   username: string;
+  // };
+  // isOnline: boolean;
+  index: number;
+  contactId: string;
+}) => {
   const { userInfo } = useUserInfoContext();
   const {
     getChatMessages,
@@ -27,7 +38,7 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
   const { setRoomInfo } = useRoomContext();
 
   // const [contactInfo, setContactInfo] = useState<UserInfo | null>(null);
-  const [contactId, setContactId] = useState<string | null>(null);
+  // const [contactId, setContactId] = useState<string | null>(null);
   const [contactMessages, setContactMessages] = useState<StoredMessage[] | []>(
     []
   );
@@ -45,22 +56,17 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
   const getChatRoomInfo = async () => {
     try {
       const response = await axiosInstance.get<{ data: Room }>(
-        `/chats/${roomId}`
+        `/chats/${chatId}`
       );
 
       const room = response.data.data;
 
       console.log(room);
 
-      setContactMessages(await getChatMessages(roomId));
-
-      const friendId = room.participants.find((id) => id !== userInfo?._id);
-      if (!friendId) return;
-
-      setContactId(friendId);
+      setContactMessages(await getChatMessages(chatId));
 
       const isFriend = userInfo?.friends.some(
-        (friend) => friend.id === friendId
+        (friend) => friend.fid === contactId
       );
 
       if (isFriend) {
@@ -74,43 +80,45 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
     }
   };
 
-  useEffect(() => {
-    getChatRoomInfo();
-  }, []);
+  // useEffect(() => {
+  //   getChatRoomInfo();
+  // }, []);
 
   // let activeIntervals = 0;
 
-  useEffect(() => {
-    if (userContacts.length === 0) return;
+  // useEffect(() => {
+  //   if (userContacts.length === 0) return;
 
-    // activeIntervals++;
-    // console.log("Active intervals:", activeIntervals);
+  //   // activeIntervals++;
+  //   // console.log("Active intervals:", activeIntervals);
 
-    const intervalId = setInterval(() => {
-      sendMessage({
-        action: "CHECK_ONLINE_STATUS",
-        receiver: userContacts[index]._id,
-      });
-    }, 7000);
+  //   const intervalId = setInterval(() => {
+  //     sendMessage({
+  //       action: "CHECK_ONLINE_STATUS",
+  //       receiver: userContacts[index]._id,
+  //     });
+  //   }, 7000);
 
-    return () => {
-      clearInterval(intervalId);
-      // activeIntervals--;
-      // console.log("Active intervals after cleanup:", activeIntervals);
-    };
-  }, [userContacts]);
+  //   return () => {
+  //     clearInterval(intervalId);
+  //     // activeIntervals--;
+  //     // console.log("Active intervals after cleanup:", activeIntervals);
+  //   };
+  // }, [userContacts]);
 
-  useEffect(() => {
-    if (!contactId) return;
-    (async () => {
-      const contact = await getContactInfo(contactId);
-      // setContactInfo(contact);
-      setUserContacts((prev) => [
-        ...prev,
-        { ...contact!, messages: [...contactMessages] },
-      ]);
-    })();
-  }, [contactId]);
+  // useEffect(() => {
+  //   if (!contactId) return;
+  //   (async () => {
+  //     const contact = await getContactInfo(contactId);
+  //     // setContactInfo(contact);
+  //     console.log("Contact : ", contact);
+  //     setUserContacts((prev) => [
+  //       ...prev,
+  //       { ...contact!, messages: [...contactMessages] },
+  //     ]);
+  //     // setUserContacts([{ ...contact!, messages: [] }]);
+  //   })();
+  // }, []);
 
   if (!userContacts[index]) return;
 
@@ -127,13 +135,12 @@ const ContactCard = ({ roomId, index }: { roomId: string; index: number }) => {
         </div>
         <div className="h-14 w-[90%]">
           <p className="font-medium mt-1 flex items-center gap-1">
-            {userContacts[index]?.username}{" "}
-            {userContacts[index] &&
-              (userContacts[index].isOnline ? (
-                <span className="h-2 w-2 bg-emerald-500 rounded-full"></span>
-              ) : (
-                <span className="h-2 w-2 bg-red-500 rounded-full"></span>
-              ))}
+            {userContacts[index].username}{" "}
+            {userContacts[index].isOnline ? (
+              <span className="h-2 w-2 bg-emerald-500 rounded-full"></span>
+            ) : (
+              <span className="h-2 w-2 bg-red-500 rounded-full"></span>
+            )}
           </p>
           {contactMessages && contactMessages.length > 0 && (
             <p className="h-5 text-sm overflow-hidden">

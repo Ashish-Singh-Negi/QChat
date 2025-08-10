@@ -14,8 +14,8 @@ import {
 import toast from "react-hot-toast";
 
 type UserContactContext = {
-  userContacts: Contacts[] | [];
-  setUserContacts: Dispatch<SetStateAction<Contacts[] | []>>;
+  userContacts: UserInfo[] | [];
+  setUserContacts: Dispatch<SetStateAction<UserInfo[] | []>>;
   contactMessages: StoredMessage[] | [];
   setContactMessages: Dispatch<SetStateAction<StoredMessage[] | []>>;
   getChatMessages: (crid: string) => Promise<StoredMessage[] | []>;
@@ -38,7 +38,7 @@ export default function UserContactContextProvider({
   const [contactMessages, setContactMessages] = useState<StoredMessage[] | []>(
     []
   );
-  const [userContacts, setUserContacts] = useState<Contacts[] | []>([]);
+  const [userContacts, setUserContacts] = useState<UserInfo[] | []>([]);
   const [selectedContact, setSelectedContact] = useState(-1);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export default function UserContactContextProvider({
     if (!contactId) return null;
 
     try {
-      const response = await axiosInstance.get<{ data: UserInfo }>(
+      const response = await axiosInstance.get<{ data: Contacts }>(
         `/friends/${contactId}`
       );
 
