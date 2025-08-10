@@ -5,13 +5,14 @@ import toast from "react-hot-toast";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { Room, StoredMessage, UserInfo } from "../../Interface/definations";
+import { Room, StoredMessage } from "../../Interface/definations";
 
 import { useRoomContext } from "@/Context/RoomContext";
 import { useUserContactContext } from "@/Context/UserContactContext";
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 
 import ProfilePic from "./ProfilePic";
+import { useWebSocketContext } from "@/Context/WebsocketContext";
 
 const ContactCard = ({
   chatId,
@@ -19,26 +20,15 @@ const ContactCard = ({
   index,
 }: {
   chatId: string;
-  // contact: {
-  //   profilePic: string;
-  //   username: string;
-  // };
-  // isOnline: boolean;
   index: number;
   contactId: string;
 }) => {
   const { userInfo } = useUserInfoContext();
-  const {
-    getChatMessages,
-    getContactInfo,
-    userContacts,
-    setUserContacts,
-    setSelectedContact,
-  } = useUserContactContext();
+  const { getChatMessages, userContacts, setSelectedContact, selectedContact } =
+    useUserContactContext();
   const { setRoomInfo } = useRoomContext();
+  const { sendMessage } = useWebSocketContext();
 
-  // const [contactInfo, setContactInfo] = useState<UserInfo | null>(null);
-  // const [contactId, setContactId] = useState<string | null>(null);
   const [contactMessages, setContactMessages] = useState<StoredMessage[] | []>(
     []
   );
@@ -84,47 +74,30 @@ const ContactCard = ({
   //   getChatRoomInfo();
   // }, []);
 
-  // let activeIntervals = 0;
+  useEffect(() => {
+    if (userContacts.length === 0) return;
 
-  // useEffect(() => {
-  //   if (userContacts.length === 0) return;
+    const intervalId = setInterval(() => {
+      sendMessage({
+        action: "CHECK_ONLINE_STATUS",
+        receiver: userContacts[index]._id,
+      });
+    }, 7000);
 
-  //   // activeIntervals++;
-  //   // console.log("Active intervals:", activeIntervals);
-
-  //   const intervalId = setInterval(() => {
-  //     sendMessage({
-  //       action: "CHECK_ONLINE_STATUS",
-  //       receiver: userContacts[index]._id,
-  //     });
-  //   }, 7000);
-
-  //   return () => {
-  //     clearInterval(intervalId);
-  //     // activeIntervals--;
-  //     // console.log("Active intervals after cleanup:", activeIntervals);
-  //   };
-  // }, [userContacts]);
-
-  // useEffect(() => {
-  //   if (!contactId) return;
-  //   (async () => {
-  //     const contact = await getContactInfo(contactId);
-  //     // setContactInfo(contact);
-  //     console.log("Contact : ", contact);
-  //     setUserContacts((prev) => [
-  //       ...prev,
-  //       { ...contact!, messages: [...contactMessages] },
-  //     ]);
-  //     // setUserContacts([{ ...contact!, messages: [] }]);
-  //   })();
-  // }, []);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [userContacts]);
 
   if (!userContacts[index]) return;
 
   return (
-    <div onClick={joinRoomHandler} className="h-[72px] w-full px-2 mb-1">
-      <div className="h-full w-full hover:bg-gray-200 cursor-pointer dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4">
+    <div onClick={joinRoomHandler} className={`h-[72px] w-full px-2 mb-1`}>
+      <div
+        className={`h-full w-full ${
+          index === selectedContact && "bg-gray-200 dark:bg-slate-900"
+        } hover:bg-gray-200 cursor-pointer dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4 transition-all`}
+      >
         <div className="h-14 w-14 text-2xl">
           {userContacts[index].profilePic && (
             <ProfilePic
