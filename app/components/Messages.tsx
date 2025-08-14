@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { MessageCircleQuestionMark } from "lucide-react";
+
 import { StoredMessage } from "../../Interface/definations";
+
+import { useUserInfoContext } from "@/Context/UserInfoContext";
+import { useUserContactContext } from "@/Context/UserContactContext";
+
 import RoomMessageCard from "./RoomMessageCard";
 import SenderMessageCard from "./SenderMessageCard";
 import ReceiverMessageCard from "./ReceiverMessageCard";
-import { useUserInfoContext } from "@/Context/UserInfoContext";
-import { useUserContactContext } from "@/Context/UserContactContext";
 
 const Messages = () => {
   const { userInfo } = useUserInfoContext();
@@ -18,7 +22,7 @@ const Messages = () => {
   >([]);
 
   // const [unSeenMessages, setUnSeenMessages] = useState<
-    // { date: string; messages: StoredMessage[] }[]
+  // { date: string; messages: StoredMessage[] }[]
   //   StoredMessage[]
   // >([]);
 
@@ -31,38 +35,36 @@ const Messages = () => {
   };
 
   useEffect(() => {
-    if (!contactMessages.length) {
+    if (!contactMessages || !contactMessages.length) {
       setSortedMessages([]);
       return;
     }
 
-    const tempSortedMessages: [
+    const messages = contactMessages;
+
+    const tempSortedMessages: {
+      date: string;
+      messages: StoredMessage[];
+    }[] = [
       {
-        date: string;
-        messages: StoredMessage[];
-      }
-    ] = [
-      {
-        date: getMessageDate(
-          contactMessages[contactMessages.length - 1]!.createdAt!
-        ),
+        date: getMessageDate(messages[messages.length - 1].createdAt!),
         messages: [],
       },
     ];
 
     let i = 0;
 
-    for (let j = contactMessages.length - 1; j >= 0; j--) {
+    for (let j = messages.length - 1; j >= 0; j--) {
       if (
         tempSortedMessages[i].date ===
-        getMessageDate(contactMessages[j].createdAt ?? "")
+        getMessageDate(messages[j].createdAt ?? "")
       ) {
-        tempSortedMessages[i].messages.unshift(contactMessages[j]);
+        tempSortedMessages[i].messages.unshift(messages[j]);
       } else {
         i++;
         tempSortedMessages.push({
-          date: getMessageDate(contactMessages[j].createdAt ?? ""),
-          messages: [contactMessages[j]],
+          date: getMessageDate(messages[j].createdAt ?? ""),
+          messages: [messages[j]],
         });
       }
     }
@@ -103,6 +105,16 @@ const Messages = () => {
   }, [contactMessages]);
 
   // TODO
+
+  console.log(sortedMessages);
+
+  if (!sortedMessages.length)
+    return (
+      <div className="h-full w-full flex flex-col justify-center items-center text-red-500">
+        <MessageCircleQuestionMark />
+        <p>No messages found</p>
+      </div>
+    );
 
   return (
     <>

@@ -2,22 +2,22 @@ import React, { useEffect, useState } from "react";
 
 import { UserInfo } from "../../Interface/definations";
 
-import { useUserContactContext } from "@/Context/UserContactContext";
+// import { useUserContactContext } from "@/Context/UserContactContext";
 import ProfilePic from "./ProfilePic";
 
 const FriendCard = ({ friendId }: { friendId: string }) => {
-  const [friend, setFriend] = useState<UserInfo | null>(null);
+  const [friend] = useState<UserInfo | null>(null);
 
-  const { getContactInfo } = useUserContactContext();
+  // const { getContactInfo } = useUserContactContext();
 
   useEffect(() => {
     console.log(friendId);
-    if (!friendId) return;
-    (async () => {
-      const contact = await getContactInfo(friendId);
-      console.log(contact);
-      setFriend(contact);
-    })();
+    //   if (!friendId) return;
+    //   (async () => {
+    //     const contact = await getContactInfo(friendId);
+    //     console.log(contact);
+    //     setFriend(contact);
+    //   })();
   }, []);
 
   // const removeFriendHandler = async () => {

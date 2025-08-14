@@ -1,7 +1,6 @@
 "use client";
 
 import { StoredMessage, UserInfo } from "@/Interface/definations";
-import axiosInstance from "@/utils/axiosinstance";
 import {
   createContext,
   Dispatch,
@@ -11,22 +10,21 @@ import {
   useEffect,
   useState,
 } from "react";
-import toast from "react-hot-toast";
+
+import { useUserInfoContext } from "./UserInfoContext";
+import { fetchContactsFromChats } from "@/utils/ContactService";
 
 type UserContactContext = {
   userContacts: UserInfo[] | [];
-  setUserContacts: Dispatch<SetStateAction<UserInfo[] | []>>;
+  // setUserContacts: Dispatch<SetStateAction<UserInfo[] | []>>;
   contactMessages: StoredMessage[] | [];
   setContactMessages: Dispatch<SetStateAction<StoredMessage[] | []>>;
-  getChatMessages: (crid: string) => Promise<StoredMessage[] | []>;
-  getContactInfo: (contactId: string) => Promise<UserInfo | null>;
-  selectedContact: number;
-  setSelectedContact: Dispatch<SetStateAction<number>>;
+  updateContactOnlineStatus: (contactId: string, isOnline: boolean) => void;
+  // getChatMessages: (crid: string) => Promise<StoredMessage[] | []>;
+  // getContactInfo: (contactId: string) => Promise<UserInfo | null>;
+  selectedContact: UserInfo | null;
+  setSelectedContact: Dispatch<SetStateAction<UserInfo | null>>;
 };
-
-interface Contacts extends UserInfo {
-  messages: StoredMessage[] | [];
-}
 
 const UserContactContext = createContext<UserContactContext | null>(null);
 
@@ -35,72 +33,64 @@ export default function UserContactContextProvider({
 }: {
   children: ReactNode;
 }) {
+  const { userInfo } = useUserInfoContext();
+
   const [contactMessages, setContactMessages] = useState<StoredMessage[] | []>(
     []
   );
   const [userContacts, setUserContacts] = useState<UserInfo[] | []>([]);
-  const [selectedContact, setSelectedContact] = useState(-1);
+  const [selectedContact, setSelectedContact] = useState<UserInfo | null>(null);
+
+  const fetchContacts = async () => {
+    try {
+      if (!Array.isArray(userInfo?.chats)) {
+        console.warn("userInfo.chats is not an array or is undefined");
+        return;
+      }
+
+      const contacts = await fetchContactsFromChats(userInfo.chats);
+      setUserContacts(contacts);
+    } catch (error) {
+      console.error("Failed to fetch contacts:", error);
+    }
+  };
+
+  const updateContactOnlineStatus = (contactId: string, isOnline: boolean) => {
+    setUserContacts((prev) =>
+      prev.map((contact) =>
+        contact._id === contactId ? { ...contact, isOnline: isOnline } : contact
+      )
+    );
+  };
+
+  useEffect(() => {
+    console.log("🚀 ~ UserContactContextProvider ~ userInfo:", userInfo);
+    if (!userInfo) return;
+    fetchContacts();
+  }, [userInfo]);
 
   useEffect(() => {
     console.log(userContacts);
-
-    console.log(selectedContact);
+    console.log(
+      "🚀 ~ UserContactContextProvider ~ userContacts length:",
+      userContacts.length
+    );
   }, [userContacts]);
 
   useEffect(() => {
     console.log(contactMessages);
   }, [contactMessages]);
 
-  const getChatMessages = async (crid: string) => {
-    try {
-      const response = await axiosInstance.get<{
-        data: StoredMessage[];
-      }>(`/chats/${crid}/messages`);
-
-      console.log(response);
-
-      const messages = response.data?.data ?? [];
-
-      console.log(messages);
-      setContactMessages(messages);
-      return messages;
-    } catch (error: any) {
-      toast.error(error?.response?.data?.error || "Failed to load messages");
-      console.error(error);
-      return [];
-    }
-  };
-
-  const getContactInfo = async (contactId: string) => {
-    console.log(contactId);
-    if (!contactId) return null;
-
-    try {
-      const response = await axiosInstance.get<{ data: Contacts }>(
-        `/friends/${contactId}`
-      );
-
-      console.log(response);
-
-      const contact = response.data.data;
-
-      console.log("Contact : ", contact);
-      return contact;
-    } catch (error: any) {
-      toast.error(error.response.data.error || "An error occured");
-      return null;
-    }
-  };
-
   return (
     <UserContactContext.Provider
       value={{
         userContacts,
-        setUserContacts,
+        // setUserContacts,
         contactMessages,
         setContactMessages,
-        getChatMessages,
-        getContactInfo,
+        updateContactOnlineStatus,
+        // getChatMessages,
+        // getContactInfo,
         selectedContact,
         setSelectedContact,
       }}

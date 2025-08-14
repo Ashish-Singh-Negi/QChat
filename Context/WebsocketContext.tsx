@@ -8,11 +8,13 @@ import {
   SetStateAction,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { SendMessage, StoredMessage } from "@/Interface/definations";
 import { useUserContactContext } from "./UserContactContext";
 import { useUserInfoContext } from "./UserInfoContext";
+import { useChatsContext } from "./ChatsContext";
 
 type WebSocketContext = {
   roomId: string | null;
@@ -33,7 +35,22 @@ export default function WebSocketContextProvider({
 
   const { userInfo } = useUserInfoContext();
 
-  const { setContactMessages, setUserContacts } = useUserContactContext();
+  const { setContactMessages, updateContactOnlineStatus } =
+    useUserContactContext();
+
+  const { addMessageToChatsMessagesMap } = useChatsContext();
+
+  // const selectedContactRef = useRef(selectedContact);
+  // const chatsMessagesRef = useRef(chatsMessages);
+
+  // useEffect(() => {
+  //   selectedContactRef.current = selectedContact;
+  // }, [selectedContact]);
+
+  // useEffect(() => {
+  //   chatsMessagesRef.current = chatsMessages;
+  // }, [chatsMessages]);
+
   const { isConnected, sendMessage, roomId } = useWebSocket(
     `${process.env.NEXT_PUBLIC_WEBSOCKET_BACKEND_URL}`,
     {
@@ -50,7 +67,7 @@ export default function WebSocketContextProvider({
           _id: string;
           sender: string;
           receiver: string;
-          chatId?: string;
+          chatId: string;
           content: string;
           createdAt: string;
           isOnline: boolean;
@@ -60,41 +77,29 @@ export default function WebSocketContextProvider({
         // console.log("Received message : ", parsed);
 
         if (parsed.action === "ONLINE_STATUS_HEARTBEAT")
-          setUserContacts((prev) =>
-            prev.map((contact) =>
-              contact._id === parsed.sender
-                ? { ...contact, isOnline: true }
-                : contact
-            )
-          );
+          updateContactOnlineStatus(parsed.sender, parsed.isOnline);
 
         if (parsed.action === "CHECK_ONLINE_STATUS")
-          setUserContacts((prev) =>
-            prev.map((contact) =>
-              contact._id === parsed.receiver
-                ? { ...contact, isOnline: parsed.isOnline }
-                : contact
-            )
-          );
+          updateContactOnlineStatus(parsed.receiver, parsed.isOnline);
 
         if (parsed.action === "CHAT_MESSAGE") {
-          setContactMessages((prev) => [
-            ...prev,
-            {
-              _id: parsed._id,
-              senderId: parsed.sender,
-              receiverId: parsed.receiver,
-              content: parsed.content,
-              createdAt: parsed.createdAt,
-              updatedAt: new Date().toISOString(),
-              isEdited: false,
-              isPinned: false,
-              isStar: false,
-              visibleToEveryone: true,
-              visibleToSender: true,
-              status: parsed.status,
-            },
-          ]);
+          const message: StoredMessage = {
+            _id: parsed._id,
+            chatId: parsed.chatId,
+            senderId: parsed.sender,
+            receiverId: parsed.receiver,
+            content: parsed.content,
+            createdAt: parsed.createdAt,
+            updatedAt: new Date().toISOString(),
+            isEdited: false,
+            isPinned: false,
+            isStar: false,
+            visibleToEveryone: true,
+            visibleToSender: true,
+            status: parsed.status,
+          };
+
+          addMessageToChatsMessagesMap(parsed.chatId, message);
 
           // After recieving message Receiver will send MESSAGE_DELIVERED_ACKNOWLEDGEMENT to sender
           if (parsed.sender !== userInfo?._id)

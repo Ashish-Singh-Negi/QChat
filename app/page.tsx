@@ -5,7 +5,7 @@ import { Toaster } from "react-hot-toast";
 
 import { useWebSocketContext } from "@/Context/WebsocketContext";
 import { useUserInfoContext } from "@/Context/UserInfoContext";
-import { useRoomContext } from "@/Context/RoomContext";
+import { useChatsContext } from "@/Context/ChatsContext";
 
 import axiosInstance from "@/utils/axiosinstance";
 
@@ -17,11 +17,13 @@ import ProfilePic from "./components/ProfilePic";
 import SearchUser from "./components/SearchUser";
 import Friends from "./components/Friends";
 import { MessageCircleMore, Search, UsersRound } from "lucide-react";
+import { useUserContactContext } from "@/Context/UserContactContext";
 
 export default function Home() {
   const { getUserProfile } = useUserInfoContext();
+  const { selectedContact } = useUserContactContext();
   const { roomId } = useWebSocketContext();
-  const { roomInfo } = useRoomContext();
+  const { selectedChat } = useChatsContext();
 
   const [nav, setNav] = useState([
     { name: "Chats", isActive: true, component: <Chats /> },
@@ -46,20 +48,13 @@ export default function Home() {
     getUserProfile();
   }, []);
 
-  // useEffect(() => {
-  // if (!roomId) return;
-  // (async () => {
-  //   setMessages(await getChatMessages(roomId));
-  // })();
-  // }, [roomId]);
-
   useEffect(() => {
-    if (!roomInfo || !roomId) return;
+    if (!selectedChat || !roomId) return;
 
-    if (roomInfo.disappearingMessages !== "OFF") {
+    if (selectedChat.disappearingMessages !== "OFF") {
       disappearMessagesAboveDurationHandler();
     }
-  }, [roomInfo]);
+  }, [selectedContact]);
 
   console.log("RENDER");
 
@@ -84,7 +79,10 @@ export default function Home() {
                 nav[0].isActive && "bg-gray-300 dark:bg-slate-700"
               } h-10 w-10 mb-4 bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-slate-700 flex items-center justify-center rounded-full cursor-pointer active:scale-95 transition-all`}
             >
-              <MessageCircleMore className="h-6 w-6 text-black dark:text-white" />
+              <MessageCircleMore
+                strokeWidth={1.25}
+                className="h-6 w-6 text-black dark:text-white"
+              />
             </button>
             <button
               onClick={() =>
@@ -99,7 +97,10 @@ export default function Home() {
                 nav[1].isActive && "bg-gray-300 dark:bg-slate-700"
               } h-10 w-10 bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-slate-700 flex items-center justify-center mb-4 rounded-full cursor-pointer active:scale-95 transition-all `}
             >
-              <UsersRound className="h-6 w-6 text-black dark:text-white" />
+              <UsersRound
+                strokeWidth={1.25}
+                className="h-6 w-6 text-black dark:text-white"
+              />
             </button>
             <button
               onClick={() =>
@@ -114,7 +115,10 @@ export default function Home() {
                 nav[2].isActive && "bg-gray-300 dark:bg-slate-700"
               } h-10 w-10 bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-slate-700 flex items-center justify-center mb-4 rounded-full cursor-pointer active:scale-95 transition-all `}
             >
-              <Search className="h-6 w-6 text-black dark:text-white" />
+              <Search
+                strokeWidth={1.25}
+                className="h-6 w-6 text-black dark:text-white"
+              />
             </button>
           </div>
           <div className="h-fit w-full flex flex-col items-center">

@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { CircleMinus, EllipsisVertical, Send, Trash2 } from "lucide-react";
+import { CircleMinus, EllipsisVertical, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
-
-import { UserInfo } from "../../Interface/definations";
 
 import { useUserContactContext } from "@/Context/UserContactContext";
 import { useWebSocketContext } from "@/Context/WebsocketContext";
-import { useRoomContext } from "@/Context/RoomContext";
 
 import axiosInstance from "@/utils/axiosinstance";
 
@@ -22,7 +19,6 @@ const ChatSection = () => {
   const { roomId } = useWebSocketContext();
   const { userContacts, contactMessages, selectedContact } =
     useUserContactContext();
-  const { roomInfo } = useRoomContext();
 
   const [openContactInfo, setOpenContactInfo] = useState(false);
   const [dropdown, setDropdown] = useState(false);
@@ -39,10 +35,14 @@ const ChatSection = () => {
     console.log("messages : ", contactMessages);
   }, [contactMessages]);
 
+  useEffect(() => {
+    console.log(selectedContact);
+  }, [selectedContact]);
+
   const dropdownActions = [
     {
       name: "Clear chat",
-      Icon: CircleMinus ,
+      Icon: CircleMinus,
       action: async () => {
         try {
           await axiosInstance.delete(`/chats/${roomId}/clear`);
@@ -62,26 +62,28 @@ const ChatSection = () => {
     },
   ];
 
-  const sendFriendRequestHandler = async () => {
-    try {
-      const response = await axiosInstance.post<{
-        data: UserInfo;
-        message: string;
-      }>(`/friends/requests`, {
-        friendUsername: userContacts[selectedContact!].username,
-      });
+  // const sendFriendRequestHandler = async () => {
+  //   try {
+  //     const response = await axiosInstance.post<{
+  //       data: UserInfo;
+  //       message: string;
+  //     }>(`/friends/requests`, {
+  //       friendUsername: selectedContact!.username,
+  //     });
+  //     console.log(
+  //       "🚀 ~ sendFriendRequestHandler ~ response.data.data :",
+  //       response.data.data
+  //     );
 
-      console.log(response.data.data);
-      toast.success(response.data.message);
-    } catch (error: any) {
-      toast.error(error?.response?.data?.error);
-      console.error(error);
-    }
-  };
+  //     toast.success(response.data.message);
+  //   } catch (error: any) {
+  //     toast.error(error?.response?.data?.error);
+  //     console.error(error);
+  //   }
+  // };
 
   return (
-    selectedContact >= 0 &&
-    userContacts[selectedContact] && (
+    selectedContact && (
       <section className="bg-[url('/background.png')] dark:bg-[url('/dark-background.png')] bg-cover h-full w-2/3 flex">
         <div className="h-full w-full flex flex-col border-r-[1px] dark:border-gray-800">
           <header className="h-16 w-full bg-white dark:bg-black px-2 pr-4 flex items-center justify-between">
@@ -92,16 +94,14 @@ const ChatSection = () => {
               >
                 <div className="h-10 w-10 text-xl">
                   <ProfilePic
-                    profilePic={userContacts[selectedContact].profilePic!}
-                    username={userContacts[selectedContact].username!}
+                    profilePic={selectedContact.profilePic!}
+                    username={selectedContact.username!}
                   />
                 </div>
                 <div className="flex flex-col">
-                  {userContacts[selectedContact].username}
+                  {selectedContact.username}
                   <span className="font-normal text-xs dark:text-gray-400 animate-dropdownOpen">
-                    {userContacts[selectedContact].isOnline
-                      ? "online"
-                      : "offline"}
+                    {selectedContact.isOnline ? "online" : "offline"}
                   </span>
                 </div>
               </div>
@@ -139,12 +139,12 @@ const ChatSection = () => {
           >
             <Messages />
 
-            {roomInfo?.isDisabled && (
+            {/* // TODO fix below statement */}
+            {/* {chats && chats[0].isDisabled && (
               <div className="h-14 w-full flex flex-col gap-2 items-center">
                 <p className="w-full text-center px-4 py-1 bg-gray-800 text-white">
-                  you and {userContacts[selectedContact]?.username} are no
-                  longer friends. To start conversation again send friend
-                  request or
+                  you and {selectedContact.username} are no longer friends. To
+                  start conversation again send friend request or
                   <br />
                   Delete the conversation
                 </p>
@@ -161,7 +161,7 @@ const ChatSection = () => {
                   </button>
                 </div>
               </div>
-            )}
+            )} */}
           </main>
           <footer className="h-14 w-full px-4 flex items-center bg-transparent mb-1">
             <MessageInput />

@@ -44,7 +44,6 @@ const Dropdown = ({
 
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
-      console.log("Print");
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)

@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import UserInfoContextProvider from "@/Context/UserInfoContext";
 import UserContactContextProvider from "@/Context/UserContactContext";
-import RoomContextProvider from "@/Context/RoomContext";
+import ChatsContextProvider from "@/Context/ChatsContext";
 import WebSocketContextProvider from "@/Context/WebsocketContext";
 
 const geistSans = Geist({
@@ -33,9 +33,9 @@ export default function RootLayout({
       >
         <UserInfoContextProvider>
           <UserContactContextProvider>
-            <WebSocketContextProvider>
-              <RoomContextProvider>{children}</RoomContextProvider>
-            </WebSocketContextProvider>
+            <ChatsContextProvider>
+              <WebSocketContextProvider>{children}</WebSocketContextProvider>
+            </ChatsContextProvider>
           </UserContactContextProvider>
         </UserInfoContextProvider>
       </body>

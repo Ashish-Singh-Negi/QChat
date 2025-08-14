@@ -48,6 +48,7 @@ export type SendMessage = {
 export type Room = {
   _id: string;
   participants: string[];
+  messages: StoredMessage[] | [];
   pinMessages: string[];
   muteNotification: false;
   disappearingMessages: string;
@@ -60,6 +61,7 @@ export type StoredMessage = {
   _id: string;
   senderId: string;
   receiverId: string;
+  chatId: string;
   content: string;
   isPinned: boolean;
   isEdited: boolean;
@@ -69,4 +71,20 @@ export type StoredMessage = {
   status: "SEND" | "DELIVERED" | "SEEN";
   updatedAt?: string;
   createdAt?: string;
+};
+
+export type ParsedMessage = {
+  action:
+    | "CHAT_MESSAGE"
+    | "ONLINE_STATUS_HEARTBEAT"
+    | "CHECK_ONLINE_STATUS"
+    | "MESSAGE_DELIVERED_ACKNOWLEDGEMENT";
+  _id: string;
+  sender: string;
+  receiver: string;
+  chatId: string;
+  content: string;
+  createdAt: string;
+  isOnline: boolean;
+  status: "SEND" | "DELIVERED" | "SEEN";
 };

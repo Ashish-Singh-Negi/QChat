@@ -108,32 +108,10 @@ export const useWebSocket = (
       webSocketRef.current &&
       webSocketRef.current.readyState === WebSocket.OPEN
     ) {
-      // if previous roomID not match with current roomID -> LEAVE previous Room and join to new Room
-      // if (roomId !== dataIs.room) {
-      //   const leaveRoom = {
-      //     action: "LEAVE",
-      //     message: "Leaving Room : " + roomId,
-      //     room: roomId,
-      //   };
-
-      //   // send action message to Leave previous Room
-      //   const buffer = Buffer.from(JSON.stringify(leaveRoom));
-      //   webSocketRef.current.send(buffer);
-
-      //   // Set new roomID
-      //   setRoomId(dataIs.room);
-      // }
 
       const buffer = Buffer.from(JSON.stringify(dataIs));
       webSocketRef.current.send(buffer);
 
-      // if (dataIs.action === "MESSAGE") {
-      // const { data } = await axiosInstance.post(
-      //   "users/chat/messages",
-      //   dataIs
-      // );
-      // console.log(data);
-      // }
     } else {
       console.error("WebSocket is not open, unable to send message.");
     }

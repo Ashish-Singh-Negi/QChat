@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { useRoomContext } from "@/Context/RoomContext";
 import { useUserContactContext } from "@/Context/UserContactContext";
 import { useWebSocketContext } from "@/Context/WebsocketContext";
 
@@ -16,8 +15,7 @@ const HomeContactInfo = ({
 }: {
   setOpenContactInfo: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { userContacts, selectedContact } = useUserContactContext();
-  const { roomInfo } = useRoomContext();
+  const { selectedContact } = useUserContactContext();
   const { roomId } = useWebSocketContext();
 
   const [showFullImage, setShowFullImage] = useState(false);
@@ -48,25 +46,25 @@ const HomeContactInfo = ({
     // getDisappearingMessagesStatus();
   };
 
-  useEffect(() => {
-    if (!roomInfo) return;
+  // useEffect(() => {
+  //   if (!chats) return;
 
-    switch (roomInfo.disappearingMessages) {
-      case "24h":
-        setDisappearingMessagesDuration("24 hours");
-        break;
-      case "7d":
-        setDisappearingMessagesDuration("7 days");
-        break;
-      case "1m":
-        setDisappearingMessagesDuration("1 month");
-        break;
+  //   switch (chats.disappearingMessages) {
+  //     case "24h":
+  //       setDisappearingMessagesDuration("24 hours");
+  //       break;
+  //     case "7d":
+  //       setDisappearingMessagesDuration("7 days");
+  //       break;
+  //     case "1m":
+  //       setDisappearingMessagesDuration("1 month");
+  //       break;
 
-      default:
-        setDisappearingMessagesDuration("OFF");
-        break;
-    }
-  }, [roomInfo]);
+  //     default:
+  //       setDisappearingMessagesDuration("OFF");
+  //       break;
+  //   }
+  // }, [chats]);
 
   // const getDisappearingMessagesStatus = async () => {
   //   try {
@@ -96,7 +94,7 @@ const HomeContactInfo = ({
   //   }
   // };
 
-  if (!userContacts[selectedContact]) return;
+  if (!selectedContact) return;
 
   return (
     <section className="h-full w-2/3 px-4 pt-2 bg-white dark:bg-black animate-slideIn">
@@ -113,8 +111,8 @@ const HomeContactInfo = ({
         <div className="h-fit w-full flex flex-col items-center border-b-2 dark:border-gray-800">
           <div className="h-32 w-32 cursor-pointer text-5xl">
             <ProfilePic
-              profilePic={userContacts[selectedContact].profilePic}
-              username={userContacts[selectedContact].username}
+              profilePic={selectedContact.profilePic}
+              username={selectedContact.username}
               setShowFullImage={setShowFullImage}
             />
           </div>
@@ -124,23 +122,23 @@ const HomeContactInfo = ({
               className="absolute z-10 top-0 left-0 bg-black bg-opacity-50 h-full w-full flex justify-center items-center"
             >
               <img
-                src={userContacts[selectedContact]?.profilePic}
+                src={selectedContact?.profilePic}
                 className={`h-96 w-96 cursor-pointer`}
                 alt="profile picture"
               />
             </div>
           )}
           <p className="h-10 mt-2 font-medium text-xl text-black dark:text-white">
-            {userContacts[selectedContact]?.username}
+            {selectedContact?.username}
           </p>
-          {userContacts[selectedContact].about && (
+          {selectedContact.about && (
             <div className="h-12 w-full mt-4 px-1 ">
               <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 About
               </h2>
               <p className="py-1 text-gray-950 dark:text-gray-400 font-normal">
                 {" "}
-                {userContacts[selectedContact].about}
+                {selectedContact.about}
               </p>
             </div>
           )}
