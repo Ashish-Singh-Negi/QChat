@@ -63,6 +63,8 @@ export default function UserContactContextProvider({
     );
   };
 
+ const  updateMessageStatus = ()=>{} 
+
   useEffect(() => {
     console.log("🚀 ~ UserContactContextProvider ~ userInfo:", userInfo);
     if (!userInfo) return;

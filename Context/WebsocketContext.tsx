@@ -8,7 +8,6 @@ import {
   SetStateAction,
   useContext,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import { SendMessage, StoredMessage } from "@/Interface/definations";
@@ -17,7 +16,7 @@ import { useUserInfoContext } from "./UserInfoContext";
 import { useChatsContext } from "./ChatsContext";
 
 type WebSocketContext = {
-  roomId: string | null;
+  // roomId: string | null;
   isConnected: boolean;
   sendMessage: (dataIs: SendMessage) => void;
   messages?: StoredMessage[] | [];
@@ -34,24 +33,11 @@ export default function WebSocketContextProvider({
   const [messages, setMessages] = useState<StoredMessage[] | []>([]);
 
   const { userInfo } = useUserInfoContext();
+  const { addMessageToChatsMessagesMap, updateMessageStatus } =
+    useChatsContext();
+  const { updateContactOnlineStatus } = useUserContactContext();
 
-  const { setContactMessages, updateContactOnlineStatus } =
-    useUserContactContext();
-
-  const { addMessageToChatsMessagesMap } = useChatsContext();
-
-  // const selectedContactRef = useRef(selectedContact);
-  // const chatsMessagesRef = useRef(chatsMessages);
-
-  // useEffect(() => {
-  //   selectedContactRef.current = selectedContact;
-  // }, [selectedContact]);
-
-  // useEffect(() => {
-  //   chatsMessagesRef.current = chatsMessages;
-  // }, [chatsMessages]);
-
-  const { isConnected, sendMessage, roomId } = useWebSocket(
+  const { isConnected, sendMessage } = useWebSocket(
     `${process.env.NEXT_PUBLIC_WEBSOCKET_BACKEND_URL}`,
     {
       onOpen: () => console.log("WebSocket connected"),
@@ -73,8 +59,6 @@ export default function WebSocketContextProvider({
           isOnline: boolean;
           status: "SEND" | "DELIVERED" | "SEEN";
         } = JSON.parse(event.data);
-
-        // console.log("Received message : ", parsed);
 
         if (parsed.action === "ONLINE_STATUS_HEARTBEAT")
           updateContactOnlineStatus(parsed.sender, parsed.isOnline);
@@ -107,20 +91,12 @@ export default function WebSocketContextProvider({
               action: "MESSAGE_DELIVERED_ACKNOWLEDGEMENT",
               _id: parsed._id,
               sender: parsed.sender,
+              chatId: parsed.chatId,
             });
         }
 
         if (parsed.action === "MESSAGE_DELIVERED_ACKNOWLEDGEMENT")
-          setContactMessages((prev) =>
-            prev.map((message) => {
-              if (message._id === parsed._id) {
-                console.log("DELIVERED MESSAGE  :  ", message);
-                return { ...message, status: parsed.status };
-              } else {
-                return message;
-              }
-            })
-          );
+          updateMessageStatus(parsed.chatId, parsed._id, parsed.status);
       },
       onClose: () => console.log("WebSocket disconnected"),
       onError: (event) => console.error("WebSocket error:", event),
@@ -135,7 +111,7 @@ export default function WebSocketContextProvider({
     <WebSocketContext.Provider
       value={{
         isConnected,
-        roomId,
+        // roomId,
         sendMessage,
         messages,
         setMessages,

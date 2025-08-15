@@ -20,6 +20,11 @@ type ChatsContext = {
   setChats: Dispatch<SetStateAction<Room[] | null>>;
   chatsMessagesMap: Map<string, StoredMessage[]>;
   addMessageToChatsMessagesMap: (key: string, message: StoredMessage) => void;
+  updateMessageStatus: (
+    key: string,
+    id: string,
+    status: "SEND" | "DELIVERED" | "SEEN"
+  ) => void;
   selectedChat: Room | null;
   setSelectedChat: Dispatch<SetStateAction<Room | null>>;
   setCurrentChatId: (chatId: string) => void;
@@ -75,6 +80,26 @@ export default function ChatsContextProvider({
     }
   };
 
+  const updateMessageStatus = (
+    key: string,
+    id: string,
+    status: "SEND" | "DELIVERED" | "SEEN"
+  ) => {
+    setChatsMessagesMap((prevMap) => {
+      const newMap = new Map(prevMap);
+
+      const messages = prevMap.get(key);
+      if (!messages) return prevMap;
+
+      const updatedMessage = messages.map((message) =>
+        message._id === id ? { ...message, status: status } : message
+      );
+
+      newMap.set(key, updatedMessage);
+      return newMap;
+    });
+  };
+
   const setCurrentChatId = (chatId: string) => {
     if (!chatId) return;
 
@@ -101,10 +126,6 @@ export default function ChatsContextProvider({
     const messages = chatsMessagesMap.get(chatId);
     if (messages) setContactMessages(messages);
   };
-
-  useEffect(() => {
-    console.log("🚀 ~ ChatsContextProvider ~ selectedChat:", selectedChat);
-  }, [selectedChat]);
 
   useEffect(() => {
     if (!userInfo) return;
@@ -136,6 +157,7 @@ export default function ChatsContextProvider({
         setChats,
         chatsMessagesMap,
         addMessageToChatsMessagesMap,
+        updateMessageStatus,
         selectedChat,
         setSelectedChat,
         setCurrentChatId,

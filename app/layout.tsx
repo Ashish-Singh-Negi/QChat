@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "QChat",
+  title: "QChat Dev",
   description: "comming soon",
 };
 

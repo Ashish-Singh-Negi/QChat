@@ -10,10 +10,12 @@ import { useWebSocketContext } from "@/Context/WebsocketContext";
 import Dropdown from "./Dropdown";
 import DropdownActionCard from "./DropdownActionCard";
 import { Ban, Pin, PinOff, Trash2 } from "lucide-react";
+import { useChatsContext } from "@/Context/ChatsContext";
 // import { useUserContactContext } from "@/Context/UserContactContext";
 
 const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
-  const { roomId, sendMessage } = useWebSocketContext();
+  const { sendMessage } = useWebSocketContext();
+  const { selectedChat } = useChatsContext();
   const [dropdown, setDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const dropdownActions = [
@@ -24,7 +26,7 @@ const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
         (async () => {
           try {
             await axiosInstance.patch(`messages/${message._id}/pin`, {
-              crid: roomId,
+              crid: selectedChat?._id,
             });
           } catch (error) {
             console.log(error);

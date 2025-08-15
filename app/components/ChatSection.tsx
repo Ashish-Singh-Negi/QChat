@@ -3,7 +3,7 @@ import { CircleMinus, EllipsisVertical, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { useUserContactContext } from "@/Context/UserContactContext";
-import { useWebSocketContext } from "@/Context/WebsocketContext";
+// import { useWebSocketContext } from "@/Context/WebsocketContext";
 
 import axiosInstance from "@/utils/axiosinstance";
 
@@ -14,11 +14,12 @@ import DropdownActionCard from "./DropdownActionCard";
 import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import HomeContactInfo from "./HomeContactInfo";
+import { useChatsContext } from "@/Context/ChatsContext";
 
 const ChatSection = () => {
-  const { roomId } = useWebSocketContext();
   const { userContacts, contactMessages, selectedContact } =
     useUserContactContext();
+  const { selectedChat } = useChatsContext();
 
   const [openContactInfo, setOpenContactInfo] = useState(false);
   const [dropdown, setDropdown] = useState(false);
@@ -45,7 +46,7 @@ const ChatSection = () => {
       Icon: CircleMinus,
       action: async () => {
         try {
-          await axiosInstance.delete(`/chats/${roomId}/clear`);
+          await axiosInstance.delete(`/chats/${selectedChat!._id}/clear`);
           toast.success("Chat cleared");
         } catch (error) {
           console.error(error);

@@ -35,7 +35,7 @@ const UserProfile = () => {
         </div>
       )}
       {editProfile && (
-        <div className="absolute z-10 h-full w-full bg-black bg-opacity-50 top-0 left-0 flex justify-center items-center">
+        <div className="absolute z-20 h-full w-full bg-black bg-opacity-50 top-0 left-0 flex justify-center items-center">
           <main className=" h-fit w-[460px] border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 flex flex-col gap-4 p-8 rounded-lg">
             <header className="h-fit w-full flex justify-between mb-4">
               <p className="text-xl font-semibold">Profile</p>

@@ -15,14 +15,13 @@ import {
 
 import { StoredMessage } from "../../Interface/definations";
 
-import { useWebSocketContext } from "@/Context/WebsocketContext";
-
 import Dropdown from "./Dropdown";
 import DropdownActionCard from "./DropdownActionCard";
 import EditDialogBox from "./EditDialogBox";
+import { useChatsContext } from "@/Context/ChatsContext";
 
 const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
-  const { roomId } = useWebSocketContext();
+  const { selectedChat } = useChatsContext();
 
   const [edit, setEdit] = useState(false);
 
@@ -36,7 +35,7 @@ const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
         (async () => {
           try {
             await axiosInstance.patch(`messages/${message._id}/pin`, {
-              crid: roomId,
+              crid: selectedChat?._id,
             });
           } catch (error) {
             console.log(error);

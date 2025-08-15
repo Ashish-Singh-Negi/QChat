@@ -51,22 +51,20 @@ const ContactCard = ({ chatId, index }: { chatId: string; index: number }) => {
           chatId === selectedChat?._id && "bg-gray-200 dark:bg-slate-900"
         } hover:bg-gray-200 cursor-pointer dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4 transition-all`}
       >
-        <div className="h-14 w-14 text-2xl">
+        <div className="relative h-14 w-14 text-2xl rounded-full">
           {userContacts[index].profilePic && (
             <ProfilePic
               profilePic={userContacts[index].profilePic}
               username={userContacts[index].username}
             />
           )}
+          {userContacts[index].isOnline && (
+            <span className="absolute right-1 bottom-1 h-2 w-2 bg-emerald-500 rounded-full"></span>
+          )}
         </div>
         <div className="h-14 w-[90%]">
-          <p className="w-full font-medium mt-1 flex items-center justify-between gap-1">
+          <p className=" font-medium mt-1 flex items-center justify-between gap-1">
             {userContacts[index].username}{" "}
-            {userContacts[index].isOnline ? (
-              <span className="h-2 w-2 bg-emerald-500 rounded-full"></span>
-            ) : (
-              <span className="h-2 w-2 bg-red-500 rounded-full"></span>
-            )}
           </p>
           {latestMessage && (
             <p className="h-5 text-sm overflow-hidden">
