@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import axiosInstance from "@/utils/axiosinstance";
 
 import { useUserContactContext } from "@/Context/UserContactContext";
-import { useWebSocketContext } from "@/Context/WebsocketContext";
 
 import ProfilePic from "./ProfilePic";
 import { X } from "lucide-react";
+import toast from "react-hot-toast";
+import { useChatsContext } from "@/Context/ChatsContext";
 
 const HomeContactInfo = ({
   setOpenContactInfo,
@@ -16,7 +17,7 @@ const HomeContactInfo = ({
   setOpenContactInfo: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { selectedContact } = useUserContactContext();
-  const { roomId } = useWebSocketContext();
+  const { selectedChat } = useChatsContext();
 
   const [showFullImage, setShowFullImage] = useState(false);
   const [muteNotifications, setMuteNotifications] = useState(false);
@@ -25,46 +26,44 @@ const HomeContactInfo = ({
     useState("");
 
   const updateDisappearingMessageSettings = async (duration: string) => {
+    const prevDisapperingMessagesDuration = disappearingMessagesDuration;
     try {
       const { data } = await axiosInstance.patch(
-        `/chats/${roomId}/disappearduration`,
+        `/chats/${selectedChat?._id}/disappearduration`,
         {
           disappearingMessagesDuration: duration,
         }
       );
       console.log(data);
-
-      // sendMessage({
-      //   action: "UPDATE",
-      //   room: roomId!,
-      // });
     } catch (error) {
+      setDisappearingMessagesDuration(prevDisapperingMessagesDuration);
+      toast.error("Failed to Change Disappearing Messages Duration");
       console.error(error);
     }
 
-    // to update room DisappearingMessages duration
+    // TODO fetch updated Chat DisappearingMessages duration
     // getDisappearingMessagesStatus();
   };
 
-  // useEffect(() => {
-  //   if (!chats) return;
+  useEffect(() => {
+    if (!selectedChat) return;
 
-  //   switch (chats.disappearingMessages) {
-  //     case "24h":
-  //       setDisappearingMessagesDuration("24 hours");
-  //       break;
-  //     case "7d":
-  //       setDisappearingMessagesDuration("7 days");
-  //       break;
-  //     case "1m":
-  //       setDisappearingMessagesDuration("1 month");
-  //       break;
+    switch (selectedChat.disappearingMessages) {
+      case "24h":
+        setDisappearingMessagesDuration("24 hours");
+        break;
+      case "7d":
+        setDisappearingMessagesDuration("7 days");
+        break;
+      case "1m":
+        setDisappearingMessagesDuration("1 month");
+        break;
 
-  //     default:
-  //       setDisappearingMessagesDuration("OFF");
-  //       break;
-  //   }
-  // }, [chats]);
+      default:
+        setDisappearingMessagesDuration("OFF");
+        break;
+    }
+  }, [selectedChat]);
 
   // const getDisappearingMessagesStatus = async () => {
   //   try {
@@ -83,11 +82,6 @@ const HomeContactInfo = ({
   //     });
 
   //     console.log(data.data);
-
-  //     setRoomInfo({
-  //       ...roomInfo!,
-  //       disappearingMessages: data.data.disappearingMessages,
-  //     });
   //   } catch (error: any) {
   //     toast.error(error?.response.data.error);
   //     console.error(error);

@@ -12,7 +12,7 @@ const RoomMessageCard = ({ message }: { message: string }) => {
   useEffect(() => {
     const splitedMessage = message.split(":");
 
-    console.log(" : ", splitedMessage);
+    // console.log(" : ", splitedMessage);
 
     if (splitedMessage[0] === userInfo?._id) {
       setRoomMessage(`you ${splitedMessage[1]}`);
@@ -24,7 +24,7 @@ const RoomMessageCard = ({ message }: { message: string }) => {
   return (
     <div className="h-fit w-full px-16 flex justify-center mb-3">
       <p className="w-fit bg-white dark:bg-gray-900 text-xs text-center rounded-lg font-normal px-4 py-1">
-        <ClockFading className="inline" /> {roomMessage}
+        <ClockFading className="inline" size={16} /> {roomMessage}
       </p>
     </div>
   );

@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 
-import { useWebSocketContext } from "@/Context/WebsocketContext";
 import { useUserInfoContext } from "@/Context/UserInfoContext";
 import { useChatsContext } from "@/Context/ChatsContext";
 
@@ -17,12 +16,9 @@ import ProfilePic from "./components/ProfilePic";
 import SearchUser from "./components/SearchUser";
 import Friends from "./components/Friends";
 import { MessageCircleMore, Search, UsersRound } from "lucide-react";
-import { useUserContactContext } from "@/Context/UserContactContext";
 
 export default function Home() {
   const { getUserProfile } = useUserInfoContext();
-  const { selectedContact } = useUserContactContext();
-  const { roomId } = useWebSocketContext();
   const { selectedChat } = useChatsContext();
 
   const [nav, setNav] = useState([
@@ -38,7 +34,9 @@ export default function Home() {
 
   const disappearMessagesAboveDurationHandler = async () => {
     try {
-      await axiosInstance.delete(`/chats/${roomId}/messages/disappear`);
+      await axiosInstance.delete(
+        `/chats/${selectedChat?._id}/messages/disappear`
+      );
     } catch (error) {
       console.error(error);
     }
@@ -49,12 +47,12 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (!selectedChat || !roomId) return;
+    if (!selectedChat) return;
 
     if (selectedChat.disappearingMessages !== "OFF") {
       disappearMessagesAboveDurationHandler();
     }
-  }, [selectedContact]);
+  }, [selectedChat]);
 
   console.log("RENDER");
 

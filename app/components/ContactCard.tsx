@@ -1,15 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useChatsContext } from "@/Context/ChatsContext";
 import { useUserContactContext } from "@/Context/UserContactContext";
 
 import ProfilePic from "./ProfilePic";
+import { useWebSocketContext } from "@/Context/WebsocketContext";
 
 const ContactCard = ({ chatId, index }: { chatId: string; index: number }) => {
   const { userContacts } = useUserContactContext();
   const { chatsMessagesMap } = useChatsContext();
+  const { sendMessage } = useWebSocketContext();
 
   const { selectedChat, setCurrentChatId, chats } = useChatsContext();
 
@@ -21,28 +23,24 @@ const ContactCard = ({ chatId, index }: { chatId: string; index: number }) => {
   }
 
   const joinRoomHandler = () => {
-    // userContacts.map((contact, index) => {
-    //   if (contact._id === contactId) setSelectedContact(index);
-    // });
-
     chats?.map((chat) => chat._id === chatId && setCurrentChatId(chat._id));
   };
 
   // TODO uncomment below effect before any commit
-  // useEffect(() => {
-  //   if (userContacts.length === 0) return;
+  useEffect(() => {
+    if (userContacts.length === 0) return;
 
-  //   const intervalId = setInterval(() => {
-  //     sendMessage({
-  //       action: "CHECK_ONLINE_STATUS",
-  //       receiver: userContacts[index]._id,
-  //     });
-  //   }, 7000);
+    const intervalId = setInterval(() => {
+      sendMessage({
+        action: "CHECK_ONLINE_STATUS",
+        receiver: userContacts[index]._id,
+      });
+    }, 7000);
 
-  //   return () => {
-  //     clearInterval(intervalId);
-  //   };
-  // }, [userContacts]);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [userContacts]);
 
   if (!userContacts[index]) return;
 
@@ -62,7 +60,7 @@ const ContactCard = ({ chatId, index }: { chatId: string; index: number }) => {
           )}
         </div>
         <div className="h-14 w-[90%]">
-          <p className="font-medium mt-1 flex items-center gap-1">
+          <p className="w-full font-medium mt-1 flex items-center justify-between gap-1">
             {userContacts[index].username}{" "}
             {userContacts[index].isOnline ? (
               <span className="h-2 w-2 bg-emerald-500 rounded-full"></span>
