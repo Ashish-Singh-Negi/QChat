@@ -4,20 +4,23 @@ import { UserInfo } from "../../Interface/definations";
 
 // import { useUserContactContext } from "@/Context/UserContactContext";
 import ProfilePic from "./ProfilePic";
+import { getContactInfo } from "@/utils/ContactService";
+// import axiosInstance from "@/utils/axiosinstance";
+import { MessageCirclePlus, UserRoundMinus } from "lucide-react";
 
 const FriendCard = ({ friendId }: { friendId: string }) => {
-  const [friend] = useState<UserInfo | null>(null);
+  const [friend, setFriend] = useState<UserInfo | null>(null);
 
   // const { getContactInfo } = useUserContactContext();
 
   useEffect(() => {
     console.log(friendId);
-    //   if (!friendId) return;
-    //   (async () => {
-    //     const contact = await getContactInfo(friendId);
-    //     console.log(contact);
-    //     setFriend(contact);
-    //   })();
+    if (!friendId) return;
+    (async () => {
+      const contact = await getContactInfo(friendId);
+      console.log(contact);
+      setFriend(contact);
+    })();
   }, []);
 
   // const removeFriendHandler = async () => {
@@ -73,9 +76,14 @@ const FriendCard = ({ friendId }: { friendId: string }) => {
         </div>
         <div className="h-14 w-[90%] flex justify-between items-center">
           <p className="font-medium mt-1">{friend?.username}</p>
-          <button className="h-8  rounded-lg font-medium px-4 bg-red-500 text-white hover:bg-red-600 darK:hover:bg-gray-800 active:scale-95 transition-all">
-            Remove
-          </button>
+          <div className="h-10 flex">
+            <button className="h-full rounded-l-3xl px-4 text-sm font-medium text-blue-500 hover:bg-gray-100 dark:hover:bg-black active:scale-95 transition-all">
+              <MessageCirclePlus size={20} />
+            </button>
+            <button className="h-full rounded-r-3xl px-4 text-sm font-medium text-red-500 hover:bg-gray-100 dark:hover:bg-black  active:scale-95 transition-all">
+              <UserRoundMinus size={20} />
+            </button>
+          </div>
         </div>
       </div>
     </div>

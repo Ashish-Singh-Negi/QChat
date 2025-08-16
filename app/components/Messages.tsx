@@ -9,6 +9,7 @@ import { useUserContactContext } from "@/Context/UserContactContext";
 import RoomMessageCard from "./RoomMessageCard";
 import SenderMessageCard from "./SenderMessageCard";
 import ReceiverMessageCard from "./ReceiverMessageCard";
+import { getMessageDate } from "@/utils/date";
 
 const Messages = () => {
   const { userInfo } = useUserInfoContext();
@@ -25,14 +26,6 @@ const Messages = () => {
   // { date: string; messages: StoredMessage[] }[]
   //   StoredMessage[]
   // >([]);
-
-  const getMessageDate = (messageTime: string) => {
-    const time = new Date(messageTime ?? "");
-    const day = String(time.getDate()).padStart(2, "0");
-    const month = String(time.getMonth() + 1).padStart(2, "0");
-    const year = time.getFullYear();
-    return `${day}-${month}-${year}`;
-  };
 
   useEffect(() => {
     if (!contactMessages || !contactMessages.length) {
@@ -67,12 +60,6 @@ const Messages = () => {
           messages: [messages[j]],
         });
       }
-    }
-
-    const todayDate = getMessageDate(new Date().toISOString());
-
-    if (tempSortedMessages[0].date === todayDate) {
-      tempSortedMessages[0].date = "Today";
     }
 
     // TODO filter unseen messages and Seen Messages

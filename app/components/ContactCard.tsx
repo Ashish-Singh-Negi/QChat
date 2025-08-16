@@ -7,6 +7,7 @@ import { useUserContactContext } from "@/Context/UserContactContext";
 
 import ProfilePic from "./ProfilePic";
 import { useWebSocketContext } from "@/Context/WebsocketContext";
+import { getMessageDate } from "@/utils/date";
 
 const ContactCard = ({ chatId, index }: { chatId: string; index: number }) => {
   const { userContacts } = useUserContactContext();
@@ -63,8 +64,13 @@ const ContactCard = ({ chatId, index }: { chatId: string; index: number }) => {
           )}
         </div>
         <div className="h-14 w-[90%]">
-          <p className=" font-medium mt-1 flex items-center justify-between gap-1">
-            {userContacts[index].username}{" "}
+          <p className="font-medium mt-1 flex items-center justify-between">
+            {userContacts[index].username}
+            {latestMessage && (
+              <span className="text-sm font-normal px-2">
+                {getMessageDate(latestMessage.createdAt!)}
+              </span>
+            )}
           </p>
           {latestMessage && (
             <p className="h-5 text-sm overflow-hidden">

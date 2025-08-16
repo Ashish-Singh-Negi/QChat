@@ -1,20 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
-import { CircleMinus, EllipsisVertical, Trash2 } from "lucide-react";
+import { CircleMinus, EllipsisVertical, Send, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
-
-import { useUserContactContext } from "@/Context/UserContactContext";
-// import { useWebSocketContext } from "@/Context/WebsocketContext";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import ProfilePic from "./ProfilePic";
+import { useUserContactContext } from "@/Context/UserContactContext";
+import { useChatsContext } from "@/Context/ChatsContext";
+// import { useWebSocketContext } from "@/Context/WebsocketContext";
 
+import { UserInfo } from "@/Interface/definations";
+
+import ProfilePic from "./ProfilePic";
 import Dropdown from "./Dropdown";
 import DropdownActionCard from "./DropdownActionCard";
 import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import HomeContactInfo from "./HomeContactInfo";
-import { useChatsContext } from "@/Context/ChatsContext";
 
 const ChatSection = () => {
   const { userContacts, contactMessages, selectedContact } =
@@ -63,25 +64,25 @@ const ChatSection = () => {
     },
   ];
 
-  // const sendFriendRequestHandler = async () => {
-  //   try {
-  //     const response = await axiosInstance.post<{
-  //       data: UserInfo;
-  //       message: string;
-  //     }>(`/friends/requests`, {
-  //       friendUsername: selectedContact!.username,
-  //     });
-  //     console.log(
-  //       "🚀 ~ sendFriendRequestHandler ~ response.data.data :",
-  //       response.data.data
-  //     );
+  const sendFriendRequestHandler = async () => {
+    try {
+      const response = await axiosInstance.post<{
+        data: UserInfo;
+        message: string;
+      }>(`/friends/requests`, {
+        friendUsername: selectedContact!.username,
+      });
+      console.log(
+        "🚀 ~ sendFriendRequestHandler ~ response.data.data :",
+        response.data.data
+      );
 
-  //     toast.success(response.data.message);
-  //   } catch (error: any) {
-  //     toast.error(error?.response?.data?.error);
-  //     console.error(error);
-  //   }
-  // };
+      toast.success(response.data.message);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.error);
+      console.error(error);
+    }
+  };
 
   return (
     selectedContact && (
@@ -140,8 +141,7 @@ const ChatSection = () => {
           >
             <Messages />
 
-            {/* // TODO fix below statement */}
-            {/* {chats && chats[0].isDisabled && (
+            {selectedChat!.isDisabled && (
               <div className="h-14 w-full flex flex-col gap-2 items-center">
                 <p className="w-full text-center px-4 py-1 bg-gray-800 text-white">
                   you and {selectedContact.username} are no longer friends. To
@@ -162,7 +162,7 @@ const ChatSection = () => {
                   </button>
                 </div>
               </div>
-            )} */}
+            )}
           </main>
           <footer className="h-14 w-full px-4 flex items-center bg-transparent mb-1">
             <MessageInput />
