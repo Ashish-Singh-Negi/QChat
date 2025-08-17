@@ -108,10 +108,8 @@ export const useWebSocket = (
       webSocketRef.current &&
       webSocketRef.current.readyState === WebSocket.OPEN
     ) {
-
       const buffer = Buffer.from(JSON.stringify(dataIs));
       webSocketRef.current.send(buffer);
-
     } else {
       console.error("WebSocket is not open, unable to send message.");
     }

@@ -36,12 +36,24 @@ const Friends = () => {
           </div>
         ))}
       </header>
-      <main className="py-4">
+      <main className="h-full py-4">
+        {nav[0].active && !userInfo?.friends.length && (
+          <div className="h-full w-full flex items-center justify-center">
+            You Don&apos;t have frined
+          </div>
+        )}
         {nav[0].active &&
           userInfo?.friends.map((friend) => (
             <FriendCard friendId={friend.fid} key={friend.fid} />
           ))}
+
+        {nav[1].active && !userInfo?.friendRequests.length && (
+          <div className="h-full w-full flex items-center justify-center">
+            No Friends Requests
+          </div>
+        )}
         {nav[1].active &&
+          userInfo?.friendRequests &&
           userInfo?.friendRequests.map((friendRequest) => (
             <FriendRequestCard requestId={friendRequest} key={friendRequest} />
           ))}

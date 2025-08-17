@@ -100,13 +100,19 @@ export default {
             transform: "rotateY(360deg)",
           },
         },
+        hourglass: {
+          "0%, 100%": { transform: "rotate(0deg)" },
+          "50%": { transform: "rotate(180deg)" },
+        },
       },
+
       animation: {
         leftSlideIn: "leftSlideIn 0.3s ease-in-out forwards",
         leftSlideOut: "leftSlideOut 0.5s ease-in-out forwards",
         dropdownOpen: "dropdownOpen 0.3s ease-in-out forwards",
         slideIn: "slideIn 0.3s ease-in-out forwards",
         flip: "flip 0.3s ease-in-out forwards",
+        hourglass: "hourglass 1.5s infinite ease-in-out",
       },
     },
   },

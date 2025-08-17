@@ -1,73 +1,87 @@
 import React, { useEffect, useState } from "react";
 
-import { UserInfo } from "../../Interface/definations";
+import { Room, UserInfo } from "../../Interface/definations";
 
 // import { useUserContactContext } from "@/Context/UserContactContext";
 import ProfilePic from "./ProfilePic";
 import { getContactInfo } from "@/utils/ContactService";
 // import axiosInstance from "@/utils/axiosinstance";
-import { MessageCirclePlus, UserRoundMinus } from "lucide-react";
+import { MessageCircle, UserRoundMinus } from "lucide-react";
+import axiosInstance from "@/utils/axiosinstance";
+import { useChatsContext } from "@/Context/ChatsContext";
+import { useUserInfoContext } from "@/Context/UserInfoContext";
+import toast from "react-hot-toast";
 
 const FriendCard = ({ friendId }: { friendId: string }) => {
   const [friend, setFriend] = useState<UserInfo | null>(null);
-
-  // const { getContactInfo } = useUserContactContext();
+  const { chats, setCurrentChatId } = useChatsContext();
+  const { setUserInfo } = useUserInfoContext();
 
   useEffect(() => {
     console.log(friendId);
     if (!friendId) return;
     (async () => {
-      const contact = await getContactInfo(friendId);
-      console.log(contact);
-      setFriend(contact);
+      const friend = await getContactInfo(friendId);
+      console.log(friend);
+      setFriend(friend);
     })();
   }, []);
 
-  // const removeFriendHandler = async () => {
-  //   try {
-  //     // Remove friend
-  //     await axiosInstance.patch(`/friends/${friendId}/remove`);
+  const removeFriendHandler = async () => {
+    toast.error("Comming soon");
+    return;
 
-  //     // Refetch user info with updated friendList
-  //     const response = await axiosInstance.get<{
-  //       data: UserInfo;
-  //     }>("/profile", {
-  //       params: { filter: "friends" },
-  //     });
+    try {
+      // Remove friend
+      await axiosInstance.patch(`/friends/${friendId}/remove`);
 
-  //     // Update state
-  //     setUserInfo((prev) => ({
-  //       ...prev!,
-  //       friends: response.data.data.friends,
-  //     }));
+      // Refetch user info with updated friendList
+      const response = await axiosInstance.get<{
+        data: UserInfo;
+      }>("/profile", {
+        params: { filter: "friends" },
+      });
 
-  //     // show success message
-  //     toast.success("Friend removed successfully");
-  //   } catch (error) {
-  //     console.error("Error removing friend or updating list:", error);
-  //     // show error message
-  //   }
-  // };
+      // Update state
+      setUserInfo((prev) => ({
+        ...prev!,
+        friends: response.data.data.friends,
+      }));
 
-  // const createChatRoom = async () => {
-  //   try {
-  //     // create chat room
-  //     const response = await axiosInstance.post<{ data: Room }>(`/chats`, {
-  //       fid: friendId,
-  //     });
+      // show success message
+      toast.success("Friend removed successfully");
+    } catch (error) {
+      console.error("Error removing friend or updating list:", error);
+      // show error message
+    }
+  };
 
-  //     console.log("Room data : ", response.data.data);
-  //   } catch (error: any) {
-  //     console.error(error);
-  //     if (error.response.status === 409) {
-  //       console.log("JOINING ");
-  //     }
-  //   }
-  // };
+  const startChatHandler = async () => {
+    const isChatExist = chats?.find((chat) => {
+      if (chat.participants.find((participant) => participant === friendId)) {
+        return chat;
+      }
+    });
+    if (isChatExist) {
+      setCurrentChatId(isChatExist._id);
+      return;
+    }
+
+    try {
+      // create chat room
+      const response = await axiosInstance.post<{ data: Room }>(`/chats`, {
+        fid: friendId,
+      });
+
+      console.log("Room data : ", response.data.data);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
 
   return friend ? (
-    <div className="h-[72px] w-full px-2 mb-1">
-      <div className="h-full w-full hover:bg-gray-200 dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4">
+    <div className="h-[72px] w-full px-2 mb-1 animate-dropdownOpen">
+      <div className="group h-full w-full hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4">
         <div className="h-14 w-14 text-2xl">
           <ProfilePic
             profilePic={friend.profilePic}
@@ -76,11 +90,17 @@ const FriendCard = ({ friendId }: { friendId: string }) => {
         </div>
         <div className="h-14 w-[90%] flex justify-between items-center">
           <p className="font-medium mt-1">{friend?.username}</p>
-          <div className="h-10 flex">
-            <button className="h-full rounded-l-3xl px-4 text-sm font-medium text-blue-500 hover:bg-gray-100 dark:hover:bg-black active:scale-95 transition-all">
-              <MessageCirclePlus size={20} />
+          <div className="group-hover:opacity-100 group-hover:animate-dropdownOpen opacity-0 animate h-10 flex">
+            <button
+              onClick={() => startChatHandler()}
+              className="h-full rounded-l-3xl px-4 text-sm font-medium text-blue-500 hover:bg-white dark:hover:bg-black active:scale-95 transition-all"
+            >
+              <MessageCircle size={20} />
             </button>
-            <button className="h-full rounded-r-3xl px-4 text-sm font-medium text-red-500 hover:bg-gray-100 dark:hover:bg-black  active:scale-95 transition-all">
+            <button
+              onClick={() => removeFriendHandler()}
+              className="h-full rounded-r-3xl px-4 text-sm font-medium text-red-500 hover:bg-white dark:hover:bg-black  active:scale-95 transition-all"
+            >
               <UserRoundMinus size={20} />
             </button>
           </div>

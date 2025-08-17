@@ -48,13 +48,10 @@ const parseDateToDay = (messageDate: Date): string | undefined => {
     currentMonth,
     currentDay
   ).getTime();
-  console.log("🚀 ~ parseDateToDay ~ messageDateOnly:", messageDateOnly);
-  console.log("🚀 ~ parseDateToDay ~ currentDateOnly:", currentDateOnly);
 
   const dayDifference = Math.floor(
     (currentDateOnly - messageDateOnly) / ONE_DAY
   );
-  console.log("🚀 ~ parseDateToDay ~ dayDifference:", dayDifference);
 
   if (dayDifference === 0) return "Today";
   if (dayDifference === 1) return "Yesterday";

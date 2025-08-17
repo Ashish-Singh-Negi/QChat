@@ -1,8 +1,12 @@
-import axiosInstance from "@/utils/axiosinstance";
 import React, { useEffect, useState } from "react";
-import { FriendRequest, UserInfo } from "../../Interface/definations";
-import { useUserInfoContext } from "@/Context/UserInfoContext";
 import toast from "react-hot-toast";
+
+import axiosInstance from "@/utils/axiosinstance";
+
+import { useUserInfoContext } from "@/Context/UserInfoContext";
+
+import { FriendRequest, UserInfo } from "../../Interface/definations";
+
 import ProfilePic from "./ProfilePic";
 
 const FriendRequestCard = ({ requestId }: { requestId: string }) => {
@@ -110,77 +114,77 @@ const FriendRequestCard = ({ requestId }: { requestId: string }) => {
   if (!friendRequest) return;
 
   return friendRequest.sender.username === userInfo?.username ? (
-    <div className="h-16 w-full border-gray-300 dark:border-gray-700 flex items-center justify-between px-2">
-      <div className="flex items-center gap-2">
-        <div className="h-10 w-10 text-2xl">
+    <div className="h-[72px] w-full px-2 mb-1 animate-dropdownOpen">
+      <div className="group h-full w-full hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4">
+        <div className="h-14 w-14 text-2xl">
           <ProfilePic
             profilePic={friendRequest.recipient.profilePic}
             username={friendRequest.recipient.username}
           />
         </div>
-        <p className="font-medium">{friendRequest.recipient.username}</p>
+        <div className="h-14 w-[90%] flex justify-between items-center">
+          <p className="font-medium mt-1">
+            {friendRequest.recipient?.username}
+          </p>
+          <p className="px-2 text-gray-500">{friendRequest.status}</p>
+        </div>
       </div>
-      <p
-        className={`${
-          friendRequest?.status === "pending"
-            ? "text-blue-500"
-            : friendRequest?.status === "accepted"
-            ? "text-emerald-500"
-            : "text-red-600"
-        }`}
-      >
-        {friendRequest!.status}
-      </p>
     </div>
   ) : friendRequest?.status === "pending" ? (
-    <div className="h-16 w-full border-gray-300 dark:border-gray-700 flex items-center justify-between px-2">
-      <div className="w-fit flex items-center gap-2">
-        {" "}
-        <div className="h-10 w-10 text-2xl">
+    <div className="h-[72px] w-full px-2 mb-1">
+      <div className="group h-full w-full hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4">
+        <div className="h-14 w-14 text-2xl">
           <ProfilePic
-            profilePic={friendRequest.sender.profilePic}
-            username={friendRequest.sender.username}
+            profilePic={friendRequest.recipient.profilePic}
+            username={friendRequest.recipient.username}
           />
         </div>
-        <p className="font-medium dark:text-white">
-          {friendRequest.sender.username}
-        </p>
-      </div>
-      <div>
-        <button
-          onClick={acceptFriendRequest}
-          className="px-2 py-1 rounded-md font-semibold text-white text-sm bg-blue-600 active:scale-95 transition-all mr-2"
-        >
-          Accept
-        </button>
-        <button
-          onClick={rejectFriendRequest}
-          className="px-2 py-1 rounded-md font-semibold text-white text-sm bg-red-500 active:scale-95 transition-all"
-        >
-          Reject
-        </button>
+        <div className="h-14 w-[90%] flex justify-between items-center">
+          <p className="font-medium mt-1">
+            {friendRequest.recipient?.username}
+          </p>
+
+          <div>
+            <button
+              onClick={acceptFriendRequest}
+              className="px-2 py-1 rounded-md font-semibold text-white text-sm bg-blue-600 active:scale-95 transition-all mr-2"
+            >
+              Accept
+            </button>
+            <button
+              onClick={rejectFriendRequest}
+              className="px-2 py-1 rounded-md font-semibold text-white text-sm bg-red-500 active:scale-95 transition-all"
+            >
+              Reject
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   ) : (
-    <div className="h-16 w-full border-gray-300 dark:border-gray-700 flex items-center justify-between px-2">
-      <div className="flex items-center gap-2">
-        <div className="h-10 w-10 text-2xl">
+    <div className="h-[72px] w-full px-2 mb-1 animate-dropdownOpen">
+      <div className="group h-full w-full hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4">
+        <div className="h-14 w-14 text-2xl">
           <ProfilePic
-            profilePic={friendRequest.sender.profilePic}
-            username={friendRequest.sender.username}
+            profilePic={friendRequest.recipient.profilePic}
+            username={friendRequest.recipient.username}
           />
         </div>
-        <p className="font-medium">{friendRequest.sender.username}</p>
+        <div className="h-14 w-[90%] flex justify-between items-center">
+          <p className="font-medium mt-1">
+            {friendRequest.recipient?.username}
+          </p>
+          <p
+            className={`${
+              friendRequest?.status === "accepted"
+                ? "text-emerald-500"
+                : "text-red-600"
+            }`}
+          >
+            {friendRequest.status}
+          </p>
+        </div>
       </div>
-      <p
-        className={`${
-          friendRequest?.status === "accepted"
-            ? "text-emerald-500"
-            : "text-red-600"
-        }`}
-      >
-        {friendRequest.status}
-      </p>
     </div>
   );
 };
