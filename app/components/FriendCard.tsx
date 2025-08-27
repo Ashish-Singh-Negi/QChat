@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Room, UserInfo } from "../../Interface/definations";
+import { Chat, UserInfo } from "../../Interface/definations";
 
 // import { useUserContactContext } from "@/Context/UserContactContext";
 import ProfilePic from "./ProfilePic";
@@ -69,7 +69,7 @@ const FriendCard = ({ friendId }: { friendId: string }) => {
 
     try {
       // create chat room
-      const response = await axiosInstance.post<{ data: Room }>(`/chats`, {
+      const response = await axiosInstance.post<{ data: Chat }>(`/chats`, {
         fid: friendId,
       });
 

@@ -25,23 +25,6 @@ export async function getContactInfo(
   }
 }
 
-export async function getChatMessages(
-  chatId: string
-): Promise<StoredMessage[]> {
-  try {
-    const response = await axiosInstance.get<{ data: StoredMessage[] }>(
-      `/chats/${chatId}/messages`
-    );
-    return response.data.data ?? [];
-  } catch (error: any) {
-    console.error(
-      "getChatMessages error:",
-      error?.response?.data?.error || error
-    );
-    return [];
-  }
-}
-
 export async function fetchContactsFromChats(
   chatList: { contactId: string }[]
 ): Promise<UserInfo[]> {

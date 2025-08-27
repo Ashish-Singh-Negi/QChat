@@ -20,7 +20,7 @@ const ContactCard = ({ chatId, index }: { chatId: string; index: number }) => {
   const messages = chatsMessagesMap.get(chatId);
   let latestMessage = null;
   if (messages) {
-    latestMessage = messages[messages.length - 1];
+    latestMessage = messages[0];
   }
 
   const joinRoomHandler = () => {
@@ -46,13 +46,13 @@ const ContactCard = ({ chatId, index }: { chatId: string; index: number }) => {
   if (!userContacts[index]) return;
 
   return (
-    <div onClick={joinRoomHandler} className={`h-[72px] w-full px-2 mb-1`}>
+    <div onClick={joinRoomHandler} className={`h-20 w-full px-2 mb-1`}>
       <div
         className={`h-full w-full ${
           chatId === selectedChat?._id && "bg-gray-200 dark:bg-slate-900"
         } hover:bg-gray-200 cursor-pointer dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4 transition-all`}
       >
-        <div className="relative h-14 w-14 text-2xl rounded-full">
+        <div className="relative shrink-0 h-14 w-14 text-2xl rounded-full">
           {userContacts[index].profilePic && (
             <ProfilePic
               profilePic={userContacts[index].profilePic}

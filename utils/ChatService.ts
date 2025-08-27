@@ -1,16 +1,63 @@
 import axiosInstance from "@/utils/axiosinstance";
-import { Room } from "@/Interface/definations";
+import { PaginationMeta, Chat, StoredMessage } from "@/Interface/definations";
+
+interface ChatWithPaginationMeta extends Chat {
+  pagination: PaginationMeta;
+}
 
 export type ChatRoomResult =
-  | { success: true; chat: Room }
+  | { success: true; chat: ChatWithPaginationMeta }
   | { success: false; error: string };
+
+export async function getChatMessages(
+  chatId: string,
+  page: number,
+  limit: number
+): Promise<
+  | {
+      data: StoredMessage[];
+      pagination: PaginationMeta;
+    }
+  | []
+> {
+  try {
+    const { data } = await axiosInstance.get<{
+      data: StoredMessage[];
+      pagination: PaginationMeta;
+    }>(`/chats/${chatId}/messages`, {
+      params: {
+        page: page,
+        limit: limit,
+      },
+    });
+    console.log("🚀 ~ getChatMessages ~ data:", data);
+
+    return data;
+  } catch (error: any) {
+    console.error(
+      "getChatMessages error:",
+      error?.response?.data?.error || error
+    );
+    return [];
+  }
+}
 
 export async function getChatRoomInfo(chatId: string): Promise<ChatRoomResult> {
   try {
-    const response = await axiosInstance.get<{ data: Room }>(
-      `/chats/${chatId}`
-    );
-    return { success: true, chat: response.data.data };
+    const response = await axiosInstance.get<{
+      data: Chat;
+      pagination: PaginationMeta;
+    }>(`/chats/${chatId}`);
+
+    const chatWithPaginationMeta = {
+      ...response.data.data,
+      pagination: response.data.pagination,
+    };
+
+    return {
+      success: true,
+      chat: chatWithPaginationMeta,
+    };
   } catch (error: any) {
     const errorMsg =
       error?.response?.data?.error || "Failed to fetch Chat info";
@@ -19,7 +66,9 @@ export async function getChatRoomInfo(chatId: string): Promise<ChatRoomResult> {
   }
 }
 
-export async function fetchAllChats(chatIds: string[]): Promise<Room[]> {
+export async function fetchAllChats(
+  chatIds: string[]
+): Promise<ChatWithPaginationMeta[]> {
   const chatRoomPromises = chatIds.map((chatId) => {
     if (!chatId) {
       console.warn("Missing chatId");
@@ -31,7 +80,10 @@ export async function fetchAllChats(chatIds: string[]): Promise<Room[]> {
   const results = await Promise.all(chatRoomPromises);
 
   const validChats = results
-    .filter((res): res is { success: true; chat: Room } => res?.success ?? true)
+    .filter(
+      (res): res is { success: true; chat: ChatWithPaginationMeta } =>
+        res?.success ?? true
+    )
     .map((res) => res.chat);
 
   return validChats;

@@ -45,7 +45,7 @@ export type SendMessage = {
   receiver?: string;
 };
 
-export type Room = {
+export interface Chat {
   _id: string;
   participants: string[];
   messages: StoredMessage[] | [];
@@ -55,7 +55,7 @@ export type Room = {
   createdAt: string;
   updatedAt: string;
   isDisabled: boolean;
-};
+}
 
 export type StoredMessage = {
   _id: string;
@@ -88,3 +88,12 @@ export type ParsedMessage = {
   isOnline: boolean;
   status: "SEND" | "DELIVERED" | "SEEN";
 };
+
+export interface PaginationMeta {
+  totalRecords: number;
+  currentPage: number;
+  limit: number;
+  totalPages: number;
+  nextPage: number | null;
+  prevPage: number | null;
+}

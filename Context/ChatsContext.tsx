@@ -1,6 +1,6 @@
 "use client";
 
-import { Room, StoredMessage } from "@/Interface/definations";
+import { Chat, PaginationMeta, StoredMessage } from "@/Interface/definations";
 import {
   createContext,
   Dispatch,
@@ -15,18 +15,26 @@ import { fetchAllChats } from "@/utils/ChatService";
 import toast from "react-hot-toast";
 import { useUserContactContext } from "./UserContactContext";
 
+interface ChatWithPaginationMeta extends Chat {
+  pagination: PaginationMeta;
+}
+
 type ChatsContext = {
-  chats: Room[] | null;
-  setChats: Dispatch<SetStateAction<Room[] | null>>;
+  chats: ChatWithPaginationMeta[] | null;
   chatsMessagesMap: Map<string, StoredMessage[]>;
   addMessageToChatsMessagesMap: (key: string, message: StoredMessage) => void;
+  updateChatMessagesPaginationMap: (
+    key: string,
+    pagination: PaginationMeta
+  ) => void;
+  chatMessagesPaginationMap: Map<string, PaginationMeta>;
   updateMessageStatus: (
     key: string,
     id: string,
     status: "SEND" | "DELIVERED" | "SEEN"
   ) => void;
-  selectedChat: Room | null;
-  setSelectedChat: Dispatch<SetStateAction<Room | null>>;
+  selectedChat: ChatWithPaginationMeta | null;
+  setSelectedChat: Dispatch<SetStateAction<ChatWithPaginationMeta | null>>;
   setCurrentChatId: (chatId: string) => void;
 };
 
@@ -38,13 +46,17 @@ export default function ChatsContextProvider({
   children: ReactNode;
 }) {
   const { userInfo } = useUserInfoContext();
-  const { setContactMessages, setSelectedContact, userContacts } =
+  const {  setSelectedContact, userContacts } =
     useUserContactContext();
 
-  const [chats, setChats] = useState<Room[] | null>(null);
-  const [selectedChat, setSelectedChat] = useState<Room | null>(null);
+  const [chats, setChats] = useState<ChatWithPaginationMeta[] | null>(null);
+  const [selectedChat, setSelectedChat] =
+    useState<ChatWithPaginationMeta | null>(null);
   const [chatsMessagesMap, setChatsMessagesMap] = useState<
     Map<string, StoredMessage[]>
+  >(new Map());
+  const [chatMessagesPaginationMap, setChatMessagesPaginationMap] = useState<
+    Map<string, PaginationMeta>
   >(new Map());
 
   const addMessageToChatsMessagesMap = (
@@ -55,7 +67,7 @@ export default function ChatsContextProvider({
       const newMap = new Map(prevMap); // clone the prev Map
 
       const chatMessages = prevMap.get(key) ?? [];
-      const updatedChatMessages = [...chatMessages, message];
+      const updatedChatMessages = [message, ...chatMessages];
 
       newMap.set(key, updatedChatMessages);
       return newMap;
@@ -123,8 +135,21 @@ export default function ChatsContextProvider({
 
     setSelectedContact(contactInfo);
 
-    const messages = chatsMessagesMap.get(chatId);
-    if (messages) setContactMessages(messages);
+    // const messages = chatsMessagesMap.get(chatId);
+    // if (messages) setContactMessages(messages);
+  };
+
+  const updateChatMessagesPaginationMap = (
+    key: string,
+    pagination: PaginationMeta
+  ) => {
+    setChatMessagesPaginationMap((prevMap) => {
+      const newMap = new Map(prevMap);
+
+      newMap.set(key, pagination);
+
+      return newMap;
+    });
   };
 
   useEffect(() => {
@@ -137,26 +162,39 @@ export default function ChatsContextProvider({
     console.log("🚀 ~ ChatsContextProvider ~ chats:", chats);
 
     const messagesMap = new Map<string, StoredMessage[]>();
+    const chatMessagesPaginationMap = new Map<string, PaginationMeta>();
 
     chats.forEach((chat) => {
       messagesMap.set(chat._id, chat.messages);
+      chatMessagesPaginationMap.set(chat._id, chat.pagination);
     });
 
     setChatsMessagesMap(messagesMap); // set once with full map
+    setChatMessagesPaginationMap(chatMessagesPaginationMap);
   }, [chats]);
 
+  // useEffect(() => {
+  //   const newMessages = chatsMessagesMap.get(selectedChat?._id!);
+  //   console.log("🚀 ~ ChatsContextProvider ~ newMessages:", newMessages);
+
+  //   if (newMessages) setContactMessages(newMessages);
+  // }, [chatsMessagesMap]);
+
   useEffect(() => {
-    const newMessages = chatsMessagesMap.get(selectedChat?._id!);
-    if (newMessages) setContactMessages(newMessages);
-  }, [chatsMessagesMap]);
+    console.log(
+      "🚀 ~ ChatsContextProvider ~ chatMessagesPaginationMap:",
+      chatMessagesPaginationMap
+    );
+  }, [chatMessagesPaginationMap]);
 
   return (
     <ChatsContext.Provider
       value={{
         chats,
-        setChats,
         chatsMessagesMap,
         addMessageToChatsMessagesMap,
+        chatMessagesPaginationMap,
+        updateChatMessagesPaginationMap,
         updateMessageStatus,
         selectedChat,
         setSelectedChat,
