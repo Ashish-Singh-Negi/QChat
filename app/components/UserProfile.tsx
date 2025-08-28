@@ -2,7 +2,7 @@ import { useUserInfoContext } from "@/Context/UserInfoContext";
 import React from "react";
 
 import ProfilePic from "./ProfilePic";
-import { AtSign, UserRound} from "lucide-react";
+import { AtSign, UserRound } from "lucide-react";
 
 const UserProfile = () => {
   const { userInfo } = useUserInfoContext();
@@ -35,9 +35,11 @@ const UserProfile = () => {
     //     </div>
     //   )}
     //   {editProfile && (
-    <main className=" h-full w-full bg-white flex flex-col gap-4 py-4 px-8 dark:bg-black">
+    <main className="h-full w-full bg-red-50 flex flex-col gap-4 py-4 px-8 dark:bg-black">
       <header className="h-fit w-full flex justify-between">
-        <p className="text-xl font-semibold">Profile</p>
+        <p className="text-xl font-semibold text-black dark:text-white">
+          Profile
+        </p>
       </header>
       <div className="h-40 w-full rounded-full flex justify-center">
         <div className="h-40 w-40 text-5xl">
@@ -48,33 +50,39 @@ const UserProfile = () => {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <UserRound className="h-6 w-6 text-red-600" />
+        <UserRound className="h-6 w-6 text-red-600 mt-4" />
         <div className="w-full flex flex-col">
-          <label className="text-xs mb-1 px-1 font-medium">username</label>
+          <label className="text-xs mb-1 px-1 font-medium">
+            username
+          </label>
           <input
             type="text"
-            className="h-10 w-full px-2 py-1 outline-none border-b-2 focus:border-red-600 dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 transition-all"
+            className="h-10 w-full px-2 py-1 outline-none border-b-2 focus:border-red-600 text-black dark:text-white bg-white dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 transition-all"
             value={userInfo.username}
           />
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <AtSign className="h-6 w-6 text-red-600" />
+        <AtSign className="h-6 w-6 text-red-600 mt-4" />
         <div className="w-full flex flex-col">
-          <label className="text-xs mb-1 px-1 font-medium">email</label>
+          <label className="text-xs mb-1 px-1 font-medium">
+            email
+          </label>
           <input
             type="text"
-            className="h-10 w-full px-2 py-1 outline-none border-b-2 focus:border-red-600 dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 transition-all"
+            className="h-10 w-full px-2 py-1 outline-none border-b-2 focus:border-red-600 text-black dark:text-white bg-white dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 transition-all"
             value={userInfo.email}
           />
         </div>
       </div>
       <div className="flex items-center gap-4">
         <div className="w-full flex flex-col">
-          <label className="text-xs mb-1 px-1 font-medium">About</label>
+          <label className="text-xs mb-1 px-1 font-medium">
+            About
+          </label>
           <textarea
             placeholder="write something..."
-            className="h-40 w-full p-2 outline-none border-b-2 focus:border-red-600 dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 mb-4 transition-all resize-none "
+            className="h-40 w-full p-2 caret-red-500 outline-none border-b-2 focus:border-red-600 text-black dark:text-white bg-white dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 mb-4 transition-all resize-none "
           ></textarea>
         </div>
       </div>

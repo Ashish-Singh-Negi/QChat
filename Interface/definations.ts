@@ -97,3 +97,5 @@ export interface PaginationMeta {
   nextPage: number | null;
   prevPage: number | null;
 }
+
+export type Theme = "DARK" | "LIGHT";

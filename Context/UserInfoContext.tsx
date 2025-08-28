@@ -61,11 +61,10 @@ export default function UserInfoContextProvider({
 export function useUserInfoContext() {
   const context = useContext(UserInfoContext);
 
-  if (!context) {
+  if (!context)
     throw new Error(
       "useUserInfoContext must be used within a UserInfoContextProvider"
     );
-  }
 
   return context;
 }

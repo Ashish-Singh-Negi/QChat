@@ -8,7 +8,7 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: "media",
+  darkMode: "class",
   safelist: [
     "bg-slate-950",
     "text-slate-300",

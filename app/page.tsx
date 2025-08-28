@@ -16,6 +16,7 @@ import ProfilePic from "./components/ProfilePic";
 import SearchUser from "./components/SearchUser";
 import Friends from "./components/Friends";
 import { MessageCircleMore, Search, UsersRound } from "lucide-react";
+import ThemeToggleBtn from "./components/ThemeToggleBtn";
 
 export default function Home() {
   const { getUserProfile } = useUserInfoContext();
@@ -60,7 +61,7 @@ export default function Home() {
     <>
       {/* <Websocket /> */}
       <Toaster position="bottom-left" />
-      <main className="h-full w-full flex overflow-hidden">
+      <main className="h-full w-full flex overflow-hiddens text-black dark:text-white">
         {/* <NavBar /> */}
         <nav className="h-full w-16 bg-red-200 dark:bg-black border-r-[1px] dark:border-gray-800 flex flex-col justify-between py-4">
           <div className="h-full w-full flex flex-col items-center">
@@ -77,10 +78,7 @@ export default function Home() {
                 nav[0].isActive && "bg-red-50 dark:bg-slate-700 opacity-100"
               } h-10 w-full ml-2 mb-4 bg-red-100 dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-slate-700 flex items-center justify-center rounded-l-full -rotate-6 cursor-pointer active:scale-95 transition-all`}
             >
-              <MessageCircleMore
-                strokeWidth={1.25}
-                className="h-6 w-6 dark:text-white"
-              />
+              <MessageCircleMore strokeWidth={1.25} className="h-6 w-6" />
             </button>
             <button
               onClick={() =>
@@ -95,10 +93,7 @@ export default function Home() {
                 nav[1].isActive && "bg-red-50 dark:bg-slate-700 opacity-100"
               } h-10 w-full ml-2 mb-4 bg-red-100 dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-slate-700 flex items-center justify-center rounded-l-full -rotate-6 cursor-pointer active:scale-95 transition-all`}
             >
-              <UsersRound
-                strokeWidth={1.25}
-                className="h-6 w-6 dark:text-white"
-              />
+              <UsersRound strokeWidth={1.25} className="h-6 w-6" />
             </button>
             <button
               onClick={() =>
@@ -113,13 +108,12 @@ export default function Home() {
                 nav[2].isActive && "bg-red-50 dark:bg-slate-700 opacity-100"
               } h-10 w-full ml-2 mb-4 bg-red-100 dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-slate-700 flex items-center justify-center rounded-l-full -rotate-6 cursor-pointer active:scale-95 transition-all`}
             >
-              <Search
-                strokeWidth={1.25}
-                className="h-6 w-6 dark:text-white"
-              />
+              <Search strokeWidth={1.25} className="h-6 w-6" />
             </button>
           </div>
+
           <div className="h-fit w-full flex flex-col items-center">
+            <ThemeToggleBtn />
             <div
               onClick={() =>
                 setNav((prev) => [

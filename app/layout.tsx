@@ -5,6 +5,7 @@ import UserInfoContextProvider from "@/Context/UserInfoContext";
 import UserContactContextProvider from "@/Context/UserContactContext";
 import ChatsContextProvider from "@/Context/ChatsContext";
 import WebSocketContextProvider from "@/Context/WebsocketContext";
+import ThemeContextProvider from "@/Context/ThemeContextProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,13 +32,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh w-full`}
       >
-        <UserInfoContextProvider>
-          <UserContactContextProvider>
-            <ChatsContextProvider>
-              <WebSocketContextProvider>{children}</WebSocketContextProvider>
-            </ChatsContextProvider>
-          </UserContactContextProvider>
-        </UserInfoContextProvider>
+        <ThemeContextProvider>
+          <UserInfoContextProvider>
+            <UserContactContextProvider>
+              <ChatsContextProvider>
+                <WebSocketContextProvider>{children}</WebSocketContextProvider>
+              </ChatsContextProvider>
+            </UserContactContextProvider>
+          </UserInfoContextProvider>
+        </ThemeContextProvider>
       </body>
     </html>
   );
