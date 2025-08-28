@@ -15,7 +15,7 @@ const Chats = () => {
       {" "}
       <header className="px-4 py-2 mb-2 flex justify-between items-center">
         <h1 className="font-semibold text-4xl">
-          <span className="text-red-500">Q</span>Chat
+          Q<span className="text-red-500 underline underline-offset-2">Chat</span>
         </h1>
       </header>
       <div className="px-4">
@@ -31,11 +31,7 @@ const Chats = () => {
         {!search &&
           userInfo &&
           userInfo.chats.map((chat, i) => (
-            <ContactCard
-              index={i}
-              key={chat.chatId}
-              chatId={chat.chatId}
-            />
+            <ContactCard index={i} key={chat.chatId} chatId={chat.chatId} />
           ))}
         {search && (
           <>
