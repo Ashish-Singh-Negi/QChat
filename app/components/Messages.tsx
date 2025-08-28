@@ -11,13 +11,14 @@ import ReceiverMessageCard from "./ReceiverMessageCard";
 import { getMessageDate } from "@/utils/date";
 import { getChatMessages } from "@/utils/ChatService";
 import { useChatsContext } from "@/Context/ChatsContext";
+import Spinner from "./Spinner";
 
 const Messages = () => {
   const { userInfo } = useUserInfoContext();
   const { selectedChat, chatsMessagesMap, chatMessagesPaginationMap } =
     useChatsContext();
 
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [contactMessages, setContactMessages] = useState<StoredMessage[]>([]);
   const [categorizeMessagesByDate, setCatogorizeMessagesByDate] = useState<
     | {
@@ -65,8 +66,9 @@ const Messages = () => {
 
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && currentChatPagination?.nextPage) {
-        console.log("NEXT PAGE", currentChatPagination.nextPage);
+        setLoading(true);
         fetchOldChatMessages();
+        setLoading(false);
       }
     });
 
@@ -149,6 +151,7 @@ const Messages = () => {
           </div>
         </div>
       ))}
+      {loading && <Spinner />}
     </>
   );
 };
