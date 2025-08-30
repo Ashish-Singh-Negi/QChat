@@ -125,12 +125,12 @@ const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
                   {message.isEdited && <span>Edited</span>}
                   {formattedTime}
                   {message.status === "SEND" && (
-                    <span className="text-gray-700 animate-flip">
+                    <span className="text-gray-800 dark:text-gray-400 animate-flip">
                       <Check size={16} strokeWidth={1.5} />
                     </span>
                   )}
                   {message.status === "DELIVERED" && (
-                    <span className="text-gray-700 animate-flip">
+                    <span className="text-gray-800 dark:text-gray-400 animate-flip">
                       <CheckCheck size={16} strokeWidth={1.5} />
                     </span>
                   )}
@@ -191,12 +191,12 @@ const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
                   {message.isEdited && <span>Edited</span>}
                   {formattedTime}
                   {message.status === "SEND" && (
-                    <span className="text-gray-400 animate-flip">
+                    <span className="text-gray-800 dark:text-gray-400 animate-flip">
                       <Check size={16} strokeWidth={1.5} />
                     </span>
                   )}
                   {message.status === "DELIVERED" && (
-                    <span className="text-gray-400 animate-flip">
+                    <span className="text-gray-800 dark:text-gray-400 animate-flip">
                       <CheckCheck size={16} strokeWidth={1.5} />
                     </span>
                   )}

@@ -6,6 +6,7 @@ import React, { FormEvent, useState } from "react";
 
 import chatIllust from "@/public/Messaging fun-amico.svg";
 import { useRouter } from "next/navigation";
+import Logo from "../components/Logo";
 
 const LoginPage = () => {
   const [username, setUsername] = useState<string | null>(null);
@@ -30,12 +31,12 @@ const LoginPage = () => {
   };
 
   return (
-    <main className="h-full w-full flex justify-between">
+    <main className="h-full w-full flex justify-between bg-white dark:bg-black text-black dark:text-white">
       <div className="h-full w-2/3 flex justify-center items-center">
         <form className="p-10 flex flex-col gap-4" onSubmit={loginHandler}>
-          <h1 className="text-4xl font-semibold mb-8">
-            <span className="text-red-500">Q</span>Chat
-          </h1>
+          <div className="mb-4">
+            <Logo />
+          </div>
           <input
             className="px-2 py-1 rounded-sm h-10 w-72 outline-none bg-gray-200 text-gray-800 dark:text-gray-300 placeholder:text-gray-800 dark:placeholder:text-gray-600 font-medium dark:bg-black border-b-2 dark:border-black focus:border-blue-500 transition-all"
             onChange={(e) => setUsername(e.target.value)}

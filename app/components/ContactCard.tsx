@@ -49,8 +49,8 @@ const ContactCard = ({ chatId, index }: { chatId: string; index: number }) => {
     <div onClick={joinRoomHandler} className={`h-20 w-full px-2 mb-1`}>
       <div
         className={`h-full w-full ${
-          chatId === selectedChat?._id && "bg-gray-200 dark:bg-slate-900"
-        } hover:bg-gray-200 cursor-pointer dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4 transition-all`}
+          chatId === selectedChat?._id && "bg-red-100 dark:bg-slate-900"
+        } hover:bg-red-100 cursor-pointer dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4 transition-all`}
       >
         <div className="relative shrink-0 h-14 w-14 text-2xl rounded-full">
           {userContacts[index].profilePic && (
@@ -67,13 +67,13 @@ const ContactCard = ({ chatId, index }: { chatId: string; index: number }) => {
           <p className="font-medium mt-1 flex items-center justify-between">
             {userContacts[index].username}
             {latestMessage && (
-              <span className="text-sm font-normal px-2">
+              <span className="text-sm font-normal px-2 text-gray-800 dark:text-gray-400">
                 {getMessageDate(latestMessage.createdAt!)}
               </span>
             )}
           </p>
           {latestMessage && (
-            <p className="h-5 text-sm overflow-hidden">
+            <p className="h-5 text-sm text-gray-900 dark:text-gray-400 overflow-hidden">
               {latestMessage.content.length > 60
                 ? `${latestMessage.content.slice(0, 60)}...`
                 : latestMessage.content}

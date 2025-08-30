@@ -18,7 +18,7 @@ const Messages = () => {
   const { selectedChat, chatsMessagesMap, chatMessagesPaginationMap } =
     useChatsContext();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [contactMessages, setContactMessages] = useState<StoredMessage[]>([]);
   const [categorizeMessagesByDate, setCatogorizeMessagesByDate] = useState<
     | {
@@ -44,21 +44,18 @@ const Messages = () => {
   };
 
   useEffect(() => {
-    const chatMessages = chatsMessagesMap.get(selectedChat!._id!);
-    console.log("🚀 ~ Messages ~ chatMessages:", chatMessages);
-    if (chatMessages) setContactMessages(chatMessages);
-
     const chatPagination = chatMessagesPaginationMap.get(selectedChat!._id!);
-    console.log("🚀 ~ Messages ~ chatPagination:", chatPagination);
     if (chatPagination) setCurrentChatPagination(chatPagination);
   }, [selectedChat]);
 
   useEffect(() => {
-    console.log(contactMessages);
-
     const messages = chatsMessagesMap.get(selectedChat!._id!);
     if (messages) setContactMessages(messages);
-  }, [chatsMessagesMap]);
+  }, [chatsMessagesMap, selectedChat]);
+
+  useEffect(() => {
+    if (currentChatPagination?.nextPage === null) setLoading(false);
+  }, [currentChatPagination]);
 
   useEffect(() => {
     const firstMessageElement = messagesRef.current?.firstElementChild;
@@ -66,9 +63,7 @@ const Messages = () => {
 
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && currentChatPagination?.nextPage) {
-        setLoading(true);
         fetchOldChatMessages();
-        setLoading(false);
       }
     });
 
@@ -86,7 +81,6 @@ const Messages = () => {
     }
 
     const messages = contactMessages;
-    // console.log("🚀 ~ Messages ~ messages:", messages);
 
     const tempCategorizeMessageByDate: {
       date: string;

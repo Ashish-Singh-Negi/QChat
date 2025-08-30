@@ -81,7 +81,7 @@ const FriendCard = ({ friendId }: { friendId: string }) => {
 
   return friend ? (
     <div className="h-[72px] w-full px-2 mb-1 animate-dropdownOpen">
-      <div className="group h-full w-full hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4">
+      <div className="group h-full w-full hover:bg-red-100 dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4">
         <div className="h-14 w-14 text-2xl">
           <ProfilePic
             profilePic={friend.profilePic}

@@ -22,7 +22,7 @@ export default function ThemeContextProvider({
 }: {
   children: ReactNode;
 }) {
-  const [theme, setTheme] = useState<Theme>("LIGHT");
+  const [theme, setTheme] = useState<Theme>("DARK");
 
   return (
     <ThemeContext.Provider

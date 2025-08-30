@@ -6,6 +6,7 @@ import React, { FormEvent, useState } from "react";
 import TextingIllust from "@/public/Texting-pana.svg";
 import axiosInstance from "@/utils/axiosinstance";
 import { useRouter } from "next/navigation";
+import Logo from "../components/Logo";
 
 const SignupPage = () => {
   const { push } = useRouter();
@@ -39,11 +40,11 @@ const SignupPage = () => {
   };
 
   return (
-    <main className="h-full w-full flex justify-evenly items-center">
+    <main className="h-full w-full flex justify-evenly items-center bg-white dark:bg-black text-black dark:text-white">
       <form onSubmit={signupHandler} className="p-10 flex flex-col gap-4">
-        <h1 className="text-4xl font-semibold mb-8">
-          <span className="text-red-500">Q</span>Chat
-        </h1>
+        <div className="mb-4">
+          <Logo />
+        </div>
         <input
           className="px-2 py-1 rounded-sm h-10 w-72 outline-none bg-gray-200 text-gray-800 dark:text-gray-300 placeholder:text-gray-800 dark:placeholder:text-gray-600 font-medium dark:bg-gray-950 border-b-2 dark:border-black focus:border-blue-500 transition-all"
           onChange={(e) => setUsername(e.target.value)}

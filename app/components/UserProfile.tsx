@@ -1,5 +1,5 @@
 import { useUserInfoContext } from "@/Context/UserInfoContext";
-import React from "react";
+import React, { useState } from "react";
 
 import ProfilePic from "./ProfilePic";
 import { AtSign, UserRound } from "lucide-react";
@@ -9,6 +9,20 @@ const UserProfile = () => {
 
   // const [showFullImage, setShowFullImage] = useState(false);
   // const [editProfile, setEditProfile] = useState(false);
+  const [email, setEmail] = useState<string | null>(null);
+  const [about, setAbout] = useState<string | null>(null);
+
+  // useEffect(() => {
+  //   if (!userInfo) return;
+  //   setEmail(userInfo?.email);
+  //   setAbout(userInfo?.about);
+  // }, [userInfo]);
+
+  // useEffect(() => {
+  //   if (about !== userInfo?.about || email !== userInfo.email) {
+  //     setEditProfile(true);
+  //   } else setEditProfile(false);
+  // }, [about, email]);
 
   if (!userInfo) return;
 
@@ -35,57 +49,67 @@ const UserProfile = () => {
     //     </div>
     //   )}
     //   {editProfile && (
-    <main className="h-full w-full bg-red-50 flex flex-col gap-4 py-4 px-8 dark:bg-black">
+    <main className="h-full w-full bg-red-50 flex flex-col gap-4 py-4 px-6 dark:bg-black">
       <header className="h-fit w-full flex justify-between">
         <p className="text-xl font-semibold text-black dark:text-white">
           Profile
         </p>
       </header>
-      <div className="h-40 w-full rounded-full flex justify-center">
-        <div className="h-40 w-40 text-5xl">
-          <ProfilePic
-            profilePic={userInfo.profilePic!}
-            username={userInfo.username!}
-          />
+      <section className="h-fit w-full flex flex-col gap-4">
+        <div className="h-40 w-full rounded-full flex justify-center">
+          <div className="h-40 w-40 text-5xl">
+            <ProfilePic
+              profilePic={userInfo.profilePic!}
+              username={userInfo.username!}
+            />
+          </div>
         </div>
-      </div>
-      <div className="flex items-center gap-4">
-        <UserRound className="h-6 w-6 text-red-600 mt-4" />
-        <div className="w-full flex flex-col">
-          <label className="text-xs mb-1 px-1 font-medium">
-            username
-          </label>
-          <input
-            type="text"
-            className="h-10 w-full px-2 py-1 outline-none border-b-2 focus:border-red-600 text-black dark:text-white bg-white dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 transition-all"
-            value={userInfo.username}
-          />
+        <div className="flex items-center gap-4">
+          <UserRound className="h-6 w-6 text-red-600 mt-4" />
+          <div className="w-full flex flex-col">
+            <label className="text-xs mb-1 px-1 font-medium">username</label>
+            <input
+              type="text"
+              disabled
+              className="h-10 w-full px-2 py-1 outline-none border-b-2 caret-red-500 focus:border-red-600 text-black dark:text-white bg-white dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 transition-all"
+              value={userInfo.username}
+            />
+          </div>
         </div>
-      </div>
-      <div className="flex items-center gap-4">
-        <AtSign className="h-6 w-6 text-red-600 mt-4" />
-        <div className="w-full flex flex-col">
-          <label className="text-xs mb-1 px-1 font-medium">
-            email
-          </label>
-          <input
-            type="text"
-            className="h-10 w-full px-2 py-1 outline-none border-b-2 focus:border-red-600 text-black dark:text-white bg-white dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 transition-all"
-            value={userInfo.email}
-          />
+        <div className="flex items-center gap-4">
+          <AtSign className="h-6 w-6 text-red-600 mt-4" />
+          <div className="w-full flex flex-col">
+            <label className="text-xs mb-1 px-1 font-medium">email</label>
+            <input
+              type="text"
+              value={email!}
+              onChange={(e) => setEmail(e.target.value)}
+              className="h-10 w-full px-2 py-1 outline-none border-b-2 caret-red-500 focus:border-red-600 text-black dark:text-white bg-white dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 transition-all"
+            />
+          </div>
         </div>
-      </div>
-      <div className="flex items-center gap-4">
-        <div className="w-full flex flex-col">
-          <label className="text-xs mb-1 px-1 font-medium">
-            About
-          </label>
-          <textarea
-            placeholder="write something..."
-            className="h-40 w-full p-2 caret-red-500 outline-none border-b-2 focus:border-red-600 text-black dark:text-white bg-white dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 mb-4 transition-all resize-none "
-          ></textarea>
+        <div className="flex items-center gap-4">
+          <div className="w-full flex flex-col">
+            <label className="text-xs mb-1 px-1 font-medium">About</label>
+            <textarea
+              placeholder="write something..."
+              value={about!}
+              onChange={(e) => setAbout(e.target.value)}
+              className="h-40 w-full p-2 caret-red-500 outline-none border-b-2 focus:border-red-600 text-black dark:text-white bg-white dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 mb-4 transition-all resize-none "
+            ></textarea>
+          </div>
         </div>
-      </div>
+      </section>
+      {/* {editProfile && (
+        <div className="h-10 w-full flex gap-20 font-medium">
+          <button className="h-10 w-full rounded-md active:scale-95 transition-all border-2 border-red-400 text-red-400">
+            Cancel
+          </button>
+          <button className="h-10 w-full rounded-md active:scale-95 transition-all bg-red-400 text-white">
+            Save
+          </button>
+        </div>
+      )} */}
     </main>
     //   )}
     //   <div

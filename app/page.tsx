@@ -59,10 +59,8 @@ export default function Home() {
 
   return (
     <>
-      {/* <Websocket /> */}
       <Toaster position="bottom-left" />
       <main className="h-full w-full flex overflow-hiddens text-black dark:text-white">
-        {/* <NavBar /> */}
         <nav className="h-full w-16 bg-red-200 dark:bg-black border-r-[1px] dark:border-gray-800 flex flex-col justify-between py-4">
           <div className="h-full w-full flex flex-col items-center">
             <button
@@ -75,8 +73,8 @@ export default function Home() {
                 ])
               }
               className={`${
-                nav[0].isActive && "bg-red-50 dark:bg-slate-700 opacity-100"
-              } h-10 w-full ml-2 mb-4 bg-red-100 dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-slate-700 flex items-center justify-center rounded-l-full -rotate-6 cursor-pointer active:scale-95 transition-all`}
+                nav[0].isActive && "bg-red-50 dark:bg-slate-700"
+              } h-14 w-full ml-2 mb-4 bg-red-100 translate-x-1 dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-slate-700 flex items-center justify-center rounded-l-full -rotate-6 cursor-pointer active:scale-95 transition-all`}
             >
               <MessageCircleMore strokeWidth={1.25} className="h-6 w-6" />
             </button>
@@ -90,8 +88,8 @@ export default function Home() {
                 ])
               }
               className={`${
-                nav[1].isActive && "bg-red-50 dark:bg-slate-700 opacity-100"
-              } h-10 w-full ml-2 mb-4 bg-red-100 dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-slate-700 flex items-center justify-center rounded-l-full -rotate-6 cursor-pointer active:scale-95 transition-all`}
+                nav[1].isActive && "bg-red-50 dark:bg-slate-700"
+              } h-14 w-full ml-2 mb-4 bg-red-100 translate-x-1 dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-slate-700 flex items-center justify-center rounded-l-full -rotate-6 cursor-pointer active:scale-95 transition-all`}
             >
               <UsersRound strokeWidth={1.25} className="h-6 w-6" />
             </button>
@@ -105,8 +103,8 @@ export default function Home() {
                 ])
               }
               className={`${
-                nav[2].isActive && "bg-red-50 dark:bg-slate-700 opacity-100"
-              } h-10 w-full ml-2 mb-4 bg-red-100 dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-slate-700 flex items-center justify-center rounded-l-full -rotate-6 cursor-pointer active:scale-95 transition-all`}
+                nav[2].isActive && "bg-red-50 dark:bg-slate-700"
+              } h-14 w-full ml-2 mb-4 bg-red-100 translate-x-1 dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-slate-700 flex items-center justify-center rounded-l-full -rotate-6 cursor-pointer active:scale-95 transition-all`}
             >
               <Search strokeWidth={1.25} className="h-6 w-6" />
             </button>
@@ -132,7 +130,7 @@ export default function Home() {
           </div>
         </nav>
 
-        <section className="h-full w-[30%] z-10 flex flex-col border-r-[1px] border-red-200 bg-white dark:border-gray-800 dark:bg-black">
+        <section className="h-full w-[30%] z-10 flex flex-col border-r-[1px] border-red-200 bg-red-50 dark:border-gray-800 dark:bg-black">
           {nav.map((value) => value.isActive && value.component)}
         </section>
         <ChatSection />

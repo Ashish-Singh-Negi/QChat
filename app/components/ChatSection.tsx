@@ -137,7 +137,7 @@ const ChatSection = () => {
           </header>
           <main
             ref={chatContainerRef}
-            className="flex-1 flex flex-col-reverse w-full font-normal overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-800"
+            className="flex-1 flex flex-col-reverse w-full font-normal overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600"
           >
             <Messages />
 
