@@ -1,28 +1,59 @@
 import { useUserInfoContext } from "@/Context/UserInfoContext";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ProfilePic from "./ProfilePic";
 import { AtSign, UserRound } from "lucide-react";
+import axiosInstance from "@/utils/axiosinstance";
+import toast from "react-hot-toast";
 
 const UserProfile = () => {
-  const { userInfo } = useUserInfoContext();
+  const { userInfo, setUserInfo } = useUserInfoContext();
 
   // const [showFullImage, setShowFullImage] = useState(false);
-  // const [editProfile, setEditProfile] = useState(false);
-  const [email, setEmail] = useState<string | null>(null);
-  const [about, setAbout] = useState<string | null>(null);
+  const [editProfile, setEditProfile] = useState(false);
 
-  // useEffect(() => {
-  //   if (!userInfo) return;
-  //   setEmail(userInfo?.email);
-  //   setAbout(userInfo?.about);
-  // }, [userInfo]);
+  // const [profilePic, setProfilePic] = useState<string>("");
+  const [email, setEmail] = useState<string>();
+  const [about, setAbout] = useState<string>();
 
-  // useEffect(() => {
-  //   if (about !== userInfo?.about || email !== userInfo.email) {
-  //     setEditProfile(true);
-  //   } else setEditProfile(false);
-  // }, [about, email]);
+  useEffect(() => {
+    if (!userInfo) return;
+    setEmail(userInfo?.email);
+    setAbout(userInfo?.about ? userInfo?.about : "");
+  }, [userInfo]);
+
+  useEffect(() => {
+    if (!about) return;
+    const aboutIs = about?.trim() === "" ? "" : about.trim();
+
+    if (aboutIs !== userInfo?.about) {
+      setEditProfile(true);
+    } else setEditProfile(false);
+  }, [about]);
+
+  const cancelhandler = () => {
+    setAbout(userInfo?.about ? userInfo?.about : "");
+  };
+
+  const saveChangesHandler = async () => {
+    try {
+      const { data }: { data: any } = await axiosInstance.patch(
+        `/users/profile`,
+        {
+          about: about,
+        }
+      );
+      console.log(data);
+
+      setEditProfile(false);
+
+      setUserInfo(data.data);
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong. profile not updated");
+      setAbout(userInfo?.about);
+    }
+  };
 
   if (!userInfo) return;
 
@@ -70,9 +101,9 @@ const UserProfile = () => {
             <label className="text-xs mb-1 px-1 font-medium">username</label>
             <input
               type="text"
+              value={userInfo.username}
               disabled
               className="h-10 w-full px-2 py-1 outline-none border-b-2 caret-red-500 focus:border-red-600 text-black dark:text-white bg-white dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 transition-all"
-              value={userInfo.username}
             />
           </div>
         </div>
@@ -82,8 +113,8 @@ const UserProfile = () => {
             <label className="text-xs mb-1 px-1 font-medium">email</label>
             <input
               type="text"
-              value={email!}
-              onChange={(e) => setEmail(e.target.value)}
+              defaultValue={email}
+              disabled
               className="h-10 w-full px-2 py-1 outline-none border-b-2 caret-red-500 focus:border-red-600 text-black dark:text-white bg-white dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 transition-all"
             />
           </div>
@@ -93,23 +124,29 @@ const UserProfile = () => {
             <label className="text-xs mb-1 px-1 font-medium">About</label>
             <textarea
               placeholder="write something..."
-              value={about!}
+              defaultValue={about}
               onChange={(e) => setAbout(e.target.value)}
               className="h-40 w-full p-2 caret-red-500 outline-none border-b-2 focus:border-red-600 text-black dark:text-white bg-white dark:bg-gray-900 dark:border-gray-800 rounded-t-md dark:focus:border-red-900 mb-4 transition-all resize-none "
             ></textarea>
           </div>
         </div>
       </section>
-      {/* {editProfile && (
+      {editProfile && (
         <div className="h-10 w-full flex gap-20 font-medium">
-          <button className="h-10 w-full rounded-md active:scale-95 transition-all border-2 border-red-400 text-red-400">
+          <button
+            onClick={() => cancelhandler()}
+            className="h-10 w-full rounded-md active:scale-95 transition-all border-2 border-red-600 text-red-600"
+          >
             Cancel
           </button>
-          <button className="h-10 w-full rounded-md active:scale-95 transition-all bg-red-400 text-white">
+          <button
+            onClick={() => saveChangesHandler()}
+            className="h-10 w-full rounded-md active:scale-95 transition-all bg-red-600 text-white"
+          >
             Save
           </button>
         </div>
-      )} */}
+      )}
     </main>
     //   )}
     //   <div

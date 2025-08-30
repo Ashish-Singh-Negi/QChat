@@ -131,7 +131,10 @@ export default function Home() {
         </nav>
 
         <section className="h-full w-[30%] z-10 flex flex-col border-r-[1px] border-red-200 bg-red-50 dark:border-gray-800 dark:bg-black">
-          {nav.map((value) => value.isActive && value.component)}
+          {nav.map(
+            (value) =>
+              value.isActive && <div key={value.name}>{value.component}</div>
+          )}
         </section>
         <ChatSection />
       </main>
