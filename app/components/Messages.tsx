@@ -55,6 +55,7 @@ const Messages = () => {
 
   useEffect(() => {
     if (currentChatPagination?.nextPage === null) setLoading(false);
+    else if (loading === false) setLoading(true);
   }, [currentChatPagination]);
 
   useEffect(() => {
