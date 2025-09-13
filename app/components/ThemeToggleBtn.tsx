@@ -1,6 +1,6 @@
 "use clients";
 
-import { useThemeContext } from "@/Context/ThemeContextProvider";
+import { useThemeContext } from "@/Contexts/ThemeContextProvider";
 import { Moon, Sun } from "lucide-react";
 import React, { useEffect } from "react";
 

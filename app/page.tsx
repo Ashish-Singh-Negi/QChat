@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 
-import { useUserInfoContext } from "@/Context/UserInfoContext";
-import { useChatsContext } from "@/Context/ChatsContext";
+import { useUserInfoContext } from "@/Contexts/UserInfoContext";
+import { useChatsContext } from "@/Contexts/ChatsContext";
 
 import axiosInstance from "@/utils/axiosinstance";
 

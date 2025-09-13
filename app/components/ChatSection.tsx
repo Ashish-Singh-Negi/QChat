@@ -4,11 +4,10 @@ import toast from "react-hot-toast";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { useUserContactContext } from "@/Context/UserContactContext";
-import { useChatsContext } from "@/Context/ChatsContext";
-// import { useWebSocketContext } from "@/Context/WebsocketContext";
+import { useUserContactContext } from "@/Contexts/UserContactContext";
+import { useChatsContext } from "@/Contexts/ChatsContext";
 
-import { UserInfo } from "@/Interface/definations";
+import { UserInfo } from "@/types/definations";
 
 import ProfilePic from "./ProfilePic";
 import Dropdown from "./Dropdown";
@@ -84,9 +83,11 @@ const ChatSection = () => {
     }
   };
 
+  // https://images.wallpapersden.com/image/download/zen-tanjiro-kamado-hd-demon-slayer_bmdmbGmUmZqaraWkpJRpZWVlrWdnaW0.jpg
+
   return (
     selectedContact && (
-      <section className="bg-[url('/background.png')] dark:bg-[url('/dark-background.png')] bg-cover h-full w-2/3 flex">
+      <section className="bg-[url('https://images.wallpapersden.com/image/download/zen-tanjiro-kamado-hd-demon-slayer_bmdmbGmUmZqaraWkpJRpZWVlrWdnaW0.jpg')] dark:bg-[url('/dark-background.png')] bg-cover h-full w-2/3 flex">
         <div className="h-full w-full flex flex-col border-r-[1px] dark:border-gray-800">
           <header className="h-16 w-full bg-white dark:bg-black px-2 pr-4 flex items-center justify-between">
             {userContacts && (
@@ -139,7 +140,7 @@ const ChatSection = () => {
             ref={chatContainerRef}
             className="flex-1 flex flex-col-reverse w-full font-normal overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600"
           >
-            <Messages />
+            <Messages key={selectedChat?._id} />
 
             {selectedChat!.isDisabled && (
               <div className="h-14 w-full flex flex-col gap-2 items-center">

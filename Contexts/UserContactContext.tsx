@@ -1,6 +1,6 @@
 "use client";
 
-import { StoredMessage, UserInfo } from "@/Interface/definations";
+import { StoredMessage, UserInfo } from "@/types/definations";
 import {
   createContext,
   Dispatch,

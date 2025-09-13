@@ -1,6 +1,6 @@
 "use client";
 
-import { Theme } from "@/Interface/definations";
+import { Theme } from "@/types/definations";
 import {
   createContext,
   Dispatch,

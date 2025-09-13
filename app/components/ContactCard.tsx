@@ -2,11 +2,11 @@
 
 import React, { useEffect } from "react";
 
-import { useChatsContext } from "@/Context/ChatsContext";
-import { useUserContactContext } from "@/Context/UserContactContext";
+import { useChatsContext } from "@/Contexts/ChatsContext";
+import { useUserContactContext } from "@/Contexts/UserContactContext";
 
 import ProfilePic from "./ProfilePic";
-import { useWebSocketContext } from "@/Context/WebsocketContext";
+import { useWebSocketContext } from "@/Contexts/WebsocketContext";
 import { getMessageDate } from "@/utils/date";
 
 const ContactCard = ({ chatId, index }: { chatId: string; index: number }) => {
@@ -60,7 +60,7 @@ const ContactCard = ({ chatId, index }: { chatId: string; index: number }) => {
             />
           )}
           {userContacts[index].isOnline && (
-            <span className="absolute right-1 bottom-1 h-2 w-2 bg-emerald-500 rounded-full"></span>
+            <span className="absolute right-1 bottom-1 h-2 w-2 bg-emerald-300 dark:bg-emerald-500 rounded-full"></span>
           )}
         </div>
         <div className="h-14 w-[90%]">

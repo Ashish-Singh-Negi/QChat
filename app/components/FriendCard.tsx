@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Chat, UserInfo } from "../../Interface/definations";
+import { Chat, UserInfo } from "../../types/definations";
 
 // import { useUserContactContext } from "@/Context/UserContactContext";
 import ProfilePic from "./ProfilePic";
@@ -8,8 +8,8 @@ import { getContactInfo } from "@/utils/ContactService";
 // import axiosInstance from "@/utils/axiosinstance";
 import { MessageCircle, UserRoundMinus } from "lucide-react";
 import axiosInstance from "@/utils/axiosinstance";
-import { useChatsContext } from "@/Context/ChatsContext";
-import { useUserInfoContext } from "@/Context/UserInfoContext";
+import { useChatsContext } from "@/Contexts/ChatsContext";
+import { useUserInfoContext } from "@/Contexts/UserInfoContext";
 import toast from "react-hot-toast";
 
 const FriendCard = ({ friendId }: { friendId: string }) => {
@@ -82,7 +82,7 @@ const FriendCard = ({ friendId }: { friendId: string }) => {
   return friend ? (
     <div className="h-[72px] w-full px-2 mb-1 animate-dropdownOpen">
       <div className="group h-full w-full hover:bg-red-100 dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4">
-        <div className="h-14 w-14 text-2xl">
+        <div className="size-14 shr text-2xl">
           <ProfilePic
             profilePic={friend.profilePic}
             username={friend.username}

@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
-import { useUserInfoContext } from "@/Context/UserInfoContext";
-import { SendMessage } from "@/Interface/definations";
+import { useUserInfoContext } from "@/Contexts/UserInfoContext";
+import { SendMessage } from "@/types/definations";
 
 interface UseWebSocketOptions {
   onOpen?: (event: Event) => void;

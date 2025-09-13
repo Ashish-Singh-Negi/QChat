@@ -1,4 +1,4 @@
-import { useUserInfoContext } from "@/Context/UserInfoContext";
+import { useUserInfoContext } from "@/Contexts/UserInfoContext";
 import React, { useState } from "react";
 import FriendCard from "./FriendCard";
 import FriendRequestCard from "./FriendRequestCard";

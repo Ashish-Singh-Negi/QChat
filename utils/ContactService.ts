@@ -1,6 +1,6 @@
 // @/services/contactService.ts
 import axiosInstance from "@/utils/axiosinstance";
-import { StoredMessage, UserInfo } from "@/Interface/definations";
+import { StoredMessage, UserInfo } from "@/types/definations";
 
 interface ContactWithMessages extends UserInfo {
   messages: StoredMessage[];

@@ -1,117 +1,46 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { MessageCircleQuestionMark } from "lucide-react";
 
-import { PaginationMeta, StoredMessage } from "../../Interface/definations";
+import { StoredMessage } from "../../types/definations";
 
-import { useUserInfoContext } from "@/Context/UserInfoContext";
+import { useUserInfoContext } from "@/Contexts/UserInfoContext";
+import { useChatsContext } from "@/Contexts/ChatsContext";
 
 import RoomMessageCard from "./RoomMessageCard";
 import SenderMessageCard from "./SenderMessageCard";
 import ReceiverMessageCard from "./ReceiverMessageCard";
 import { getMessageDate } from "@/utils/date";
-import { getChatMessages } from "@/utils/ChatService";
-import { useChatsContext } from "@/Context/ChatsContext";
-import Spinner from "./Spinner";
 
 const Messages = () => {
   const { userInfo } = useUserInfoContext();
-  const { selectedChat, chatsMessagesMap, chatMessagesPaginationMap } =
-    useChatsContext();
+  const { selectedChat, chatsMessagesMap } = useChatsContext();
 
-  const [loading, setLoading] = useState(true);
-  const [contactMessages, setContactMessages] = useState<StoredMessage[]>([]);
-  const [categorizeMessagesByDate, setCatogorizeMessagesByDate] = useState<
-    | {
-        date: string;
-        messages: StoredMessage[];
-      }[]
-  >([]);
-
-  const [currentChatPagination, setCurrentChatPagination] =
-    useState<PaginationMeta | null>(null);
+  const [contactMessages, setContactMessages] = useState<StoredMessage[]>(
+    selectedChat!._id! ? chatsMessagesMap.get(selectedChat!._id)! : []
+  );
 
   const messagesRef = useRef<HTMLDivElement>(null);
 
-  const fetchOldChatMessages = async () => {
-    const response: any = await getChatMessages(
-      selectedChat!._id!,
-      currentChatPagination!.nextPage!,
-      currentChatPagination!.limit!
-    );
+  const OldMessages = useMemo(() => {
+    if (!contactMessages.length) return [];
 
-    setContactMessages((prev) => [...prev, ...response.data.messages]);
-    setCurrentChatPagination(response.data.pagination);
-  };
+    const grouped = contactMessages.reduce((acc, msg) => {
+      const date = getMessageDate(msg.createdAt!);
+      if (!acc[date]) acc[date] = [];
+      acc[date].unshift(msg);
+      return acc;
+    }, {} as Record<string, StoredMessage[]>);
 
-  useEffect(() => {
-    const chatPagination = chatMessagesPaginationMap.get(selectedChat!._id!);
-    if (chatPagination) setCurrentChatPagination(chatPagination);
-  }, [selectedChat]);
-
-  useEffect(() => {
-    const messages = chatsMessagesMap.get(selectedChat!._id!);
-    if (messages) setContactMessages(messages);
-  }, [chatsMessagesMap, selectedChat]);
-
-  useEffect(() => {
-    if (currentChatPagination?.nextPage === null) setLoading(false);
-    else if (loading === false) setLoading(true);
-  }, [currentChatPagination]);
-
-  useEffect(() => {
-    const firstMessageElement = messagesRef.current?.firstElementChild;
-    if (!firstMessageElement) return;
-
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && currentChatPagination?.nextPage) {
-        fetchOldChatMessages();
-      }
-    });
-
-    observer.observe(firstMessageElement);
-
-    return () => {
-      observer.disconnect(); // safer than unobserve in dynamic DOM
-    };
-  }, [categorizeMessagesByDate]);
-
-  useEffect(() => {
-    if (!contactMessages || !contactMessages.length) {
-      setCatogorizeMessagesByDate([]);
-      return;
-    }
-
-    const messages = contactMessages;
-
-    const tempCategorizeMessageByDate: {
-      date: string;
-      messages: StoredMessage[];
-    }[] = [
-      {
-        date: getMessageDate(messages[0].createdAt!),
-        messages: [],
-      },
-    ];
-
-    let j = 0;
-
-    for (let i = 0; i < contactMessages.length; i++) {
-      if (
-        tempCategorizeMessageByDate[j].date ===
-        getMessageDate(contactMessages[i].createdAt!)
-      ) {
-        tempCategorizeMessageByDate[j].messages.unshift(contactMessages[i]);
-      } else {
-        tempCategorizeMessageByDate.push({
-          date: getMessageDate(contactMessages[i].createdAt!),
-          messages: [contactMessages[i]],
-        });
-        j++;
-      }
-    }
-
-    setCatogorizeMessagesByDate(tempCategorizeMessageByDate);
+    return Object.entries(grouped).map(([date, messages]) => ({
+      date,
+      messages,
+    }));
   }, [contactMessages]);
+
+  useEffect(() => {
+    const newMessages = chatsMessagesMap.get(selectedChat!._id!);
+    if (newMessages) setContactMessages(newMessages);
+  }, [chatsMessagesMap]);
 
   if (!contactMessages.length)
     return (
@@ -123,7 +52,7 @@ const Messages = () => {
 
   return (
     <>
-      {categorizeMessagesByDate?.map(({ date, messages }) => (
+      {OldMessages?.map(({ date, messages }) => (
         <div className="mb-3 flex flex-col" key={date}>
           <div className="sticky z-10 top-1 w-full flex justify-center mb-3">
             <p className="text-xs bg-white dark:bg-gray-900 rounded-lg px-3 py-1 font-medium">
@@ -146,7 +75,6 @@ const Messages = () => {
           </div>
         </div>
       ))}
-      {loading && <Spinner />}
     </>
   );
 };

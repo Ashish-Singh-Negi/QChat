@@ -1,4 +1,4 @@
-import { useUserInfoContext } from "@/Context/UserInfoContext";
+import { useUserInfoContext } from "@/Contexts/UserInfoContext";
 import React from "react";
 
 const ProfilePic = ({

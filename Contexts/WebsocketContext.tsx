@@ -10,7 +10,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { SendMessage, StoredMessage } from "@/Interface/definations";
+import { SendMessage, StoredMessage } from "@/types/definations";
 import { useUserContactContext } from "./UserContactContext";
 import { useUserInfoContext } from "./UserInfoContext";
 import { useChatsContext } from "./ChatsContext";

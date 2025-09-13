@@ -3,9 +3,9 @@ import toast from "react-hot-toast";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { useUserInfoContext } from "@/Context/UserInfoContext";
+import { useUserInfoContext } from "@/Contexts/UserInfoContext";
 
-import { FriendRequest, UserInfo } from "../../Interface/definations";
+import { FriendRequest, UserInfo } from "../../types/definations";
 
 import ProfilePic from "./ProfilePic";
 

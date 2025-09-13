@@ -4,12 +4,12 @@ import React, { useEffect, useState } from "react";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { useUserContactContext } from "@/Context/UserContactContext";
+import { useUserContactContext } from "@/Contexts/UserContactContext";
+import { useChatsContext } from "@/Contexts/ChatsContext";
 
 import ProfilePic from "./ProfilePic";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
-import { useChatsContext } from "@/Context/ChatsContext";
 
 const HomeContactInfo = ({
   setOpenContactInfo,
@@ -101,7 +101,7 @@ const HomeContactInfo = ({
         </button>
         Contact Info
       </header>
-      <main className="h-[92%] w-full overflow-y-auto overflow-x-hidden">
+      <main className="min-h-96 w-full overflow-y-auto overflow-x-hidden">
         <div className="h-fit w-full flex flex-col items-center border-b-2 dark:border-gray-800">
           <div className="h-32 w-32 cursor-pointer text-5xl">
             <ProfilePic

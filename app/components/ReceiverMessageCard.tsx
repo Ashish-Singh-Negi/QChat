@@ -3,14 +3,14 @@ import toast from "react-hot-toast";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { StoredMessage } from "../../Interface/definations";
+import { StoredMessage } from "../../types/definations";
 
-import { useWebSocketContext } from "@/Context/WebsocketContext";
+import { useWebSocketContext } from "@/Contexts/WebsocketContext";
 
 import Dropdown from "./Dropdown";
 import DropdownActionCard from "./DropdownActionCard";
 import { Ban, Pin, PinOff, Trash2 } from "lucide-react";
-import { useChatsContext } from "@/Context/ChatsContext";
+import { useChatsContext } from "@/Contexts/ChatsContext";
 // import { useUserContactContext } from "@/Context/UserContactContext";
 
 const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {

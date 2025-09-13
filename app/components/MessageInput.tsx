@@ -1,9 +1,9 @@
 import React, { FormEvent, useState } from "react";
 
-import { useWebSocketContext } from "@/Context/WebsocketContext";
-import { useUserInfoContext } from "@/Context/UserInfoContext";
-import { useUserContactContext } from "@/Context/UserContactContext";
-import { useChatsContext } from "@/Context/ChatsContext";
+import { useWebSocketContext } from "@/Contexts/WebsocketContext";
+import { useUserInfoContext } from "@/Contexts/UserInfoContext";
+import { useUserContactContext } from "@/Contexts/UserContactContext";
+import { useChatsContext } from "@/Contexts/ChatsContext";
 import { Send } from "lucide-react";
 
 const MessageInput = () => {

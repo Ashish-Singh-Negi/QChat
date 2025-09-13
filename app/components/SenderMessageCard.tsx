@@ -13,12 +13,12 @@ import {
   Trash2,
 } from "lucide-react";
 
-import { StoredMessage } from "../../Interface/definations";
+import { StoredMessage } from "../../types/definations";
 
 import Dropdown from "./Dropdown";
 import DropdownActionCard from "./DropdownActionCard";
 import EditDialogBox from "./EditDialogBox";
-import { useChatsContext } from "@/Context/ChatsContext";
+import { useChatsContext } from "@/Contexts/ChatsContext";
 
 const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
   const { selectedChat } = useChatsContext();

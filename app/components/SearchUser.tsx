@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 import axiosInstance from "@/utils/axiosinstance";
 
-import { UserInfo } from "../../Interface/definations";
+import { UserInfo } from "../../types/definations";
 
-import { useUserInfoContext } from "@/Context/UserInfoContext";
+import { useUserInfoContext } from "@/Contexts/UserInfoContext";
 
-import ProfilePic from "./ProfilePic";
-import { Send } from "lucide-react";
+import SearchUserCard from "./SearchUserCard";
 
 const SearchUser = () => {
   const { userInfo } = useUserInfoContext();
@@ -49,20 +47,6 @@ const SearchUser = () => {
     }
   };
 
-  const sendFriendRequestHandler = async (username: string) => {
-    try {
-      const { data } = await axiosInstance.post("/friends/requests", {
-        friendUsername: username,
-      });
-
-      console.log(data);
-      toast.success("Friend request send");
-    } catch (error: any) {
-      toast.error(error.response.data.error);
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     getUsersByUsername(searchUsername);
   }, [searchUsername]);
@@ -90,28 +74,11 @@ const SearchUser = () => {
         usernameFounded.map((user) => {
           if (userInfo?.username !== user.username)
             return (
-              <div
+              <SearchUserCard
                 key={user._id + user.username}
-                className="h-[72px] w-full px-2 mb-1"
-              >
-                <div className="h-full w-full hover:bg-gray-200 dark:hover:bg-gray-900 rounded-lg flex items-center px-2 py-2 gap-4">
-                  <div className="h-14 w-14 text-2xl">
-                    <ProfilePic
-                      profilePic={user.profilePic}
-                      username={user.username}
-                    />
-                  </div>
-                  <div className="h-14 w-[90%] flex items-center justify-between">
-                    <p className="font-medium mt-1">{user?.username}</p>
-                    <button
-                      onClick={() => sendFriendRequestHandler(user.username)}
-                      className="h-8 flex items-center cursor-pointer gap-1 px-4 py-1 rounded-md font-semibold text-white bg-red-600 active:scale-95 transition-all"
-                    >
-                      send <Send className="inline mt-1 h-3 w-3" />
-                    </button>
-                  </div>
-                </div>
-              </div>
+                profilePicUrl={user.profilePic}
+                username={user.username}
+              />
             );
         })}
     </>
