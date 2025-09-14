@@ -1,4 +1,4 @@
-export type UserInfo = {
+export interface UserInfo {
   _id: string;
   username: string;
   email: string;
@@ -15,9 +15,9 @@ export type UserInfo = {
   // blacklist: string[];
   createdAt: string;
   updatedAt: string;
-};
+}
 
-export type FriendRequest = {
+export interface FriendRequest {
   _id: string;
   sender: {
     username: string;
@@ -30,20 +30,46 @@ export type FriendRequest = {
   status: "accepted" | "pending" | "rejected";
   sendAt: string;
   respondedAt: string;
-};
+}
 
-export type SendMessage = {
-  _id?: string;
-  action:
-    | "CHAT_MESSAGE"
-    | "ONLINE_STATUS_HEARTBEAT"
-    | "CHECK_ONLINE_STATUS"
-    | "MESSAGE_DELIVERED_ACKNOWLEDGEMENT";
-  content?: string;
-  chatId?: string;
-  sender?: string;
-  receiver?: string;
-};
+export interface Message {
+  action: "CHAT_MESSAGE";
+  content: string;
+  chatId: string;
+  sender: string;
+  receiver: string;
+}
+
+export interface OnlineStatusHeartbeat {
+  action: "ONLINE_STATUS_HEARTBEAT";
+  sender: string;
+}
+
+export interface CheckUserOnlineStatus {
+  action: "CHECK_ONLINE_STATUS";
+  receiver: string;
+}
+
+export interface AckMessage {
+  action: "MESSAGE_DELIVERED_ACKNOWLEDGEMENT";
+  _id: string;
+  sender: string;
+  chatId: string;
+  status: MessageStatus;
+}
+
+export interface RoomMessage {
+  action: "ROOM_MESSAGE";
+  content: string;
+}
+
+export interface PinMessage {
+  action: "PIN";
+  chatId: string;
+  _id: string;
+  receiver: string;
+  isPinned: boolean;
+}
 
 export interface Chat {
   _id: string;
@@ -57,7 +83,9 @@ export interface Chat {
   isDisabled: boolean;
 }
 
-export type StoredMessage = {
+export type MessageStatus = "SEND" | "DELIVERED" | "SEEN";
+
+export interface StoredMessage {
   _id: string;
   senderId: string;
   receiverId: string;
@@ -68,12 +96,12 @@ export type StoredMessage = {
   isStar: boolean;
   visibleToEveryone?: boolean;
   visibleToSender?: boolean;
-  status: "SEND" | "DELIVERED" | "SEEN";
+  status: MessageStatus;
   updatedAt?: string;
   createdAt?: string;
-};
+}
 
-export type ParsedMessage = {
+export interface ParsedMessage {
   action:
     | "CHAT_MESSAGE"
     | "ONLINE_STATUS_HEARTBEAT"
@@ -86,8 +114,8 @@ export type ParsedMessage = {
   content: string;
   createdAt: string;
   isOnline: boolean;
-  status: "SEND" | "DELIVERED" | "SEEN";
-};
+  status: MessageStatus;
+}
 
 export interface PaginationMeta {
   totalRecords: number;

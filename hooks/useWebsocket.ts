@@ -1,7 +1,14 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 import { useUserInfoContext } from "@/Contexts/UserInfoContext";
-import { SendMessage } from "@/types/definations";
+import {
+  AckMessage,
+  CheckUserOnlineStatus,
+  Message,
+  OnlineStatusHeartbeat,
+  PinMessage,
+  RoomMessage,
+} from "@/types/definations";
 
 interface UseWebSocketOptions {
   onOpen?: (event: Event) => void;
@@ -56,7 +63,7 @@ export const useWebSocket = (
       pingInterval = setInterval(() => {
         sendMessage({
           action: "ONLINE_STATUS_HEARTBEAT",
-          sender: userInfo?._id,
+          sender: userInfo?._id!,
         });
       }, 3000);
     };
@@ -103,7 +110,15 @@ export const useWebSocket = (
     console.log("useWebSocket ROOM ID : ", roomId);
   }, [roomId]);
 
-  const sendMessage = async (dataIs: SendMessage) => {
+  const sendMessage = async (
+    dataIs:
+      | Message
+      | OnlineStatusHeartbeat
+      | CheckUserOnlineStatus
+      | AckMessage
+      | PinMessage
+      | RoomMessage
+  ) => {
     if (
       webSocketRef.current &&
       webSocketRef.current.readyState === WebSocket.OPEN

@@ -11,10 +11,11 @@ import Dropdown from "./Dropdown";
 import DropdownActionCard from "./DropdownActionCard";
 import { Ban, Pin, PinOff, Trash2 } from "lucide-react";
 import { useChatsContext } from "@/Contexts/ChatsContext";
-// import { useUserContactContext } from "@/Context/UserContactContext";
+import { useUserContactContext } from "@/Contexts/UserContactContext";
 
 const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
   const { sendMessage } = useWebSocketContext();
+  const { selectedContact } = useUserContactContext();
   const { selectedChat } = useChatsContext();
   const [dropdown, setDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -32,6 +33,14 @@ const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
             console.log(error);
           }
         })();
+
+        sendMessage({
+          action: "PIN",
+          chatId: selectedChat!._id!,
+          _id: message._id,
+          isPinned: !message.isPinned,
+          receiver: selectedContact!._id!,
+        });
       },
     },
     {
@@ -59,6 +68,8 @@ const ReceiverMessageCard = ({ message }: { message: StoredMessage }) => {
         action: "MESSAGE_DELIVERED_ACKNOWLEDGEMENT",
         _id: message._id,
         sender: message.senderId,
+        chatId: selectedChat!._id!,
+        status: "DELIVERED",
       });
   }, []);
 

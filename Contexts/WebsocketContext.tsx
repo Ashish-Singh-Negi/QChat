@@ -10,15 +10,31 @@ import {
   useEffect,
   useState,
 } from "react";
-import { SendMessage, StoredMessage } from "@/types/definations";
+import {
+  AckMessage,
+  CheckUserOnlineStatus,
+  Message,
+  MessageStatus,
+  OnlineStatusHeartbeat,
+  PinMessage,
+  RoomMessage,
+  StoredMessage,
+} from "@/types/definations";
 import { useUserContactContext } from "./UserContactContext";
 import { useUserInfoContext } from "./UserInfoContext";
 import { useChatsContext } from "./ChatsContext";
 
 type WebSocketContext = {
-  // roomId: string | null;
   isConnected: boolean;
-  sendMessage: (dataIs: SendMessage) => void;
+  sendMessage: (
+    dataIs:
+      | Message
+      | OnlineStatusHeartbeat
+      | CheckUserOnlineStatus
+      | AckMessage
+      | RoomMessage
+      | PinMessage
+  ) => void;
   messages?: StoredMessage[] | [];
   setMessages: Dispatch<SetStateAction<StoredMessage[] | []>>;
 };
@@ -33,8 +49,11 @@ export default function WebSocketContextProvider({
   const [messages, setMessages] = useState<StoredMessage[] | []>([]);
 
   const { userInfo } = useUserInfoContext();
-  const { addMessageToChatsMessagesMap, updateMessageStatus } =
-    useChatsContext();
+  const {
+    addMessageToChatsMessagesMap,
+    updateMessageStatus,
+    updateMessagePinStatus,
+  } = useChatsContext();
   const { updateContactOnlineStatus } = useUserContactContext();
 
   const { isConnected, sendMessage } = useWebSocket(
@@ -44,59 +63,77 @@ export default function WebSocketContextProvider({
       onMessage: (event) => {
         console.log("Received message:", event.data);
 
-        const parsed: {
-          action:
-            | "CHAT_MESSAGE"
-            | "ONLINE_STATUS_HEARTBEAT"
-            | "CHECK_ONLINE_STATUS"
-            | "MESSAGE_DELIVERED_ACKNOWLEDGEMENT";
-          _id: string;
-          sender: string;
-          receiver: string;
-          chatId: string;
-          content: string;
-          createdAt: string;
-          isOnline: boolean;
-          status: "SEND" | "DELIVERED" | "SEEN";
-        } = JSON.parse(event.data);
+        const parsed:
+          | (Message & {
+              _id: string;
+              createdAt: string;
+              status: MessageStatus;
+            })
+          | (OnlineStatusHeartbeat & {
+              isOnline: boolean;
+            })
+          | (CheckUserOnlineStatus & {
+              isOnline: boolean;
+            })
+          | AckMessage
+          | PinMessage
+          | RoomMessage = JSON.parse(event.data);
 
-        if (parsed.action === "ONLINE_STATUS_HEARTBEAT")
-          updateContactOnlineStatus(parsed.sender, parsed.isOnline);
+        switch (parsed.action) {
+          case "ONLINE_STATUS_HEARTBEAT":
+            updateContactOnlineStatus(parsed.sender, parsed.isOnline);
 
-        if (parsed.action === "CHECK_ONLINE_STATUS")
-          updateContactOnlineStatus(parsed.receiver, parsed.isOnline);
+            break;
 
-        if (parsed.action === "CHAT_MESSAGE") {
-          const message: StoredMessage = {
-            _id: parsed._id,
-            chatId: parsed.chatId,
-            senderId: parsed.sender,
-            receiverId: parsed.receiver,
-            content: parsed.content,
-            createdAt: parsed.createdAt,
-            updatedAt: new Date().toISOString(),
-            isEdited: false,
-            isPinned: false,
-            isStar: false,
-            visibleToEveryone: true,
-            visibleToSender: true,
-            status: parsed.status,
-          };
+          case "CHECK_ONLINE_STATUS":
+            updateContactOnlineStatus(parsed.receiver, parsed.isOnline!);
+            break;
 
-          addMessageToChatsMessagesMap(parsed.chatId, message);
-
-          // After recieving message Receiver will send MESSAGE_DELIVERED_ACKNOWLEDGEMENT to sender
-          if (parsed.sender !== userInfo?._id)
-            sendMessage({
-              action: "MESSAGE_DELIVERED_ACKNOWLEDGEMENT",
+          case "CHAT_MESSAGE":
+            const message: StoredMessage = {
               _id: parsed._id,
-              sender: parsed.sender,
               chatId: parsed.chatId,
-            });
-        }
+              senderId: parsed.sender,
+              receiverId: parsed.receiver,
+              content: parsed.content,
+              createdAt: parsed.createdAt,
+              updatedAt: new Date().toISOString(),
+              isEdited: false,
+              isPinned: false,
+              isStar: false,
+              visibleToEveryone: true,
+              visibleToSender: true,
+              status: parsed.status,
+            };
 
-        if (parsed.action === "MESSAGE_DELIVERED_ACKNOWLEDGEMENT")
-          updateMessageStatus(parsed.chatId, parsed._id, parsed.status);
+            addMessageToChatsMessagesMap(parsed.chatId, message);
+
+            console.log(parsed);
+
+            // After receiving message Receiver will send MESSAGE_DELIVERED_ACKNOWLEDGEMENT to sender
+            if (parsed.sender !== userInfo?._id)
+              sendMessage({
+                action: "MESSAGE_DELIVERED_ACKNOWLEDGEMENT",
+                _id: parsed._id,
+                sender: parsed.sender,
+                chatId: parsed.chatId,
+                status: "DELIVERED",
+              });
+            break;
+
+          case "MESSAGE_DELIVERED_ACKNOWLEDGEMENT":
+            updateMessageStatus(parsed.chatId, parsed._id, parsed.status);
+            break;
+
+          case "PIN":
+            console.log(parsed);
+            updateMessagePinStatus(parsed.chatId, parsed._id, parsed.isPinned);
+            break;
+
+          default:
+            console.log("Action : ", parsed.action, "NOT exist");
+            break;
+        }
       },
       onClose: () => console.log("WebSocket disconnected"),
       onError: (event) => console.error("WebSocket error:", event),

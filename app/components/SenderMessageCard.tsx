@@ -19,9 +19,13 @@ import Dropdown from "./Dropdown";
 import DropdownActionCard from "./DropdownActionCard";
 import EditDialogBox from "./EditDialogBox";
 import { useChatsContext } from "@/Contexts/ChatsContext";
+import { useWebSocketContext } from "@/Contexts/WebsocketContext";
+import { useUserContactContext } from "@/Contexts/UserContactContext";
 
 const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
   const { selectedChat } = useChatsContext();
+  const { sendMessage } = useWebSocketContext();
+  const { selectedContact } = useUserContactContext();
 
   const [edit, setEdit] = useState(false);
 
@@ -40,12 +44,15 @@ const SenderMessageCard = ({ message }: { message: StoredMessage }) => {
           } catch (error) {
             console.log(error);
           }
-
-          // sendMessage({
-          //   action: "UPDATE",
-          //   room: roomId!,
-          // });
         })();
+        
+        sendMessage({
+          action: "PIN",
+          chatId: selectedChat!._id!,
+          _id: message._id,
+          isPinned: !message.isPinned,
+          receiver: selectedContact!._id!,
+        });
       },
     },
     {

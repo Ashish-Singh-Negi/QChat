@@ -18,15 +18,23 @@ import { useUserContactContext } from "./UserContactContext";
 type ChatsContext = {
   chats: Chat[] | null;
   chatsMessagesMap: Map<string, StoredMessage[]>;
-  addMessageToChatsMessagesMap: (key: string, message: StoredMessage) => void;
+  addMessageToChatsMessagesMap: (
+    chatId: string,
+    message: StoredMessage
+  ) => void;
   addMessagesToChatsMessagesMap: (
-    key: string,
+    chatId: string,
     message: StoredMessage[]
   ) => void;
   updateMessageStatus: (
-    key: string,
+    chatId: string,
     id: string,
     status: "SEND" | "DELIVERED" | "SEEN"
+  ) => void;
+  updateMessagePinStatus: (
+    chatId: string,
+    id: string,
+    isPinned: boolean
   ) => void;
   selectedChat: Chat | null;
   setSelectedChat: Dispatch<SetStateAction<Chat | null>>;
@@ -52,31 +60,31 @@ export default function ChatsContextProvider({
   //   useState<Map<string, StoredMessage[]>>(new Map());
 
   const addMessageToChatsMessagesMap = (
-    key: string,
+    chatId: string,
     message: StoredMessage
   ) => {
     setChatsMessagesMap((prevMap) => {
       const newMap = new Map(prevMap); // clone the prev Map
 
-      const chatMessages = prevMap.get(key) ?? [];
+      const chatMessages = prevMap.get(chatId) ?? [];
       const updatedChatMessages = [message, ...chatMessages];
 
-      newMap.set(key, updatedChatMessages);
+      newMap.set(chatId, updatedChatMessages);
       return newMap;
     });
   };
 
   const addMessagesToChatsMessagesMap = (
-    key: string,
+    chatId: string,
     messages: StoredMessage[]
   ) => {
     setChatsMessagesMap((prevMap) => {
       const newMap = new Map(prevMap); // clone the prev Map
 
-      const chatMessages = prevMap.get(key) ?? [];
+      const chatMessages = prevMap.get(chatId) ?? [];
       const updatedChatMessages = [...chatMessages, ...messages];
 
-      newMap.set(key, updatedChatMessages);
+      newMap.set(chatId, updatedChatMessages);
       return newMap;
     });
   };
@@ -100,21 +108,42 @@ export default function ChatsContextProvider({
   };
 
   const updateMessageStatus = (
-    key: string,
+    chatId: string,
     id: string,
     status: "SEND" | "DELIVERED" | "SEEN"
   ) => {
     setChatsMessagesMap((prevMap) => {
       const newMap = new Map(prevMap);
 
-      const messages = prevMap.get(key);
+      const messages = prevMap.get(chatId);
       if (!messages) return prevMap;
 
       const updatedMessage = messages.map((message) =>
         message._id === id ? { ...message, status: status } : message
       );
 
-      newMap.set(key, updatedMessage);
+      newMap.set(chatId, updatedMessage);
+      return newMap;
+    });
+  };
+
+  const updateMessagePinStatus = (
+    chatId: string,
+    id: string,
+    isPinned: boolean
+  ) => {
+    console.log(chatId, " ", id, " ", isPinned);
+    setChatsMessagesMap((prevMap) => {
+      const newMap = new Map(prevMap);
+
+      const messages = prevMap.get(chatId);
+      if (!messages) return prevMap;
+
+      const updatedMessage = messages.map((message) =>
+        message._id === id ? { ...message, isPinned: isPinned } : message
+      );
+
+      newMap.set(chatId, updatedMessage);
       return newMap;
     });
   };
@@ -178,6 +207,7 @@ export default function ChatsContextProvider({
         addMessageToChatsMessagesMap,
         addMessagesToChatsMessagesMap,
         updateMessageStatus,
+        updateMessagePinStatus,
         selectedChat,
         setSelectedChat,
         setCurrentChatId,
